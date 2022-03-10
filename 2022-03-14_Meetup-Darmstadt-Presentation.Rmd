@@ -1,0 +1,1969 @@
+---
+title: "Datenanalyse / Statistik mit R leicht gemacht!"
+subtitle: "Data Science Meetup Darmstadt"
+author: "Wolf Riepl"
+institute: " "
+date: "14. März 2022, 19 Uhr"
+output:
+  xaringan::moon_reader:
+    chakra: libs/remark-latest.min.js
+    lib_dir: libs
+    css: ["libs/_css/my_css.css"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumberFormat: "%current%"
+      ratio: 16:9
+---
+
+class: agenda, inverse
+
+```{r, include = FALSE}
+library(fontawesome)
+```
+
+# Agenda
+
+### .yellow[*1. Kurzer Einstieg in R und RStudio*]
+### 2. Automatisierte Berichte mit R: Das Markdown-Format
+### 3. Statistik mit R leicht gemacht
+### 4. Ergänzungen
+
+???
+
+* Zuerst Pakete installieren, dann einleitende Folien
+* Gemeinsam stricken
+
+R-Code schreiben, ja - aber dank moderner Erweiterungspakete kann man viel Cooles mit ein oder zwei Codezeilen erreichen
+
+---
+
+layout: true
+
+# Erstes Date: R und RStudio
+
+---
+
+## Warum R?
+
+> R ist die weltweit leistungsstärkste Programmiersprache für statistische Berechnungen, maschinelles Lernen und Grafiken und steht gleichzeitig für eine blühende globale Gemeinschaft von Anwendern, Entwicklern und Beitragenden.
+
+--
+
+** *Das sagt ausgerechnet - Microsoft!* ** Microsoft R Application Network (MRAN)
+
+* Über 18.000 Erweiterungspakete allein auf CRAN  
+  (Comprehensive R Archive Network)
+* Weitere Pakete u. a. bei github und auf bioconductor.org
+* Online gibt es Antworten auf nahezu jede denkbare R-Frage, z. B. bei **stackoverflow**
+* Sehr aktive Community: Twitter #RStats, RBloggers
+
+---
+
+## Warum R? Einige Konzerne, die R einsetzen
+
+.pull-left[
+![facebook](libs/_Images/logo-facebook.png)
+
+![Google](libs/_Images/logo-Google.png)
+
+```{r, out.width = "15%", out.height = "15%"}
+knitr::include_graphics("libs/_Images/logo-Twitter.png")
+```
+
+```{r, out.width = "25%", out.height = "25%"}
+knitr::include_graphics("libs/_Images/logo-airbnb.png")
+```
+
+]
+
+.pull-right[
+* u. a. zur Verhaltens-Analyse (Status-Updates, Profilbilder);  
+Visualisierung großer Datenmengen  
+<br>
+  
+* Werbewirksamkeit; ökonomische Prognosen;  
+statistische Modellierung (Big Data)  
+<br><br>
+  
+* Datenvisualisierung, Semantische Analysen
+<br><br><br>
+
+* Data Science
+
+
+]
+
+---
+
+.pull-left[
+
+## Warum R? Popularität
+
+* Sehr populär für eine **domänen-spezifische Sprache**
+* ABER:
+
+```{r, out.height = "85%", out.width = "85%"}
+knitr::include_graphics("libs/_Images/hadley-rankings.png")
+```
+
+Tiobe Index: Starke Schwankungen  
+z. B. R auf Platz 8 (08/2020) vs. 19 (09/2019)
+
+]
+
+.pull-right[
+```{r, out.width = "74%", out.height = "74%"}
+knitr::include_graphics("libs/_Images/IEEE-ranking-2021.png")
+```
+
+* IEEE = *Institute of Electrical and Electronics Engineers* **2021**; 
+https://spectrum.ieee.org/top-programming-languages/
+* 11 Metriken von github, Google, Stack Overflow, Twitter etc.
+* Nicht in Top 10: PHP, SQL, Ruby, Rust, Julia
+
+]
+---
+
+## Ein kuzer Blick in die Geschichte
+
+.large[
+* R ist eine Implementierung der Programmiersprache S
+* S wurde von John Chambers (Bell Labs) entwickelt; erste Veröffentlichung (S1) 1976
+* **Ross Ihaka** und **Robert Gentleman** entwickelten R ab 1992; Verbreitung ab 1993
+* Weiterentwicklung durch R Core Team (https://www.r-project.org/contributors.html) seit 1997
+* R Foundation for Statistical Computing (Wirtschaftsuniversität Wien)
+* GNU (General Public License)
+* R ist gleichzeitig eine Programmiersprache und eine Entwicklungsumgebung
+]
+
+.center[![Ross Ihaka and Robert Gentleman](libs/_Images/ihaka-gentleman.png)]
+
+---
+
+## Grundprinzipien: Wie tickt R?
+
+.pull-left[
+* Überwiegend programmiert in R, C, Fortran
+
+* Funktionales Programmieren und <br>Objektorientiertes Programmieren:
+
+> "Alles, was existiert, ist ein Objekt.  
+Alles, was passiert, ist ein Funktionsaufruf."
+
+<br>.right[
+John Chambers  
+Entwickler von S und Mitglied von R Core
+]]
+
+.pull-right[
+.right[![R Logo](libs/_Images/logo-R.png)]  
+![John Chambers](libs/_Images/john-chambers.png)
+]
+
+---
+
+### Starkes Entwicklerteam, unter anderen:
+
+Hadley Wickham | Jenny Bryan | Max Kuhn | Garrett Grolemund
+---------------|-------------|----------|------------------
+![Hadley Wickham](libs/_Images/hadley-wickham.png) | ![Jenny Bryan](libs/_Images/jenny-bryan.png) | <img src="libs/_Images/max-kuhn.png" alt="Max Kuhn", width=172px> | ![Garrett Grolemund](libs/_Images/garrett-grolemund.png)
+Über 130 R-Pakete | ROpenSci: reproduzierbare Forschung; R Foundation | Pakete: tidymodels;<br>älter: caret, C50 | Zahlreiche Webinare
+Initiator des *tidyverse* | Bücher: Happy Git; R Packages | Buch: Tidy Modeling with R (mit Julia Silge) | Buch: R for Data Science
+Bücher: R for Data Science; Advanced R; ggplot2;<br>R Packages | "... dann komme ich in Ihr Büro und zünde Ihren Computer an 🔥" | Buch: Feature Engineering and Selection (mit Kjell Johnson) | Buch: Hands-On Programming with R
+
+---
+
+### Starkes Entwicklerteam, unter anderen:
+
+Mara Averick | Yihui Xie | Thomas Pedersen | Winston Chang
+-------------|-----------|-----------------|--------------
+<img src="libs/_Images/mara-averick.png" alt="Mara Averick", height = 172px> | <img src="libs/_Images/yihui-xie.png" alt="Yihui Xie", height=172px> | <img src="libs/_Images/thomas-pedersen.png" alt="Thomas L. Pedersen", height=172px> | <img src="libs/_Images/winston-chang.png" alt="Winston Chang", height=172px>
+tidyverse-Entwicklerin | R-Pakete: knitr, animation, bookdown, blogdown, xaringan | gganimate, zahlreiche ggplot2-Erweiterungen | Shiny, R6; Mitarbeit an ggplot2, devtools
+\> 40.000 Twitter-Follower | Bücher: R Markdown, Blogdown, Bookdown | arbeitet u. a. an Beschleunigung von Grafik-Paketen | R Graphics Cookbook
+
+---
+
+## Empfohlene Entwicklungsumgebung für R
+
+* *Es gibt Alternativen, z. B. R Tools für Visual Studio; vim*
+
+* Team entwickelt auch **Shiny** (Tool für interaktive Webapplikationen mit R)
+* Kontinuierliche Weiterentwicklung;  
+*Empfehlung: RStudio regelmäßig updaten!*
+
+* Leistungsfähige Open-Source-Version
+
+* Bei wachsenden Anforderungen skalierbar:
+  + RStudio Desktop Server (kostenlos)
+  + RStudio Desktop Pro (kostenpflichtig)
+  + RStudio Workbench (kostenpflichtig)
+
+---
+
+## Die Oberfläche: Fenster und Reiter - Konsole
+
+.pull-left[
+`r paste(R.Version()$version.string, R.Version()$nickname, sep = "-")`
+![RStudio Startbildschirm](libs/_Images/RStudio-Startup.png)
+]
+
+.pull-right[
+* Direkteingabe von Befehlen
+* Zeigt Befehle, die im Skriptfenster (Source) ausgeführt wurden
+
+* .blue[Benutzereingaben blau]
+* Ergebnisse schwarz
+* .red[Fehlermeldungen und Warnungen rot]
+
+* Nichts geht verloren: vgl. History-Fenster
+]
+
+---
+
+## Die Oberfläche - Konsole: Tastenkombinationen
+
+.pull-left[
+<img src="libs/_Images/RStudio-Strg-Pfeil.png" alt="RStudio-Strg-Pfeil", height=400px>
+]
+
+.pull-right[
+* **Strg+L:** Konsole leeren
+
+* **Pfeiltaste ↑:** Frühere Befehle
+* **Pfeiltaste ↓:** Spätere Befehle
+
+* **Strg + ↑:** Pop-Up mit bereits ausgeführten Befehlen zur Auswahl
+
+]
+
+---
+
+## Die Oberfläche - Konsole: Tastenkombinationen
+
+Befehl tippen -> **Tabulator-Taste (Tab)**: Auswahl an Befehlen  / Datensätzen
+
+![Kontextmenu read...](libs/_Images/RStudio-Kontextmenu1.png)
+
+---
+
+## Die Oberfläche - Konsole: Tastenkombinationen
+
+**Tab** innerhalb einer Funktion, d. h. innerhalb runder Klammern: mögliche Argumente 
+
+![Kontextmenu read.csv](libs/_Images/RStudio-Kontextmenu2.png)
+
+---
+
+## Die Oberfläche - Konsole: Tastenkombinationen
+
+**Tab** innerhalb einer Funktion nach Gleichheitszeichen: Hier Pfadangabe / Dateien
+
+![Kontextmenu read.csv-3](libs/_Images/RStudio-Kontextmenu3.png)
+
+---
+
+## Die Oberfläche - Konsole: Autofill
+
+.pull-left[
+Autocompletion-Verhalten von RStudio einstellen:
+
+Tools - Global Options - Code - Completion
+]
+
+.pull-right[
+```{r, out.width = "90%", out.height = "90%"}
+knitr::include_graphics("libs/_Images/RStudio-Autocomplete.png")
+```
+
+]
+
+---
+
+## Die Oberfläche: Source (Skriptfenster)
+
+.pull-left[
+![RStudio Skriptfenster](libs/_Images/RStudio-Skriptfenster.png)
+
+* Skripte machen Analysen reproduzierbar
+* Syntax Highlighting
+* Tabs für mehrere Skripte
+
+]
+
+.pull-right[
+Ausgewählte Zeilen bzw. aktuelle Zeile ausführen:
+
+* Strg + Enter oder
+* "Run" klicken
+
+Gesamtes Skript ausführen:
+
+* Strg + Alt + R oder
+* Alles markieren (Strg + A),  
+dann "Run" klicken oder Strg + Enter
+
+]
+
+---
+
+## Die Oberfläche: Source (Skriptfenster)
+
+![RStudio Source statt Run](libs/_Images/RStudio-Source-klicken.png)
+
+.pull-left[
+**Source** statt **Run**:
+* Auf *Source* klicken oder Strg + Shift + S
+* Gesamtes Skript wird ausgeführt
+* Ergebnisse erscheinen **nicht** in der Konsole;  
+Verarbeitung im Hintergrund
+
+* Ergebnisse doch sehen:  
+"Source with Echo" oder Strg + Shift + Enter
+
+]
+
+.pull-right[
+.content-box-gray[
+**Source** ist nützlich vor allem für Skripte,  
+die eigene Funktionen definieren
+]
+
+**Fenster auswählen**
+* Strg + 1 -> Source
+* Strg + 2 -> Konsole
+]
+
+---
+
+## Die Oberfläche: Skripte - Syntax Highlighting
+
+Typ | Erläuterung
+----|----
+.txt | Textdatei
+Python, C, C++ | Programmiersprachen
+SQL | *Structured Query Language*, Datenbanksprache
+XML | *Extensible Markup Language*, Auszeichnungssprache
+YAML | *YAML Ain't Markup Language*, Auszeichnungssprache
+Markdown | Auszeichnungssprache, siehe automatisierte R-Berichte
+TeX | Textsatzsystem mit Makrosprache; häufigster Zugang: LaTeX
+HTML | *Hypertext Markup Language*, Auszeichnungssprache
+Javascript | Skriptsprache
+CSS | *Cascading Style Sheets*, Webseiten-Gestaltung
+Shell | Kommandozeilen-Befehle zur Interaktion mit Betriebssystem
+
+
+---
+
+## Die Oberfläche: Arbeitsumgebung / Environment
+
+.pull-left[
+<img src="libs/_Images/RStudio-Environment.png" alt="RStudio Environment", height=400px>
+]
+
+.pull-right[
+* albums: Datensatz, auf- und einklappbar
+
+* testmatrix: Matrix; character = Text
+
+* Künstler: Vektor mit 1.010 Elementen (Text)
+
+* test_num: numerischer Vektor mit 4 Elementen
+
+* testliste: Liste, auf- und einklappbar
+
+* Quadrat: benutzerdefinierte Funktion
+
+]
+
+---
+
+## Die Oberfläche: History - Befehls-Geschichte
+
+.pull-left[
+![RStudio History](libs/_Images/RStudio-History.png)
+]
+
+.pull-right[
+* Zeichnet Befehle sowohl aus der Konsole als auch dem Skript-Fenster auf
+* Befehle in Konsole oder Skript übernehmen
+* Befehle werden in **.Rhistory** gespeichert
+
+#### Projekte
+
+* Empfehlung: mit RStudio-Projekten arbeiten  
+=> Projektspezifische Befehlsgeschichte *(History)*
+
+]
+
+---
+
+## Arbeitsverzeichnisse und Projekte
+
+.pull-left[
+.center[![Jenny Bryan](libs/_Images/jenny-bryan.png)]
+> Wenn die erste Zeile Ihres R-Skripts lautet:
+
+`setwd(“C:/Users/jenny/Pfad/den/nur/ich/habe“)`
+
+> dann komme ich in Ihr Büro und  
+ZÜNDE IHREN COMPUTER AN 🔥.
+
+]
+
+.pull-right[
+####.green[Empfehlung: Mit Projekten arbeiten!]
+
+Projektorientierte Workflows: Siehe 
+https://www.tidyverse.org/articles/2017/12/workflow-vs-script/
+
+#### Arbeitsverzeichnis: Nicht empfohlen, <br>aber möglich
+
+* `setwd()` einstellen: *set working directory*
+* `getwd()` abfragen: *get working directory*
+* Unter *Files - More - Set as Working Directory*
+* Unter *Tools - Global Options - General* einstellen
+
+]
+
+---
+
+layout: false
+
+# Erstes Date: R und RStudio - Projekte
+
+.pull-left[
+<img src="libs/_Images/RStudio-Projekt-anlegen.png" alt="RStudio Projekt anlegen", height=400px>
+
+** Projektspezifische Arbeitsumgebung  
+mit Skripten, Daten, Befehlsgeschichte**
+]
+
+.pull-right[
+![RStudio: Find in Files](libs/_Images/RStudio-Find-in-Files.png)
+
+Suche in allen Dateien, die zu einem Projekt gehören: **Strg + Shift + F**
+
+]
+
+---
+
+# Erstes Date: R und RStudio
+
+## Ansicht für Datensätze
+
+```{r}
+# library(billboard)
+# View(wiki_hot_100s)
+```
+
+.pull-left[
+![RStudio Viewer](libs/_Images/RStudio-Viewer-billboard.png)
+
+* Datensatz in der Arbeitsumgebung *(Environment)* anklicken oder
+* Konsole: *View(data)* (mit großem "V"!)
+]
+
+.pull-right[
+* Sortieren, Filtern
+* **Nicht für manuelle Änderungen gedacht**
+
+* Daten bearbeiten: interaktiv nicht empfohlen!
+
+  `edit(data)`
+
+* .green[Empfohlen: Änderungen **immer** im Skript dokumentieren]
+]
+
+---
+
+# Erstes Date: R und RStudio - Hilfe
+
+![dplyr Vignette](libs/_Images/dplyr-help.png)
+
+Hilfe: Wo? | Hilfe: Wie?
+-----------|--------------
+Konsole: Funktion | `?read.csv`; kurz für: `help("read.csv")`<br>Falls nicht erfolgreich: Zwei Fragezeichen `??` verwenden
+Konsole: R-Paket | `help(package = "dplyr")` -> Vignetten (falls vorhanden); Funktionsübersicht
+R-Skript | Funktion markieren, F1 drücken<br>Paket muss geladen sein! `library(dplyr)`
+Hilfe-Fenster | Stichwort ins Suchfeld eingeben
+
+---
+
+# Erstes Date: R und RStudio - Dateiformate
+
+![Dateiformate](libs/_Images/RStudio-Dateiformate.png)
+
+Dateiformat | Beschreibung
+------------|-------------
+.RData | Arbeitsumgebung (*Environment*); Datensätze, Vektoren, Funktionen etc.; *Workspace Image*
+.Rhistory | Protokoll der R-Befehle aus der Konsole / Skripten; siehe *History*-Fenster
+.Rda | Meist einzelner Datensatz; kann mehrere Objekte enthalten
+.rds | Einzelnes R-Objekt
+.R | Skript (Syntax, Code)
+.Rmd | R Markdown: Berichte; Text und Ergebnisse mischen; Ausgabeformate z. B. Word, PDF, HTML, Powerpoint
+.Rproj | RStudio-interne Datei zur Projektverwaltung
+
+---
+
+# Erstes Date: R und RStudio
+
+## Ausblick: Versionsverwaltung mit git / github
+
+### Manuelle Versionsverwaltung?
+
+* `Projektbericht-final.docx`
+
+* `Projektbericht-final2.docx`
+
+--
+
+* `Projektbericht-final-Anmerkungen-Tina.docx`
+
+* `Projektbericht-final-Anmerkungen-Tina-v3.docx`
+
+* `Projektbericht-final-Anmerkungen-Tina-v3-eingearbeitet.docx`
+
+--
+
+* `Projektbericht-final-Anmerkungen-Tina-v3-eingearbeitet-Chefversion-v2.docx`
+
+* `Projektbericht-final-Anmerkungen-Tina-v3.17-eingearbeitet-Chefversion-abgegeben.docx`
+
+---
+
+# Erstes Date: R und RStudio
+
+## Ausblick: Versionsverwaltung mit git / github
+
+.pull-left[
+![git](libs/_Images/git.png)
+]
+
+.pull-right[
+* Erfordert git-Installation: https://git-scm.com/downloads
+
+* Anleitung siehe https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN
+
+* .green[**Empfehlung: Jenny Bryan - Happy Git and GitHub for the useR] ** 
+https://happygitwithr.com/
+]
+
+---
+class: agenda
+
+# Agenda
+
+
+---
+
+layout: true
+
+
+
+---
+
+## Daten: Das chartmusicdata-Paket
+
+.pull-left[
+#### https://tsort.info/ "The World's Music Charts"
+  + Songs und Alben von 1900 bis 2018
+  + Punktesystem gut geeignet für Einträge bis etwa 2012
+
+#### https://chart2000.com/ "Music Charts 2000 - 2021"
+  + Punktesystem besser für aktuellere Einträge
+
+#### Einmalig installieren; in jeder R-Session bei Bedarf laden
+
+```{r, eval = FALSE, echo = TRUE}
+# install.packages("devtools")
+library(devtools)
+install_github("fjodor/chartmusicdata")
+```
+
+```{r}
+library(chartmusicdata)
+data("topalbums")
+```
+                        
+ 
+]
+
+.pull-right[
+
+Datensatz | Quelle: tsort.info
+----------|-------
+charts | Alle Songs und Alben von tsort.info von 1900 bis 2018
+topsongs | Top 5000 Songs
+topalbums | Top 3000 Alben
+
+<br><br>
+
+Datensatz | Quelle: chart2000.com
+----------|-----------------------
+songs2000 | Top 50 Songs jedes Monats von Januar 2000 bis Juni 2021
+albums2000 | Top 50 Alben jedes Monats von Januar 2000 bis Juni 2021
+
+]
+---
+
+## Die topalbums-Daten
+
+```{r, echo = TRUE, eval = FALSE}
+head(topalbums, n = 3)
+```
+
+```{r, echo = FALSE, eval = TRUE}
+head(topalbums, n = 3) |> knitr::kable()
+```
+
+--
+
+.pull-left[
+* position: Platzierung, von 1 bis 3000
+* artist: Künstler / Band
+* name: Album-Titel
+* year: Jahr der Veröffentlichung
+* final_score: Gesamt-Punkte, gewichtet nach Region und Jahr
+]
+
+.pull-right[
+* raw_usa: Rohpunkte USA
+* raw_eng: Rohpunkte in den restlichen englischsprachigen Ländern
+* raw_eur: Rohpunkte in den restlichen (nicht-englischsprachigen) europäischen Ländern
+* raw_row: Rohpunkte im Rest der Welt (ohne Europa, ohne englischsprachige Länder)
+]
+---
+
+---
+layout: false
+class: agenda
+
+# Agenda
+
+
+---
+layout: true
+
+
+---
+
+## Die drei Basis-Schichten in Aktion: 1. Daten
+
+.pull-left[
+```{r ggplot2-1, eval = FALSE, echo = TRUE}
+library(tidyverse)
+# Empfohlen; lädt mehrere Pakete
+
+# library(ggplot2)
+# Alternative, um nur ggplot2 zu laden
+
+# Nur die erste Schicht:
+
+ggplot(topalbums) #<<
+```
+
+```{r, message = FALSE}
+library(tidyverse)
+theme_set(theme_gray(base_size = 20))
+```
+
+#### Nur Daten: Das reicht noch nicht ... 
+]
+
+.pull-right[
+```{r, ref.label = "ggplot2-1", message = FALSE, out.height = "75%", out.width = "75%"}
+```
+
+]
+
+---
+
+## Die drei Basis-Schichten in Aktion:<br>1. Daten und 2. Ästhetiken
+
+.pull-left[
+```{r ggplot2-2, eval = FALSE, echo = TRUE}
+
+# Erste Schicht und zweite Schicht:
+
+ggplot(topalbums,
+       aes(x = year, y = final_score)) #<<
+```
+
+#### Daten und Ästhetiken: Noch kein vollwertiges Diagramm ...
+]
+
+.pull-right[
+```{r, ref.label = "ggplot2-2", message = FALSE, out.height = "80%", out.width = "80%"}
+```
+
+]
+
+---
+
+## Daten, Ästhetiken und Geometrie
+
+.pull-left[
+```{r ggplot2-3, eval = FALSE, echo = TRUE}
+
+# Alle drei Basis-Schichten:
+
+ggplot(topalbums,
+       aes(x = year, y = final_score)) + 
+  geom_point() #<<
+```
+
+* Erst mit Angabe der Geometrie entsteht ein vollwertiges Diagramm
+* `geom_point()`: Streu- bzw. Punktdiagramm
+* Schichten mit **+** verknüpfen!
+
+]
+
+.pull-right[
+```{r, ref.label = "ggplot2-3", message = FALSE, out.height = "80%", out.width = "80%"}
+```
+
+]
+
+---
+
+## Warum es wichtig ist, Achsen gut zu beschriften
+
+![xkcd 833 label axes](libs/_Images/xkcd-833-label-axes.png)
+
+Quelle:	https://xkcd.com/833/
+
+---
+
+## Daten, Ästhetiken, Geometrie - und Beschriftungen
+
+.pull-left[
+```{r ggplot2-4, eval = FALSE, echo = TRUE}
+
+# Alle drei Basis-Schichten:
+
+ggplot(topalbums,
+       aes(x = year, y = final_score)) + 
+  geom_point() +
+  labs(title = "Topalben: Gesamtpunkte im Zeitverlauf", #<<
+       x = "Jahr", y = "Gesamtpunkte") #<<
+```
+
+`labs(title = "a", x = "x", y = "y")`
+
+]
+
+.pull-right[
+```{r, ref.label = "ggplot2-4", message = FALSE, out.height = "80%", out.width = "80%"}
+```
+
+]
+---
+
+## ggplot2 und dplyr
+
+.pull-left[
+```{r ggplot2-dplyr, echo = TRUE, eval = FALSE}
+topalbums %>% 
+  filter(artist == "Rihanna") %>% 
+  ggplot(aes(x = year, y = final_score,
+             label = name)) + #<<
+  geom_point(col = "blue") +
+  geom_text(size = 5) + #<<
+  labs(title = "Rihanna-Alben",
+       x = "Jahr", y = "Gesamtpunkte")
+```
+
+* Mit der pipe `%>%` werden die Daten in `ggplot()` eingefügt
+* Der Teildatensatz muss keinem Objekt zugewiesen werden
+* `geom_text()` greift auf die Ästhetik `label` zu
+* Man kann mehrere `geoms` in einem Diagramm verbinden
+* Überlappende Beschriftungen verhindern: `ggrepel::geom_text_repel()`
+]
+
+.pull-right[
+```{r, ref.label = "ggplot2-dplyr", out.width = "85%", out.height = "85%", dpi = 300}
+```
+
+]
+
+---
+
+## ggplot2 und dplyr
+
+.pull-left[
+```{r ggplot2-dplyr2, echo = TRUE, eval = FALSE}
+
+library(ggrepel)
+
+topalbums %>% 
+  filter(artist == "Rihanna") %>% 
+  ggplot(aes(x = year, y = final_score,
+             label = name)) + #<<
+  geom_point(col = "blue") +
+  geom_text_repel(size = 5) + #<<
+  labs(title = "Rihanna-Alben",
+       x = "Jahr", y = "Gesamtpunkte")
+```
+
+* Mit der pipe `%>%` werden die Daten in `ggplot()` eingefügt
+* Der Teildatensatz muss keinem Objekt zugewiesen werden
+* `geom_text()` greift auf die Ästhetik `label` zu
+* Man kann mehrere `geoms` in einem Diagramm verbinden
+* Überlappende Beschriftungen verhindern: `ggrepel::geom_text_repel()`
+]
+
+.pull-right[
+```{r, ref.label = "ggplot2-dplyr2", out.width = "85%", out.height = "85%", dpi = 300}
+```
+
+]
+
+---
+
+## "Fortgeschrittene" Schichten: 4. Facets
+
+.pull-left[
+```{r facets, echo = TRUE, eval = FALSE, cache = TRUE}
+
+topalbums %>% 
+  filter(artist %in% c("Bob Dylan", "The Rolling Stones")) %>% 
+  ggplot(aes(x = final_score)) +
+  geom_histogram(fill = "plum", bins = 15) +   #<<
+  facet_wrap(~ artist) #<<
+# Alternative: facet_wrap(vars(artist))
+```
+
+* Facetten: Diagramme für Untergruppen mit `facet_wrap()`
+* Variablen angeben mit Formel-Schreibweise: `~ variable` oder `vars(variable)`
+* Empfehlung bei Histogrammen: Verschiedene Bandbreiten testen mit `bins` oder `binwidth`
+]
+
+.pull-right[
+```{r, ref.label = "facets", out.width = "85%", out.height = "85%", message = FALSE}
+```
+
+]
+---
+
+## 5. Statistische Transformationen
+
+.pull-left[
+```{r trend, echo = TRUE, eval = FALSE}
+
+topalbums %>% 
+  filter(artist == "The Beatles") %>% 
+  ggplot(aes(x = year, y = final_score)) +
+  geom_point() +
+  geom_smooth(method = "lm", col = "blue") + #<<
+  labs(title = "Beatles-Alben im Zeitverlauf",
+       subtitle = "mit Trendgerade",
+       x = "Jahr", y = "Gesamtpunkte")
+```
+
+* Trendgerade einzeichnen mit `geom_smooth()`
+* Nichtlineare Anpassungskurven möglich mit `method = "loess"` oder `method = "gam"`
+
+]
+
+.pull-right[
+```{r, ref.label = "trend", out.width = "85%", out.height = "85%", message = FALSE}
+```
+]
+
+---
+
+## 6. Koordinatensysteme
+
+.pull-left[
+```{r coords, echo = TRUE, eval = FALSE}
+topalbums %>% 
+  filter(artist == "The Beatles") %>% 
+  ggplot(aes(x = year, y = final_score)) +
+  geom_point() +
+  scale_y_log10() + #<<
+  labs(title = "Beatles-Alben im Zeitverlauf",
+       caption = "y-Achse logarithmiert", #<<
+       x = "Jahr", y = "Gesamtpunkte")
+```
+
+* Anpassungen an Koordinatensystemen mit `scale_`-Funktionen
+* Hier: Logarithmische y-Achse
+* `scale`-Funktionen enthalten Skalenart, z. B. `scale_x_continuous` oder `scale_x_discrete`
+* Optionen: z. B. Achsenmarkierungen *(breaks)* oder Wertebereich *(limits)* einstellen
+]
+
+.pull-right[
+```{r, ref.label = "coords", out.width = "85%", out.height = "85%", message = FALSE}
+```
+
+]
+
+---
+
+## 7. Themes: "Tinte, die keine Daten darstellt"  
+
+.pull-left[
+```{r themes, echo = TRUE, eval = FALSE}
+
+p <- topalbums %>% #<<
+  filter(artist == "The Beatles") %>% 
+  ggplot(aes(x = year, y = final_score)) +
+  geom_point() +
+  geom_smooth(method = "lm", col = "blue") +
+  labs(title = "Beatles-Alben im Zeitverlauf",
+       subtitle = "mit Trendgerade",
+       x = "Jahr", y = "Gesamtpunkte")
+
+p + theme_bw()   #<<
+p + theme_dark() #<<
+```
+
+* Themes finden: `?theme_`
+* Weitere themes in Erweiterungspaketen:
+  + **ggthemes**, z. B. `theme_economist(), theme_fivethirtyeight()`
+  + **hrbrthemes, ggtech**
+]
+
+.pull-right[
+```{r, ref.label = "themes", out.width = "45%", out.height = "60%", message = FALSE}
+```
+
+]
+---
+
+## Ausblick
+
+.pull-left[
+.left-column[
+```{r, out.width = "100%", out.height = "100%"}
+knitr::include_graphics("libs/_Images/cover_ggplot2-hadley.jpg")
+knitr::include_graphics("libs/_Images/cover_wilke-fundamentals.png")
+
+```
+]
+.right-column[
+* **Hadley Wickham: ggplot2 - <br>Elegant Graphics for Data Analysis**  
+Online frei zugänglich:<br>https://ggplot2-book.org/  
+*Auf Aktualität achten! (>= 3. Auflage)*
+
+* **Claus Wilke:<br>Fundamentals of Data Visualization**  
+https://clauswilke.com/dataviz/  
+Nicht R-spefizifisch, aber Grafiken mit ggplot2 erstellt, Code auf github
+]]
+
+.pull-right[
+
+* Zahlreiche Zusatzpakete, die ggplot2 noch leistungsfähiger machen:<br>*ggplot2 extensions gallery*  
+https://exts.ggplot2.tidyverse.org/gallery/
+  + **gganimate** für Animationen
+  + **ggstatsplot** für statistische Ergebnisse
+  + ... und viele mehr ...
+  
+* Base R Grafiken in ggplot2 umwandeln:
+  + **qplot()** *(q = quick)* für einfachere Code-Anpassung
+  + **ggfortify** für vordefinierte Methoden; `autoplot()` statt Base R `plot()`
+
+]
+---
+layout: false
+class: agenda
+
+# Agenda
+
+### 1. Erstes Date: R und RStudio
+### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
+### 3. Let's Go International: Daten-Import und -Export
+### 4. Datenaufbereitung und Visualisierung
+### .blue[*5. <u>Statistik</u> und Data Mining*]
+### 6. Automatisierte Berichte
+### 7. Ergänzungen
+
+---
+layout: true
+
+# Statistik mit R
+
+---
+
+## Lang lebe die Nullhypothese ...
+
+.pull-left[
+![xkcd Nullhyp](libs/_Images/xkcd-892-Null-hyp.png)
+]
+
+.pull-right[
+Quelle: xkcd 892  
+https://xkcd.com/892/
+]
+
+---
+
+## Einführung in den R Commander
+
+.left-column[
+.black[* GUI = *graphical user interface* für R
+* Zahlreiche Befehle zur Datenaufbereitung, Statistik, Diagrammerstellung, Modellierung
+
+Weitere GUIs:
+* Rattle
+* RKWard
+* Deducer
+]]
+
+.right-column[
+![Rcmdr Hauptmenü](libs/_Images/Rcmdr-main.png)
+]
+
+---
+
+## Erscheinungsjahr vs. Über / Unter 5 Punkten
+
+**Forschungsfrage:** Gibt es Unterschiede im durchschnittlichen Alter (Erscheinungsjahr)  
+.indent[.indent[zwischen Alben, die über / unter 5 Punkten (~ Median) erreichten?]]
+
+--
+
+**Hypothese:** Alben, die über 5 Punkte erreichten,	sind durchschnittlich älter als Alben, die weniger als 5 Punkte erreichten.
+
+--
+
+**Begründung:**	Mehr Zeit für Chartplatzierungen; „Oldies“ waren langlebiger?
+
+--
+
+**Methode:** t-Test für unabhängige Stichproben  
+.indent[.indent[*Statistik – Mittelwerte vergleichen*]]
+
+**Begründung der Testauswahl:**
+* keine Messwiederholung
+* keine paarweise Zuordnung der Gruppenelemente -> unabhängige Stichproben
+
+```{r ueber-5-punkte}
+topalbums <- topalbums %>% 
+  mutate(ueber5 = ifelse(final_score > 5, "> 5 P", "< 5 P"))
+
+```
+
+---
+
+## t-Test: Erscheinungsjahr vs. Über / Unter 5 Punkte
+
+.pull-left[
+![Rcmdr t-Test](libs/_Images/Rcmdr-ttest1.png)
+
+** Variablen-Auswahl - *Datenmanagement* **
+* Gruppierungsvariable: `ueber5`
+* Abhängige Variable: `year`
+
+]
+
+.pull-right[
+### Optionen
+
+* Zweiseitiger Test / einseitiger Test für gerichtete Hypothese: *Differenz > 0*
+* Gleiche Varianzen: *nein*
+
+![Rcmdr t-Test2](libs/_Images/Rcmdr-ttest2.png)
+]
+
+---
+
+.pull-left[
+### t-Test: Code & Ergebnis
+
+```{r}
+options(width = 50)
+```
+
+```{r ttest, echo = TRUE}
+
+t.test(year ~ ueber5,
+       alternative = 'two.sided', #<<
+       # alternative = 'greater',
+       conf.level = .95, 
+       var.equal = FALSE,
+       data = topalbums)
+```
+
+```{r}
+options(width = 80)
+```
+
+]
+
+--
+
+.pull-right[
+
+### Zweiseitiger Test
+
+* Mittelwertsunterschied < 2 Jahre
+* Test signifikant: p < 0,05;  
+pos. Konfidenzintervall
+* Welch: Korrektur bei ungleichen Varianzen;<br> von **Andy Field** empfohlen 
+* Inhaltliche Bedeutsamkeit?
+<br>
+* p-Wert beim einseitigen Test?
+* **Hypothese bestätigt, *wenn auch knapp***
+
+]
+---
+
+## t-Test: Ergebnisse weiterverarbeiten
+
+.pull-left[
+```{r, echo = TRUE}
+my_test <- t.test(year ~ ueber5,
+   alternative = 'greater', #<<
+   conf.level = .95, var.equal = FALSE,
+   data = topalbums)
+str(my_test, list.len = 5)
+```
+
+]
+
+--
+
+.pull-right[
+#### Datentyp: Liste
+
+#### Auf einzelne Elemente zugreifen
+```{r, echo = TRUE}
+my_test$p.value
+my_test$statistic
+```
+
+]
+
+
+---
+
+## t-Test: Ergebnisse *elegant* weiterverarbeiten
+
+### Bericht in Textform (englisch): easystats / report
+
+.pull-left[
+
+```{r report, echo = TRUE, eval = FALSE}
+library(report)
+report(my_test) #<<
+```
+
+```{r report-wrap, message = FALSE, warning = FALSE}
+library(report)
+report(my_test) %>% 
+  stringr::str_wrap(width = 50) %>% 
+  cat()
+```
+
+]
+
+.pull-right[
+
+```{r, out.height = "40%", out.width = "40%"}
+knitr::include_graphics("libs/_Images/logo-report.png")
+```
+* Kennwerte, die über die Standard-Ausgabe des t-Tests hinausgehen: **Effektstärken**
+* Teil der **easystats**-Paketsammlung
+]
+
+---
+
+## t-Test: Ergebnisse *elegant* weiterverarbeiten
+
+.pull-left[
+### Visualisierung: ggstatsplot
+
+```{r ggstatsplot, eval = FALSE, echo = TRUE}
+library(ggstatsplot)
+ggbetweenstats(topalbums, #<<
+  x = ueber5, y = year,
+  title = "Jahr vs. Über / Unter 5 Punkte",
+  caption = "Datenquelle: tsort.info")
+
+```
+
+* Boxplot
+* Violin-Plot
+* Einzelne Datenpunkte
+* Angereichert mit statistischen Kennzahlen
+
+]
+
+.pull-right[
+```{r, ref.label = "ggstatsplot", out.width = "95%", out.height = "95%", message = FALSE, }
+```
+
+]
+
+---
+
+## Korrelationsanalyse
+
+![xkcd Korr](libs/_Images/xkcd-925-corr.png)
+
+Quelle: http://xkcd.com/925/
+
+---
+
+## Korrelationsanalyse
+
+.pull-left[
+
+* Schon bei den Datenstrukturen gesehen: Korrelation zwischen Rohpunkten USA und Rohpunkten Europa
+* Ergebnis: Liste
+
+```{r, echo = TRUE}
+
+Korrelation <- cor.test(topalbums$raw_usa,
+                        topalbums$raw_eur)
+str(Korrelation, list.len = 4)
+
+```
+]
+
+.pull-right[
+### Einfach dank der R-Werkzeugkiste!
+
+* Im R Commander zusammenklicken unter `Statistik - Deskriptive Statistik - Test auf Signifikanz der Korrelation`
+* Standard-Ausgabe: `Korrelation`, bzw. `cor.test(topalbums$raw_usa, topalbums$raw_eur)` direkt ausführen
+]
+
+---
+
+.pull-left[
+## Korrelation grafisch
+
+```{r ggscatterstats, echo = TRUE, eval = FALSE}
+ggscatterstats(data = topalbums,
+    x = raw_usa, y = raw_eur)
+```
+
+### Simple Syntax - informative Ausgabe!
+
+* Streudiagramm: bivariate Verteilungen
+* Dichte + Histogramm: *"marginal densigram"* - Verteilungen 
+* Anpassungsgerade mit Konfidenzband: Linearer Zusammenhang?
+* Korrelationskoeffizient *Pearson's r*
+* t-Wert, p-Wert, Konfidenzintervall für r, Fallzahl
+* Bayes Factor
+]
+
+.pull-right[
+```{r, ref.label = "ggscatterstats", message = FALSE, warning = FALSE, out.width = "100%", out.height = "100%", dpi = 300}
+```
+
+]
+
+---
+
+## Regressionsanalyse
+
+.pull-left[
+
+* Nimmt im Gegensatz zur Korrelation eine Wirkungsrichtung an
+* Unterscheidung zwischen **unabhängigen Variablen** *(Prädiktoren, Regressoren)* und **abhängiger Variable** *(Zielgröße, Regressand)*
+
+```{r reg1, echo = TRUE}
+reg <- lm(raw_eur ~ raw_usa, #<<
+          data = topalbums) #<<
+reg
+```
+
+]
+
+.pull-right[
+* Im R Commander zusammenklicken unter `Statistik - Modelle anpassen - Lineare Regression`
+* In Base R ist die direkte Ausgabe (`reg`) minimal: sie gibt lediglich die Koeffizienten an
+
+]
+
+---
+
+## Regressionsanalyse: `summary()`
+
+.small[
+```{r reg2, echo = TRUE}
+summary(reg) #<<
+```
+]
+
+---
+
+## Regressionsanalyse: Text-Interpretation mit dem report-Paket
+
+```{r report-reg, echo = TRUE, eval = FALSE}
+report::report(reg) #<<
+```
+
+```{r, message = FALSE}
+report(reg) %>% 
+  stringr::str_wrap(width = 90) %>% 
+  cat()
+```
+
+---
+
+## Zur Interpretation von p-Werten ...
+
+```{r, fig.align = "center", out.width = "25%", out.height = "25%"}
+knitr::include_graphics("libs/_Images/xkcd-1478-p-values.png")
+```
+
+Quelle: https://xkcd.com/1478/
+
+---
+layout: false
+class: agenda
+
+# Agenda
+
+### 1. Erstes Date: R und RStudio
+### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
+### 3. Let's Go International: Daten-Import und -Export
+### 4. Datenaufbereitung und Visualisierung
+### .blue[*5. Statistik und <u>Data Mining</u>*]
+### 6. Automatisierte Berichte
+### 7. Ergänzungen
+
+---
+layout: true
+
+# Data Mining-Beispiel: Titanic
+
+---
+
+.pull-left[
+## Wurden Frauen und Kinder zuerst gerettet?
+
+* Daten zu 891 Passagieren (Trainingsdaten für maschinelles Lernen)
+* Variablen:
+  + Abhängige Variable (AV): Überlebt ja / nein
+  + Unabhängige Variablen (UV): Alter, Geschlecht, Passagierklasse (1-3)
+* Wie hängen Alter, Geschlecht und Passagierklasse mit den Überlebenschancen zusammen?
+* Ziel: Ein Ergebnis, das auch Nicht-Statistikern leicht erklärt werden kann
+]
+
+.pull-right[
+```{r}
+knitr::include_graphics("libs/_Images/titanic.jpg")
+```
+
+Der Untergang der Titanic  
+Gravur von Willy Stöwer  
+Quelle: Wikimedia Commons
+]
+
+---
+
+.pull-left[
+```{r, out.width = "70%", out.height = "70%"}
+knitr::include_graphics("libs/_Images/Zen-Entscheidungsbaum.png")
+```
+
+]
+.pull-right[
+### Entscheidungsbaum
+
+* Leicht interpretierbar
+* Nicht nur für Yogis geeignet
+
+Quelle: https://elephantjournal.com
+]
+
+---
+
+```{r titanic-dataprep, echo = FALSE}
+
+library(titanic)
+titanic <- titanic_train
+titanic <- titanic %>% 
+    select(Survived, Pclass, Sex, Age) %>% 
+    rename(Alter = Age,
+           Passagierklasse = Pclass,
+           Geschlecht = Sex) %>% 
+    mutate(Survived = as.factor(Survived),
+           Survived = fct_recode(Survived,
+                        Ertrunken = "0",
+                        Gerettet = "1"),
+           Geschlecht = fct_recode(Geschlecht,
+                            weiblich = "female",
+                            männlich = "male"),
+           Passagierklasse = as.factor(Passagierklasse),
+           Passagierklasse = fct_recode(Passagierklasse,
+                                '1. Klasse' = "1",
+                                '2. Klasse' = "2",
+                                '3. Klasse' = "3"))
+```
+
+```{r rpart, fig.width = 11, fig.height = 7, message = FALSE}
+library(rpart)
+tree <- rpart(Survived ~ ., #<<
+              data = titanic,
+              method = "class")
+
+rattle::fancyRpartPlot(tree,
+          palettes = c("Greys", "Greens"),
+          sub = "", tweak = 1.2)
+
+```
+
+---
+
+.pull-left[
+### Interpretation
+
+* Ausgangspunkt: Knoten 1 oben; enthält gesamte Stichprobe
+* Aufteilung in Unterknoten, sodass möglichst „reine“ Knoten entstehen, d. h. möglichst eindeutig nach Ertrunkenen und Geretteten unterschieden
+* Algorithmus: `rpart`
+
+#### Ergebnisse
+
+* **Geschlecht** ist das wichtigste Kriterium
+  + Klare Mehrheit der Frauen überlebte
+  + Klare Mehrheit der Männer starb
+  + „Kinder zuerst“ bei Männern ok: die meisten Jungs bis 6 Jahre überlebten
+* Frauen: **Passagierklasse** wichtiger als Geschlecht
+]
+
+.pull-right[
+### Simpler R-Code!
+
+```{r, echo = TRUE, eval = FALSE}
+library(rpart)
+tree <- rpart(Survived ~ ., #<<
+              data = titanic,
+              method = "class")
+```
+
+* Modell: rpart; Formel wie bei Regression
+* Auch für metrische abhängige Variablen möglich: `method = "anova"`
+
+```{r, echo = TRUE, eval = FALSE}
+library(rattle)
+fancyRpartPlot(tree) #<<
+```
+
+* Visualisierung: `fancyRpartPlot()`
+* Mehr Einstellmöglichkeiten: Paket **rpart.plot**, Funktion `prp()`
+
+]
+
+---
+
+
+---
+layout: false
+class: agenda
+
+# Agenda
+
+### 1. Erstes Date: R und RStudio
+### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
+### 3. Let's Go International: Daten-Import und -Export
+### 4. Datenaufbereitung und Visualisierung
+### 5. Statistik und Data Mining
+### .blue[*6. Automatisierte Berichte mit R*]
+### 7. Ergänzungen
+
+---
+layout: true
+
+# Automatisierte Berichte mit R
+
+---
+
+## Warum? Houston, wir haben ein Problem!
+
+```{r, out.height = "60%", out.width = "60%", fig.align = 'center'}
+knitr::include_graphics("libs/_Images/markdown-houston.png")
+```
+
+---
+
+## Warum? Reproduzierbarkeit von Studien, Datenanalysen
+
+#### Schätzungen
+
+* 75% - 90% prä-klinischer Studienergebnisse nicht reproduzierbar
+* Kosten für bio-medizinische Firmen in den USA pro Jahr: 28 Mrd. USD
+
+Quelle: Vortrag von Garrett Grolemund, EARL-Konferenz, London
+
+* Video: https://www.youtube.com/watch?v=HVlwNayog-k
+* Folien: https://earlconf.com/_downloads/london_speakers/EARL2018_-_London_-_Garrett_Grolemund.pdf
+
+#### Reproduzierbare Ergebnisse dank RMarkdown!
+
+---
+
+## Word, PDF, Powerpoint, .green[HTML]
+
+.pull-left[
+
+* Markdown: einfache Auszeichnungssprache („Markup“-Sprache)  
+Weitere Markup-Sprachen: HTML, XML  
+* R-Paket **rmarkdown** seit 2014
+* Word-Dokumente erfordern MS Word-Installation
+* PDF-Dokumente:
+  + LaTeX-Installation: **TinyTex** (Alternative: MiKTeX)
+  + Oder HTML aus Browser als PDF drucken bzw. `pagedown::chrome_print()`
+
+* .green[**Empfehlung: HTML für interaktive Elemente!**]
+* Es gibt verschiedene HTML-Formate, inklusive mehreren Präsentations-Varianten
+  + Mein Favorit: .blue[**xaringan**]
+]
+
+.pull-right[
+```{r markdown-logo, echo = FALSE, out.width = "60%", out.height = "50%", fig.align = "right"}
+knitr::include_graphics("libs/_Images/logo-markdown.png")
+```
+]
+
+---
+
+## Vorlagen unter File - New File - R Markdown
+
+.pull-left[
+
+```{r markdown-vorlage, echo = FALSE, out.width = "85%", out.height = "85%"}
+knitr::include_graphics("libs/_Images/Markdown-Vorlage.png")
+```
+
+]
+
+.pull-right[
+
+Jederzeit zwischen HTML, PDF, Word wechseln: im YAML-Header
+
+* output: html_document
+* output: word_document
+* output: pdf_document
+
+Oder:
+
+```{r knit-to, echo = FALSE, out.width = "40%", out.height = "40%"}
+knitr::include_graphics("libs/_Images/knit-to.png")
+```
+
+]
+
+---
+
+## YAML Header
+
+* Enthält Meta-Informationen, z. B. Titel, Autor, Datum, Ausgabeformat
+* YAML Ain‘t Markup Language <- Yet Another Markup Language
+* Gekennzeichnet mit jeweils drei	---	am Anfang des Dokuments
+* Grundgerüst kann aus RStudio-Vorlage übernommen und angepasst werden
+
+**Knit:** Dokument aus .Rmd-Vorlage erstellen
+
+```{r yaml, echo = FALSE, out.width = "70%", out.height = "70%"}
+knitr::include_graphics("libs/_Images/yaml-header.png")
+```
+
+---
+
+## R-Code und Text mischen
+
+```{r R-Text-Code, echo = FALSE, out.width = "100%", out.height = "100%"}
+knitr::include_graphics("libs/_Images/Text_R-Code.png")
+knitr::include_graphics("libs/_Images/Text_R-Code_Output.png")
+```
+
+---
+
+## R-Code und Text mischen
+
+.pull-left[
+
+Markdown-Code | Ergebnis
+--------------|---------
+*'r R-code'*  |	R-Code in laufenden Text einbetten,<br>z. B. „Die Daten beruhen auf 'r nrow(albums)' Alben.“
+#<br>##| Überschrift 1 <br> Überschrift 2 … usw.
+\*Text*<br>\_Text_          | *Kursivschrift*
+\*\*Text**<br>\_\_Text__    | **Fettschrift**
+
+]
+
+.pull-right[
+Markdown-Code | Ergebnis
+--------------|---------
+\* Punkt 1<br>\* Punkt 2<br> <center> + P 2.1 | Nicht nummerierte Liste
+1. Punkt 1<br>2. Punkt 2 | Nummerierte Liste
+
+Weitere Formatierungen siehe:
+* https://rmarkdown.rstudio.com/authoring_basics.html
+* Markdown Quick Reference in der RStudio-Hilfe
+
+]
+   
+---
+
+## R Codeblock
+
+```{r Codeblock, echo = FALSE, eval = FALSE}
+
+library(tidyverse)
+ggplot(diamonds, aes(x = carat, y = price, color = color)) +
+  geom_point() + 
+  theme_dark()
+
+```
+
+![R-Codeblock](libs/_Images/R-Codeblock.png)
+
+* Beginnt mit ```` ```{r} ````
+* endet mit ```` ``` ```` 
+* Wird von R Studio automatisch grau hinterlegt
+* Empfehlung: benennen; hier: *Codeblock*; jeder Name muss eindeutig sein
+* echo = TRUE:	Codeblock im fertigen Dokument anzeigen; Alternative: FALSE
+* eval = FALSE: Code nicht evaluieren (d. h. hier erscheint Code, aber kein Diagramm)
+* Tastaturkürzel: **Strg + Alt + I** fügt Codeblock ein
+
+---
+
+## Chunk-Optionen
+
+.large[
+Für weitere Chunk-Optionen neben *echo* und *eval* siehe https://yihui.org/knitr/options/
+
+* Einstellungen für Grafiken, z. B. fig.width, fig.height
+
+* Caching, d. h. Zwischenspeichern von Codeblöcken für schnellere Ausführung
+
+* Umgang mit Fehlern (anzeigen vs. abbrechen) und Warnungen, Messages (anzeigen vs. unterdrücken)
+
+* Animationen
+]
+
+---
+
+## Literatur
+
+.pull-left[
+```{r Markdown-book, echo = FALSE, fig.show = "hold", out.width = "45%", out.extra = 'style="border:10px solid white;"'}
+knitr::include_graphics("libs/_Images/cover-markdown.png")
+knitr::include_graphics("libs/_Images/cover-R4DS.png")
+```
+]
+
+.pull-right[
+Beide Bücher sind online kostenlos lesbar
+
+* [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+* [R for Data Science](https://r4ds.had.co.nz/index.html)
+	Kap. 27, 29, 30
+
+Hilfe in RStudio
+
+* Help – Markdown Quick Reference
+* Help – Cheatsheets:  
+R Markdown Cheat Sheet  
+R Markdown Reference Guide
+
+]
+
+---
+
+## Ausblick: Bookdown - Bücher direkt aus R
+
+.pull-left[
+* R-Paket von **Yihui Xie** (knitr, animation)
+
+* Grundlage: Markdown
+* Dynamische Bearbeitung
+* Flexible Outputs, z. B. PDF auf Knopfdruck
+* Einfachere Auszeichnungssprache als LaTeX
+* Online-Veröffentlichung, z. B. auf GitHub, bookdown.org, beliebiger Webserver
+* Online-Veröffentlichung ermöglicht interaktive Inhalte:  
+Shiny-Apps, HTML-Widgets, Animationen
+
+https://bookdown.org/
+
+]
+
+.pull-right[
+```{r bookdown, echo = FALSE, out.width = "55%", out.height = "55%"}
+knitr::include_graphics("libs/_Images/cover-bookdown.jpg", )
+```
+
+]
+
+---
+
+## Ausblick: Blogdown - Websites / Blogs direkt aus R
+
+.pull-left[
+* R-Paket von **Yihui Xie** (knitr, animation)
+
+* Erzeugt statische Webseite:
+  + HTML, CSS, JavaScript, Bilder, ...
+  + Kein PHP, keine Datenbank, keine serverbasierte R-Installation erforderlich
+
+* Grundlage: Markdown
+  + Dynamische Bearbeitung
+  + Flexible Outputs, z. B. PDF, Buch, etc.
+  
+https://bookdown.org/yihui/blogdown/
+]
+
+.pull-right[
+```{r blogdown, echo = FALSE, out.width = "57%", out.height = "57%"}
+knitr::include_graphics("libs/_Images/cover-blogdown.png", )
+```
+
+]
+
+---
+
+## Ausblick: Dashboards mit R und Markdown
+
+.pull-left[
+### Das flexdashboard-Paket
+
+* Baut auf Markdown auf, HTML-Format
+* Responsiv
+* Unterstützt *value boxes* und *gauges* (Kästchen und Armaturen-Displays wie im Auto)
+* Flexible Layouts: Zeilen und Spalten einfach definieren
+* *Storyboards*: Grafiken und zentrale Befunde übersichtlich darstellen
+* Interaktive Elemente: HTML-Widgets, optional Shiny-Apps
+
+https://pkgs.rstudio.com/flexdashboard/
+]
+
+.pull-right[
+```{r}
+knitr::include_graphics("libs/_Images/flexdashboards.png")
+```
+]
+
+---
+
+## Ausblick: Shiny
+
+.pull-left[
+
+* Interaktive App, die auf Nutzereingaben reagiert
+
+* Benötigt R während der Laufzeit:
+
+  + Lokale R-Session *oder*
+  + Serverbasierte R-Session (Webseite)
+
+* In Markdown-Dokumente einbetten oder als alleinstehende App
+  
+Shiny lernen:
+
+  + RStudio-Webseiten: https://shiny.rstudio.com/
+  + Buch von Hadley Wickham: [Mastering Shiny](https://mastering-shiny.org/)
+]
+
+.pull-right[
+```{r, echo = FALSE, out.width = "70%", out.height = "70%"}
+knitr::include_graphics("libs/_Images/cover-mastering-shiny.png")
+```
+]
+
+---
+layout: false
+class: agenda
+
+# Agenda
+
+### 1. Erstes Date: R und RStudio
+### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
+### 3. Let's Go International: Daten-Import und -Export
+### 4. Datenaufbereitung und Visualisierung
+### 5. Statistik und Data Mining
+### 6. Automatisierte Berichte mit R
+### .blue[*7. Ergänzungen*]
+
+---
+
+layout: true
+# Ergänzungen
+
+---
+
+## Einige Empfehlungen für R-Pakete
+
+Aufgabe | Paket-Empfehlung(en)
+--------|----------------------
+Datenimport<br>.indent[.txt, .csv, .dat usw.]<br>.indent[Excel] | <br>readr<br>readxl; Pivot-Daten: tidyxl, unpivotr
+Datenaufbereitung | dplyr, tidyr
+Umgang mit Faktorwerten (Text mit vordefinierten Kategorien) | forcats
+Grafiken<br>.indent[Statisch (.png, .jpg usw.)]<br>.indent[Interaktiv (HTML, mouse-over-Effekte)]<br>.indent[Animationen (.gif)] | <br>ggplot2<br>plotly, htmlwidgets, trelliscopejs; leaflet für Geodaten <br> gganimate
+Statistik<br>.indent[Effektstärken]<br>.indent[Stichprobenplanung] | <br>compute.es<br>pwr
+Maschinelles Lernen (Machine Learning, Predictive Modeling) | neu: tidymodels (Paketsammlung, ähnlich tidyverse)<br>alt, etabliert: caret
+
+---
+
+## Statistik: Effektstärken und Stichpobenplanung
+
+#### Welche Stichprobengröße wird benötigt,<br>damit eine Mittelwertsdifferenz mit einer bestimmten Effektstärke signifikant wird?
+
+Es geht um vier Größen – sind drei bekannt, kann die vierte bestimmt werden.
+
+* **Stichprobengröße** (n)
+
+* **Effektstärke**
+
+* **Signifikanzniveau** = P (*Typ I-Fehler*) = Wahrscheinlichkeit, einen Effekt nachzuweisen,den es „in Wirklichkeit“ nicht gibt.  
+Üblich sind 5% (auch 1%, 0,1%, 10%, …)
+
+* **Teststärke** (power) = 1 – P (*Typ II-Fehler*) = Wahrscheinlichkeit, einen Effekt nachzuweisen, den es „in Wirklichkeit“ gibt.  
+Üblich ist 80%
+
+
+---
+
+## Statistik: Effektstärken und Stichpobenplanung
+
+.pull-left[
+R-Pakete:
+* **compute.es** zur Berechnung von Effektstärken
+* **pwr** zur Stichprobenplanung
+
+```{r pwr, eval = FALSE, echo = TRUE}
+library(compute.es)
+library(pwr)
+
+ttest <- t.test(topalbums$final_score ~
+                  topalbums$nach1990)
+Effekt <- tes(ttest$statistic, 1419, 1581,
+              verbose = FALSE)
+pwr.t.test(n = NULL, 
+           d = Effekt$d, 
+           sig.level = 0.05, 
+           power = 0.8, 
+           type = "two.sample",
+           alternative = "two.sided")
+```
+]
+
+.pull-right[
+### Welche Fallzahl n, <br>damit t-Test sig. wird?
+
+```{r, ref.label = "pwr"}
+```
+
+]
+
+---
+
+### Normalverteilung: Voraussetzung parametrischer Tests wie t-Test
+
+.pull-left[
+#### Statistisch
+
+```{r, echo = TRUE}
+shapiro.test(
+  topalbums$final_score
+)
+```
+
+#### Grafisch
+
+```{r gghistostats, echo = TRUE, eval = FALSE}
+ggstatsplot::gghistostats(
+  topalbums, final_score,
+  normal.curve = TRUE)
+```
+
+]
+
+.pull-right[
+```{r, out.width = "94%", out.height = "94%"}
+ggstatsplot::gghistostats(
+  topalbums, final_score,
+  normal.curve = TRUE) +
+  theme_bw(base_size = 18)
+```
+
+]
+
+---
+
+.pull-left[
+### Animationen mit gganimate
+* Datenquelle: *gapminder*-Paket
+* **Hans Rosling**: Seine Videos lohnen sich!
+
+#### R-Paket: gganimate
+* ursprünglich von **David Robinson**
+* stark überarbeitet von **Thomas Lin Pedersen**
+<br>
+* Wohlstand (GDP, Pro-Kopf-Einkommen) und Lebenserwartung im Zeitverlauf
+* 1952 – 2007; Daten in 5er-Schritten; <br>gganimate „glättet“ durch Interpolation
+* Grafik enthält Informationen über einzelne Länder (Farben), Bevölkerung (Größe der Blasen) und Kontinente (Unterdiagramme = "Facetten" bzw. facets)
+
+]
+
+.pull-right[
+```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
+# Code von Thomas Lin Pedersen
+# https://github.com/thomasp85/gganimate/wiki/Gapminder
+
+library(gapminder)
+library(ggplot2)
+library(gganimate)
+
+ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+  geom_point(alpha = 0.7) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  theme_bw(base_size = 17) +
+  theme(legend.position = 'none') +
+  labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
+  transition_time(year) 
+```
+
+]
+
+---
+
+
+## Datentypen in R
+
+Datentyp | Details
+---------|---------
+Atomare Vektoren | logisch: TRUE, FALSE <br> numerisch: integer, double <br> character (Text)
+Vektoren mit speziellen Attributen | Faktoren: Text mit festgelegten Kategorien (*factors*) <br> Datum (*date*), Datum-und-Zeit (*date-times*), Zeitintervalle (*durations*)
+Mehrdimensionale Vektoren | Matrizen: zwei Dimensionen - Zeilen und Spalten <br> Arrays: Erweiterung von Matrizen, n Dimensionen
+Listen | flexible Datenspeicher <br> können unterschiedliche Datentypen enthalten
+Datensätze <br> *data frames* | für "rechteckige" Daten, d. h. Vektoren gleicher Länge
+
+
+---
+
+## ggplot2: Leicht gemacht mit esquisse!
+
+.pull-left[
+```{r}
+knitr::include_graphics("libs/_Images/esquisse.png")
+```
+]
+
+.pull-right[
+* Grafische Nutzeroberfläche:<br>ggplot2-Diagramme interaktiv erstellen
+
+* Variablen mit der Maus in Felder ziehen, um sie Ästhetiken zuzuordnen
+
+* R-Code abrufen oder Diagramm direkt verwenden
+
+* Start: per Code oder als RStudio-Addin  
+`esquisse::esquisser()`
+
+```{r, eval = FALSE}
+# install.packages("esquisse")
+esquisse::esquisser()
+```
+
+]
+
