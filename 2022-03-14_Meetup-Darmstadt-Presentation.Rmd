@@ -23,6 +23,7 @@ background-color: #EFEFEF
 ```{r, include = FALSE}
 library(fontawesome)
 library(tidyverse)
+library(knitr)
 knitr::opts_chunk$set(echo = FALSE, comment = "")
 ```
 
@@ -41,7 +42,7 @@ knitr::include_graphics("libs/_Images/logo-R.png")
 <br><br>
 ## Hands-On Tutorial
 
-```{r, fig.align = "center", out.width = "90%", out.height = "90%"}
+```{r, fig.align = "center", out.width = "100%", out.height = "100%"}
 knitr::include_graphics("libs/_Images/Darmstadt-Data-Science.png")
 ```
 ]
@@ -57,7 +58,6 @@ knitr::include_graphics("libs/_Images/Darmstadt-Data-Science.png")
 ---
 
 class: agenda, inverse
-
 
 # Agenda
 
@@ -242,40 +242,22 @@ layout: false
 
 # Erstes Date: R und RStudio - Projekte
 
-.pull-left[
-<img src="libs/_Images/RStudio-Projekt-anlegen.png" alt="RStudio Projekt anlegen", height=400px>
+```{r, fig.align = "center"}
+include_graphics("libs/_Images/RStudio-Projekt-anlegen.png")
+```
 
-** Projektspezifische Arbeitsumgebung  
-mit Skripten, Daten, Befehlsgeschichte**
-]
-
----
+** Projektspezifische Arbeitsumgebung mit Skripten, Daten, Befehlsgeschichte**
 
 
 ---
-
-# Erstes Date: R und RStudio - Dateiformate
-
-![Dateiformate](libs/_Images/RStudio-Dateiformate.png)
-
-Dateiformat | Beschreibung
-------------|-------------
-.RData | Arbeitsumgebung (*Environment*); Datensätze, Vektoren, Funktionen etc.; *Workspace Image*
-.Rhistory | Protokoll der R-Befehle aus der Konsole / Skripten; siehe *History*-Fenster
-.Rda | Meist einzelner Datensatz; kann mehrere Objekte enthalten
-.rds | Einzelnes R-Objekt
-.R | Skript (Syntax, Code)
-.Rmd | R Markdown: Berichte; Text und Ergebnisse mischen; Ausgabeformate z. B. Word, PDF, HTML, Powerpoint
-.Rproj | RStudio-interne Datei zur Projektverwaltung
-
----
-
-
-
----
-class: agenda
+class: agenda, inverse
 
 # Agenda
+
+### 1. Kurzer Einstieg in R und RStudio
+### .yellow[*2. Automatisierte Berichte mit R: Das Markdown-Format*]
+### 3. Statistik mit R leicht gemacht
+### 4. Ergänzungen
 
 
 ---
@@ -358,46 +340,21 @@ head(topalbums, n = 3) |> knitr::kable()
 ]
 ---
 
----
 layout: false
-class: agenda
+class: agenda, inverse
 
 # Agenda
+
+### 1. Kurzer Einstieg in R und RStudio
+### 2. Automatisierte Berichte mit R: Das Markdown-Format
+### .yellow[*3. Statistik mit R leicht gemacht*]
+### 4. Ergänzungen
 
 
 ---
 layout: true
 
-
----
-
-
----
-
-## Warum es wichtig ist, Achsen gut zu beschriften
-
-![xkcd 833 label axes](libs/_Images/xkcd-833-label-axes.png)
-
-Quelle:	https://xkcd.com/833/
-
----
-layout: false
-class: agenda
-
-# Agenda
-
-### 1. Erstes Date: R und RStudio
-### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
-### 3. Let's Go International: Daten-Import und -Export
-### 4. Datenaufbereitung und Visualisierung
-### .blue[*5. <u>Statistik</u> und Data Mining*]
-### 6. Automatisierte Berichte
-### 7. Ergänzungen
-
----
-layout: true
-
-# Statistik mit R
+# Statistik mit R leicht gemacht
 
 ---
 
@@ -414,21 +371,6 @@ https://xkcd.com/892/
 
 ---
 
-## Einführung in den R Commander
-
-.left-column[
-.black[* GUI = *graphical user interface* für R
-* Zahlreiche Befehle zur Datenaufbereitung, Statistik, Diagrammerstellung, Modellierung
-
-Weitere GUIs:
-* Rattle
-* RKWard
-* Deducer
-]]
-
-.right-column[
-![Rcmdr Hauptmenü](libs/_Images/Rcmdr-main.png)
-]
 
 ---
 
@@ -645,6 +587,42 @@ knitr::include_graphics("libs/_Images/xkcd-1478-p-values.png")
 ```
 
 Quelle: https://xkcd.com/1478/
+
+---
+
+---
+
+### Normalverteilung: Voraussetzung parametrischer Tests wie t-Test
+
+.pull-left[
+#### Statistisch
+
+```{r, echo = TRUE}
+shapiro.test(
+  topalbums$final_score
+)
+```
+
+#### Grafisch
+
+```{r gghistostats, echo = TRUE, eval = FALSE}
+ggstatsplot::gghistostats(
+  topalbums, final_score,
+  normal.curve = TRUE)
+```
+
+]
+
+.pull-right[
+```{r, out.width = "94%", out.height = "94%"}
+ggstatsplot::gghistostats(
+  topalbums, final_score,
+  normal.curve = TRUE) +
+  theme_bw(base_size = 18)
+```
+
+]
+
 
 ---
 layout: false
@@ -1119,16 +1097,21 @@ layout: true
 
 ---
 
-## Einige Empfehlungen für R-Pakete
+## Einführung in den R Commander
 
-Aufgabe | Paket-Empfehlung(en)
---------|----------------------
-Datenimport<br>.indent[.txt, .csv, .dat usw.]<br>.indent[Excel] | <br>readr<br>readxl; Pivot-Daten: tidyxl, unpivotr
-Datenaufbereitung | dplyr, tidyr
-Umgang mit Faktorwerten (Text mit vordefinierten Kategorien) | forcats
-Grafiken<br>.indent[Statisch (.png, .jpg usw.)]<br>.indent[Interaktiv (HTML, mouse-over-Effekte)]<br>.indent[Animationen (.gif)] | <br>ggplot2<br>plotly, htmlwidgets, trelliscopejs; leaflet für Geodaten <br> gganimate
-Statistik<br>.indent[Effektstärken]<br>.indent[Stichprobenplanung] | <br>compute.es<br>pwr
-Maschinelles Lernen (Machine Learning, Predictive Modeling) | neu: tidymodels (Paketsammlung, ähnlich tidyverse)<br>alt, etabliert: caret
+.left-column[
+.black[* GUI = *graphical user interface* für R
+* Zahlreiche Befehle zur Datenaufbereitung, Statistik, Diagrammerstellung, Modellierung
+
+Weitere GUIs:
+* Rattle
+* RKWard
+* Deducer
+]]
+
+.right-column[
+![Rcmdr Hauptmenü](libs/_Images/Rcmdr-main.png)
+]
 
 ---
 
@@ -1180,39 +1163,6 @@ pwr.t.test(n = NULL,
 ### Welche Fallzahl n, <br>damit t-Test sig. wird?
 
 ```{r, ref.label = "pwr"}
-```
-
-]
-
----
-
-### Normalverteilung: Voraussetzung parametrischer Tests wie t-Test
-
-.pull-left[
-#### Statistisch
-
-```{r, echo = TRUE}
-shapiro.test(
-  topalbums$final_score
-)
-```
-
-#### Grafisch
-
-```{r gghistostats, echo = TRUE, eval = FALSE}
-ggstatsplot::gghistostats(
-  topalbums, final_score,
-  normal.curve = TRUE)
-```
-
-]
-
-.pull-right[
-```{r, out.width = "94%", out.height = "94%"}
-ggstatsplot::gghistostats(
-  topalbums, final_score,
-  normal.curve = TRUE) +
-  theme_bw(base_size = 18)
 ```
 
 ]
@@ -1298,3 +1248,35 @@ esquisse::esquisser()
 
 ]
 
+
+---
+layout: false
+class: hide-footer, hide-count
+
+# .green[Viel Erfolg bei Ihren Datenanalysen!]
+
+.pull-left[
+```{r, fig.align = "center", out.width = "100%", out.height = "100%"}
+knitr::include_graphics("libs/_Images/Darmstadt-Data-Science.png")
+```
+]
+
+.pull-right[
+```{r, fig.align = "center", out.width = "100%", out.height = "100%"}
+knitr::include_graphics("libs/_Images/coffee.jpg")
+```
+]
+
+.pull-left[
+.blue[**
+Wolf Riepl  
+Profile auf LinkedIn und Xing  
+https://statistik-dresden.de/  
+**]]
+
+.pull-right[
+.blue[**
+.right[Youtube: StatistikinDD]
+.right[Twitter: @StatistikInDD]
+.right[https://www.facebook.com/statistikdresden]
+**]]

@@ -28,7 +28,7 @@ background-color: #EFEFEF
 &lt;br&gt;&lt;br&gt;
 ## Hands-On Tutorial
 
-&lt;img src="libs/_Images/Darmstadt-Data-Science.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="libs/_Images/Darmstadt-Data-Science.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
 ]
 
 .left-column[&lt;br&gt;&lt;br&gt;&lt;br&gt;`` ``14. März 2022]
@@ -42,7 +42,6 @@ background-color: #EFEFEF
 ---
 
 class: agenda, inverse
-
 
 # Agenda
 
@@ -219,40 +218,20 @@ layout: false
 
 # Erstes Date: R und RStudio - Projekte
 
-.pull-left[
-&lt;img src="libs/_Images/RStudio-Projekt-anlegen.png" alt="RStudio Projekt anlegen", height=400px&gt;
+&lt;img src="libs/_Images/RStudio-Projekt-anlegen.png" width="501" style="display: block; margin: auto;" /&gt;
 
-** Projektspezifische Arbeitsumgebung  
-mit Skripten, Daten, Befehlsgeschichte**
-]
-
----
+** Projektspezifische Arbeitsumgebung mit Skripten, Daten, Befehlsgeschichte**
 
 
 ---
-
-# Erstes Date: R und RStudio - Dateiformate
-
-![Dateiformate](libs/_Images/RStudio-Dateiformate.png)
-
-Dateiformat | Beschreibung
-------------|-------------
-.RData | Arbeitsumgebung (*Environment*); Datensätze, Vektoren, Funktionen etc.; *Workspace Image*
-.Rhistory | Protokoll der R-Befehle aus der Konsole / Skripten; siehe *History*-Fenster
-.Rda | Meist einzelner Datensatz; kann mehrere Objekte enthalten
-.rds | Einzelnes R-Objekt
-.R | Skript (Syntax, Code)
-.Rmd | R Markdown: Berichte; Text und Ergebnisse mischen; Ausgabeformate z. B. Word, PDF, HTML, Powerpoint
-.Rproj | RStudio-interne Datei zur Projektverwaltung
-
----
-
-
-
----
-class: agenda
+class: agenda, inverse
 
 # Agenda
+
+### 1. Kurzer Einstieg in R und RStudio
+### .yellow[*2. Automatisierte Berichte mit R: Das Markdown-Format*]
+### 3. Statistik mit R leicht gemacht
+### 4. Ergänzungen
 
 
 ---
@@ -337,46 +316,21 @@ head(topalbums, n = 3)
 ]
 ---
 
----
 layout: false
-class: agenda
+class: agenda, inverse
 
 # Agenda
+
+### 1. Kurzer Einstieg in R und RStudio
+### 2. Automatisierte Berichte mit R: Das Markdown-Format
+### .yellow[*3. Statistik mit R leicht gemacht*]
+### 4. Ergänzungen
 
 
 ---
 layout: true
 
-
----
-
-
----
-
-## Warum es wichtig ist, Achsen gut zu beschriften
-
-![xkcd 833 label axes](libs/_Images/xkcd-833-label-axes.png)
-
-Quelle:	https://xkcd.com/833/
-
----
-layout: false
-class: agenda
-
-# Agenda
-
-### 1. Erstes Date: R und RStudio
-### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
-### 3. Let's Go International: Daten-Import und -Export
-### 4. Datenaufbereitung und Visualisierung
-### .blue[*5. &lt;u&gt;Statistik&lt;/u&gt; und Data Mining*]
-### 6. Automatisierte Berichte
-### 7. Ergänzungen
-
----
-layout: true
-
-# Statistik mit R
+# Statistik mit R leicht gemacht
 
 ---
 
@@ -393,21 +347,6 @@ https://xkcd.com/892/
 
 ---
 
-## Einführung in den R Commander
-
-.left-column[
-.black[* GUI = *graphical user interface* für R
-* Zahlreiche Befehle zur Datenaufbereitung, Statistik, Diagrammerstellung, Modellierung
-
-Weitere GUIs:
-* Rattle
-* RKWard
-* Deducer
-]]
-
-.right-column[
-![Rcmdr Hauptmenü](libs/_Images/Rcmdr-main.png)
-]
 
 ---
 
@@ -497,7 +436,7 @@ library(ggstatsplot)
 ]
 
 .pull-right[
-&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-13-1.png" width="95%" height="95%" /&gt;
+&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-14-1.png" width="95%" height="95%" /&gt;
 
 ]
 
@@ -568,7 +507,7 @@ ggscatterstats(data = topalbums,
 ]
 
 .pull-right[
-&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-15-1.png" width="100%" height="100%" /&gt;
+&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-16-1.png" width="100%" height="100%" /&gt;
 
 ]
 
@@ -667,6 +606,47 @@ values were computed using the Wald approximation.
 &lt;img src="libs/_Images/xkcd-1478-p-values.png" width="25%" height="25%" style="display: block; margin: auto;" /&gt;
 
 Quelle: https://xkcd.com/1478/
+
+---
+
+---
+
+### Normalverteilung: Voraussetzung parametrischer Tests wie t-Test
+
+.pull-left[
+#### Statistisch
+
+
+```r
+shapiro.test(
+  topalbums$final_score
+)
+```
+
+```
+
+	Shapiro-Wilk normality test
+
+data:  topalbums$final_score
+W = 0.6974, p-value &lt; 2.2e-16
+```
+
+#### Grafisch
+
+
+```r
+ggstatsplot::gghistostats(
+  topalbums, final_score,
+  normal.curve = TRUE)
+```
+
+]
+
+.pull-right[
+&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-20-1.png" width="94%" height="94%" /&gt;
+
+]
+
 
 ---
 layout: false
@@ -1077,16 +1057,21 @@ layout: true
 
 ---
 
-## Einige Empfehlungen für R-Pakete
+## Einführung in den R Commander
 
-Aufgabe | Paket-Empfehlung(en)
---------|----------------------
-Datenimport&lt;br&gt;.indent[.txt, .csv, .dat usw.]&lt;br&gt;.indent[Excel] | &lt;br&gt;readr&lt;br&gt;readxl; Pivot-Daten: tidyxl, unpivotr
-Datenaufbereitung | dplyr, tidyr
-Umgang mit Faktorwerten (Text mit vordefinierten Kategorien) | forcats
-Grafiken&lt;br&gt;.indent[Statisch (.png, .jpg usw.)]&lt;br&gt;.indent[Interaktiv (HTML, mouse-over-Effekte)]&lt;br&gt;.indent[Animationen (.gif)] | &lt;br&gt;ggplot2&lt;br&gt;plotly, htmlwidgets, trelliscopejs; leaflet für Geodaten &lt;br&gt; gganimate
-Statistik&lt;br&gt;.indent[Effektstärken]&lt;br&gt;.indent[Stichprobenplanung] | &lt;br&gt;compute.es&lt;br&gt;pwr
-Maschinelles Lernen (Machine Learning, Predictive Modeling) | neu: tidymodels (Paketsammlung, ähnlich tidyverse)&lt;br&gt;alt, etabliert: caret
+.left-column[
+.black[* GUI = *graphical user interface* für R
+* Zahlreiche Befehle zur Datenaufbereitung, Statistik, Diagrammerstellung, Modellierung
+
+Weitere GUIs:
+* Rattle
+* RKWard
+* Deducer
+]]
+
+.right-column[
+![Rcmdr Hauptmenü](libs/_Images/Rcmdr-main.png)
+]
 
 ---
 
@@ -1156,44 +1141,6 @@ NOTE: n is number in *each* group
 
 ---
 
-### Normalverteilung: Voraussetzung parametrischer Tests wie t-Test
-
-.pull-left[
-#### Statistisch
-
-
-```r
-shapiro.test(
-  topalbums$final_score
-)
-```
-
-```
-
-	Shapiro-Wilk normality test
-
-data:  topalbums$final_score
-W = 0.6974, p-value &lt; 2.2e-16
-```
-
-#### Grafisch
-
-
-```r
-ggstatsplot::gghistostats(
-  topalbums, final_score,
-  normal.curve = TRUE)
-```
-
-]
-
-.pull-right[
-&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-27-1.png" width="94%" height="94%" /&gt;
-
-]
-
----
-
 .pull-left[
 ### Animationen mit gganimate
 * Datenquelle: *gapminder*-Paket
@@ -1210,7 +1157,7 @@ ggstatsplot::gghistostats(
 ]
 
 .pull-right[
-![](2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-28-1.gif)&lt;!-- --&gt;
+![](2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-29-1.gif)&lt;!-- --&gt;
 
 ]
 
@@ -1250,6 +1197,34 @@ Datensätze &lt;br&gt; *data frames* | für "rechteckige" Daten, d. h. Vektoren 
 
 ]
 
+
+---
+layout: false
+class: hide-footer, hide-count
+
+# .green[Viel Erfolg bei Ihren Datenanalysen!]
+
+.pull-left[
+&lt;img src="libs/_Images/Darmstadt-Data-Science.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+&lt;img src="libs/_Images/coffee.jpg" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-left[
+.blue[**
+Wolf Riepl  
+Profile auf LinkedIn und Xing  
+https://statistik-dresden.de/  
+**]]
+
+.pull-right[
+.blue[**
+.right[Youtube: StatistikinDD]
+.right[Twitter: @StatistikInDD]
+.right[https://www.facebook.com/statistikdresden]
+**]]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
