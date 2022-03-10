@@ -1,30 +1,19 @@
----
-title: "Datenanalyse / Statistik mit R leicht gemacht!"
-subtitle: "Data Science Meetup Darmstadt"
-author: "Wolf Riepl"
-institute: " "
-date: "14. März 2022, 19 Uhr"
-output:
-  xaringan::moon_reader:
-    chakra: libs/remark-latest.min.js
-    lib_dir: libs
-    seal: false
-    css: ["libs/_css/my_css.css"]
-    nature:
-      highlightStyle: github
-      highlightLines: true
-      countIncrementalSlides: false
-      slideNumberFormat: "%current%"
-      ratio: 16:9
----
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Datenanalyse / Statistik mit R leicht gemacht!</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Wolf Riepl" />
+    <script src="libs/header-attrs-2.12/header-attrs.js"></script>
+    <link rel="stylesheet" href="libs/_css/my_css.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
 class: hide-footer, hide-count
 background-color: #EFEFEF
 
-```{r, include = FALSE}
-library(fontawesome)
-library(tidyverse)
-knitr::opts_chunk$set(echo = FALSE, comment = "")
-```
+
 
 
 
@@ -32,21 +21,17 @@ knitr::opts_chunk$set(echo = FALSE, comment = "")
 
 # Statistik leicht gemacht mit
 
-```{r, fig.align = "center"}
-knitr::include_graphics("libs/_Images/logo-R.png")
-```
+&lt;img src="libs/_Images/logo-R.png" width="267" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
-<br><br>
+&lt;br&gt;&lt;br&gt;
 ## Hands-On Tutorial
 
-```{r, fig.align = "center", out.width = "90%", out.height = "90%"}
-knitr::include_graphics("libs/_Images/Darmstadt-Data-Science.png")
-```
+&lt;img src="libs/_Images/Darmstadt-Data-Science.png" width="90%" height="90%" style="display: block; margin: auto;" /&gt;
 ]
 
-.left-column[<br><br><br>`` ``14. März 2022]
+.left-column[&lt;br&gt;&lt;br&gt;&lt;br&gt;`` ``14. März 2022]
 .right-column[
 .pull-left[Wolf Riepl - R Trainer]
 .pull-right[Youtube: StatistikinDD]
@@ -83,7 +68,7 @@ layout: true
 
 ## Warum R?
 
-> R ist die weltweit leistungsstärkste Programmiersprache für statistische Berechnungen, maschinelles Lernen und Grafiken und steht gleichzeitig für eine blühende globale Gemeinschaft von Anwendern, Entwicklern und Beitragenden.
+&gt; R ist die weltweit leistungsstärkste Programmiersprache für statistische Berechnungen, maschinelles Lernen und Grafiken und steht gleichzeitig für eine blühende globale Gemeinschaft von Anwendern, Entwicklern und Beitragenden.
 
 --
 
@@ -104,27 +89,23 @@ layout: true
 
 ![Google](libs/_Images/logo-Google.png)
 
-```{r, out.width = "15%", out.height = "15%"}
-knitr::include_graphics("libs/_Images/logo-Twitter.png")
-```
+&lt;img src="libs/_Images/logo-Twitter.png" width="15%" height="15%" /&gt;
 
-```{r, out.width = "25%", out.height = "25%"}
-knitr::include_graphics("libs/_Images/logo-airbnb.png")
-```
+&lt;img src="libs/_Images/logo-airbnb.png" width="25%" height="25%" /&gt;
 
 ]
 
 .pull-right[
 * u. a. zur Verhaltens-Analyse (Status-Updates, Profilbilder);  
 Visualisierung großer Datenmengen  
-<br>
+&lt;br&gt;
   
 * Werbewirksamkeit; ökonomische Prognosen;  
 statistische Modellierung (Big Data)  
-<br><br>
+&lt;br&gt;&lt;br&gt;
   
 * Datenvisualisierung, Semantische Analysen
-<br><br><br>
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 * Data Science
 
@@ -140,9 +121,7 @@ statistische Modellierung (Big Data)
 * Sehr populär für eine **domänen-spezifische Sprache**
 * ABER:
 
-```{r, out.height = "85%", out.width = "85%"}
-knitr::include_graphics("libs/_Images/hadley-rankings.png")
-```
+&lt;img src="libs/_Images/hadley-rankings.png" width="85%" height="85%" /&gt;
 
 Tiobe Index: Starke Schwankungen  
 z. B. R auf Platz 8 (08/2020) vs. 19 (09/2019)
@@ -150,9 +129,7 @@ z. B. R auf Platz 8 (08/2020) vs. 19 (09/2019)
 ]
 
 .pull-right[
-```{r, out.width = "74%", out.height = "74%"}
-knitr::include_graphics("libs/_Images/IEEE-ranking-2021.png")
-```
+&lt;img src="libs/_Images/IEEE-ranking-2021.png" width="74%" height="74%" /&gt;
 
 * IEEE = *Institute of Electrical and Electronics Engineers* **2021**; 
 https://spectrum.ieee.org/top-programming-languages/
@@ -183,12 +160,12 @@ https://spectrum.ieee.org/top-programming-languages/
 .pull-left[
 * Überwiegend programmiert in R, C, Fortran
 
-* Funktionales Programmieren und <br>Objektorientiertes Programmieren:
+* Funktionales Programmieren und &lt;br&gt;Objektorientiertes Programmieren:
 
-> "Alles, was existiert, ist ein Objekt.  
+&gt; "Alles, was existiert, ist ein Objekt.  
 Alles, was passiert, ist ein Funktionsaufruf."
 
-<br>.right[
+&lt;br&gt;.right[
 John Chambers  
 Entwickler von S und Mitglied von R Core
 ]]
@@ -204,10 +181,10 @@ Entwickler von S und Mitglied von R Core
 
 Hadley Wickham | Jenny Bryan | Max Kuhn | Garrett Grolemund
 ---------------|-------------|----------|------------------
-![Hadley Wickham](libs/_Images/hadley-wickham.png) | ![Jenny Bryan](libs/_Images/jenny-bryan.png) | <img src="libs/_Images/max-kuhn.png" alt="Max Kuhn", width=172px> | ![Garrett Grolemund](libs/_Images/garrett-grolemund.png)
-Über 130 R-Pakete | ROpenSci: reproduzierbare Forschung; R Foundation | Pakete: tidymodels;<br>älter: caret, C50 | Zahlreiche Webinare
+![Hadley Wickham](libs/_Images/hadley-wickham.png) | ![Jenny Bryan](libs/_Images/jenny-bryan.png) | &lt;img src="libs/_Images/max-kuhn.png" alt="Max Kuhn", width=172px&gt; | ![Garrett Grolemund](libs/_Images/garrett-grolemund.png)
+Über 130 R-Pakete | ROpenSci: reproduzierbare Forschung; R Foundation | Pakete: tidymodels;&lt;br&gt;älter: caret, C50 | Zahlreiche Webinare
 Initiator des *tidyverse* | Bücher: Happy Git; R Packages | Buch: Tidy Modeling with R (mit Julia Silge) | Buch: R for Data Science
-Bücher: R for Data Science; Advanced R; ggplot2;<br>R Packages | "... dann komme ich in Ihr Büro und zünde Ihren Computer an 🔥" | Buch: Feature Engineering and Selection (mit Kjell Johnson) | Buch: Hands-On Programming with R
+Bücher: R for Data Science; Advanced R; ggplot2;&lt;br&gt;R Packages | "... dann komme ich in Ihr Büro und zünde Ihren Computer an 🔥" | Buch: Feature Engineering and Selection (mit Kjell Johnson) | Buch: Hands-On Programming with R
 
 ---
 
@@ -215,9 +192,9 @@ Bücher: R for Data Science; Advanced R; ggplot2;<br>R Packages | "... dann komm
 
 Mara Averick | Yihui Xie | Thomas Pedersen | Winston Chang
 -------------|-----------|-----------------|--------------
-<img src="libs/_Images/mara-averick.png" alt="Mara Averick", height = 172px> | <img src="libs/_Images/yihui-xie.png" alt="Yihui Xie", height=172px> | <img src="libs/_Images/thomas-pedersen.png" alt="Thomas L. Pedersen", height=172px> | <img src="libs/_Images/winston-chang.png" alt="Winston Chang", height=172px>
+&lt;img src="libs/_Images/mara-averick.png" alt="Mara Averick", height = 172px&gt; | &lt;img src="libs/_Images/yihui-xie.png" alt="Yihui Xie", height=172px&gt; | &lt;img src="libs/_Images/thomas-pedersen.png" alt="Thomas L. Pedersen", height=172px&gt; | &lt;img src="libs/_Images/winston-chang.png" alt="Winston Chang", height=172px&gt;
 tidyverse-Entwicklerin | R-Pakete: knitr, animation, bookdown, blogdown, xaringan | gganimate, zahlreiche ggplot2-Erweiterungen | Shiny, R6; Mitarbeit an ggplot2, devtools
-\> 40.000 Twitter-Follower | Bücher: R Markdown, Blogdown, Bookdown | arbeitet u. a. an Beschleunigung von Grafik-Paketen | R Graphics Cookbook
+\&gt; 40.000 Twitter-Follower | Bücher: R Markdown, Blogdown, Bookdown | arbeitet u. a. an Beschleunigung von Grafik-Paketen | R Graphics Cookbook
 
 ---
 
@@ -243,7 +220,7 @@ layout: false
 # Erstes Date: R und RStudio - Projekte
 
 .pull-left[
-<img src="libs/_Images/RStudio-Projekt-anlegen.png" alt="RStudio Projekt anlegen", height=400px>
+&lt;img src="libs/_Images/RStudio-Projekt-anlegen.png" alt="RStudio Projekt anlegen", height=400px&gt;
 
 ** Projektspezifische Arbeitsumgebung  
 mit Skripten, Daten, Befehlsgeschichte**
@@ -298,16 +275,14 @@ layout: true
 
 #### Einmalig installieren; in jeder R-Session bei Bedarf laden
 
-```{r, eval = FALSE, echo = TRUE}
+
+```r
 # install.packages("devtools")
 library(devtools)
 install_github("fjodor/chartmusicdata")
 ```
 
-```{r}
-library(chartmusicdata)
-data("topalbums")
-```
+
                         
  
 ]
@@ -320,7 +295,7 @@ charts | Alle Songs und Alben von tsort.info von 1900 bis 2018
 topsongs | Top 5000 Songs
 topalbums | Top 3000 Alben
 
-<br><br>
+&lt;br&gt;&lt;br&gt;
 
 Datensatz | Quelle: chart2000.com
 ----------|-----------------------
@@ -332,13 +307,17 @@ albums2000 | Top 50 Alben jedes Monats von Januar 2000 bis Juni 2021
 
 ## Die topalbums-Daten
 
-```{r, echo = TRUE, eval = FALSE}
+
+```r
 head(topalbums, n = 3)
 ```
 
-```{r, echo = FALSE, eval = TRUE}
-head(topalbums, n = 3) |> knitr::kable()
-```
+
+| position|artist          |name                                 | year| final_score| raw_usa| raw_eng| raw_eur| raw_row|
+|--------:|:---------------|:------------------------------------|----:|-----------:|-------:|-------:|-------:|-------:|
+|        1|The Beatles     |Sgt Pepper's Lonely Hearts Club Band | 1967|      54.415|  33.740|  13.824|   9.284|   0.553|
+|        2|Michael Jackson |Thriller                             | 1982|      50.782|  29.628|  18.143|  14.952|   4.743|
+|        3|U2              |The Joshua Tree                      | 1987|      38.197|  21.342|  13.411|  17.733|   0.553|
 
 --
 
@@ -390,7 +369,7 @@ class: agenda
 ### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
 ### 3. Let's Go International: Daten-Import und -Export
 ### 4. Datenaufbereitung und Visualisierung
-### .blue[*5. <u>Statistik</u> und Data Mining*]
+### .blue[*5. &lt;u&gt;Statistik&lt;/u&gt; und Data Mining*]
 ### 6. Automatisierte Berichte
 ### 7. Ergänzungen
 
@@ -452,13 +431,9 @@ Weitere GUIs:
 
 **Begründung der Testauswahl:**
 * keine Messwiederholung
-* keine paarweise Zuordnung der Gruppenelemente -> unabhängige Stichproben
+* keine paarweise Zuordnung der Gruppenelemente -&gt; unabhängige Stichproben
 
-```{r ueber-5-punkte}
-topalbums <- topalbums %>% 
-  mutate(ueber5 = ifelse(final_score > 5, "> 5 P", "< 5 P"))
 
-```
 
 ---
 
@@ -468,35 +443,32 @@ topalbums <- topalbums %>%
 
 .pull-left[
 
-```{r report, echo = TRUE, eval = FALSE}
+
+```r
 library(report)
-my_test <- t.test(year ~ ueber5,
-   alternative = 'greater', #<<
+my_test &lt;- t.test(year ~ ueber5,
+*  alternative = 'greater',
    conf.level = .95, var.equal = FALSE,
    data = topalbums)
-report(my_test) #<<
+*report(my_test)
 ```
 
-```{r report-wrap, message = FALSE, warning = FALSE}
-library(report)
 
-my_test <- t.test(year ~ ueber5,
-   alternative = 'greater', #<<
-   conf.level = .95, var.equal = FALSE,
-   data = topalbums)
-
-report(my_test) %>% 
-  stringr::str_wrap(width = 50) %>% 
-  cat()
+```
+The Welch Two Sample t-test testing the difference
+of year by ueber5 (mean in group &lt; 5 P = 1991.10,
+mean in group &gt; 5 P = 1989.62) suggests that the
+effect is positive, statistically significant, and
+very small (difference = 1.49, 95% CI [0.61, Inf],
+t(2758.20) = 2.80, p = 0.003; Cohen's d = 0.11,
+95% CI [0.04, Inf])
 ```
 
 ]
 
 .pull-right[
 
-```{r, out.height = "40%", out.width = "40%"}
-knitr::include_graphics("libs/_Images/logo-report.png")
-```
+&lt;img src="libs/_Images/logo-report.png" width="40%" height="40%" /&gt;
 * Kennwerte, die über die Standard-Ausgabe des t-Tests hinausgehen: **Effektstärken**
 * Teil der **easystats**-Paketsammlung
 ]
@@ -508,13 +480,13 @@ knitr::include_graphics("libs/_Images/logo-report.png")
 .pull-left[
 ### Visualisierung: ggstatsplot
 
-```{r ggstatsplot, eval = FALSE, echo = TRUE}
+
+```r
 library(ggstatsplot)
-ggbetweenstats(topalbums, #<<
+*ggbetweenstats(topalbums,
   x = ueber5, y = year,
   title = "Jahr vs. Über / Unter 5 Punkte",
   caption = "Datenquelle: tsort.info")
-
 ```
 
 * Boxplot
@@ -525,8 +497,7 @@ ggbetweenstats(topalbums, #<<
 ]
 
 .pull-right[
-```{r, ref.label = "ggstatsplot", out.width = "95%", out.height = "95%", message = FALSE, }
-```
+&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-13-1.png" width="95%" height="95%" /&gt;
 
 ]
 
@@ -547,12 +518,24 @@ Quelle: http://xkcd.com/925/
 * Korrelation zwischen Rohpunkten USA und Rohpunkten Europa
 * Ergebnis: Liste
 
-```{r, echo = TRUE}
 
-Korrelation <- cor.test(topalbums$raw_usa,
+```r
+Korrelation &lt;- cor.test(topalbums$raw_usa,
                         topalbums$raw_eur)
 str(Korrelation, list.len = 4)
+```
 
+```
+List of 9
+ $ statistic  : Named num -3.71
+  ..- attr(*, "names")= chr "t"
+ $ parameter  : Named int 2998
+  ..- attr(*, "names")= chr "df"
+ $ p.value    : num 0.000214
+ $ estimate   : Named num -0.0675
+  ..- attr(*, "names")= chr "cor"
+  [list output truncated]
+ - attr(*, "class")= chr "htest"
 ```
 ]
 
@@ -568,7 +551,8 @@ str(Korrelation, list.len = 4)
 .pull-left[
 ## Korrelation grafisch
 
-```{r ggscatterstats, echo = TRUE, eval = FALSE}
+
+```r
 ggscatterstats(data = topalbums,
     x = raw_usa, y = raw_eur)
 ```
@@ -584,8 +568,7 @@ ggscatterstats(data = topalbums,
 ]
 
 .pull-right[
-```{r, ref.label = "ggscatterstats", message = FALSE, warning = FALSE, out.width = "100%", out.height = "100%", dpi = 300}
-```
+&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-15-1.png" width="100%" height="100%" /&gt;
 
 ]
 
@@ -598,10 +581,21 @@ ggscatterstats(data = topalbums,
 * Nimmt im Gegensatz zur Korrelation eine Wirkungsrichtung an
 * Unterscheidung zwischen **unabhängigen Variablen** *(Prädiktoren, Regressoren)* und **abhängiger Variable** *(Zielgröße, Regressand)*
 
-```{r reg1, echo = TRUE}
-reg <- lm(raw_eur ~ raw_usa, #<<
-          data = topalbums) #<<
+
+```r
+*reg &lt;- lm(raw_eur ~ raw_usa,
+*         data = topalbums)
 reg
+```
+
+```
+
+Call:
+lm(formula = raw_eur ~ raw_usa, data = topalbums)
+
+Coefficients:
+(Intercept)      raw_usa  
+    4.51192     -0.07867  
 ```
 
 ]
@@ -617,8 +611,30 @@ reg
 ## Regressionsanalyse: `summary()`
 
 .small[
-```{r reg2, echo = TRUE}
-summary(reg) #<<
+
+```r
+*summary(reg)
+```
+
+```
+
+Call:
+lm(formula = raw_eur ~ raw_usa, data = topalbums)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-4.403 -2.923 -1.079  1.761 14.900 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  4.51192    0.11626  38.809  &lt; 2e-16 ***
+raw_usa     -0.07867    0.02122  -3.707 0.000214 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.793 on 2998 degrees of freedom
+Multiple R-squared:  0.004562,	Adjusted R-squared:  0.00423 
+F-statistic: 13.74 on 1 and 2998 DF,  p-value: 0.0002139
 ```
 ]
 
@@ -626,23 +642,29 @@ summary(reg) #<<
 
 ## Regressionsanalyse: Text-Interpretation mit dem report-Paket
 
-```{r report-reg, echo = TRUE, eval = FALSE}
-report::report(reg) #<<
+
+```r
+*report::report(reg)
 ```
 
-```{r, message = FALSE}
-report(reg) %>% 
-  stringr::str_wrap(width = 90) %>% 
-  cat()
+
+```
+We fitted a linear model (estimated using OLS) to predict raw_eur with raw_usa (formula:
+raw_eur ~ raw_usa). The model explains a statistically significant and very weak
+proportion of variance (R2 = 4.56e-03, F(1, 2998) = 13.74, p &lt; .001, adj. R2 = 4.23e-03).
+The model's intercept, corresponding to raw_usa = 0, is at 4.51 (95% CI [4.28, 4.74],
+t(2998) = 38.81, p &lt; .001). Within this model: - The effect of raw usa is statistically
+significant and negative (beta = -0.08, 95% CI [-0.12, -0.04], t(2998) = -3.71, p &lt; .001;
+Std. beta = -0.07, 95% CI [-0.10, -0.03]) Standardized parameters were obtained by fitting
+the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-
+values were computed using the Wald approximation.
 ```
 
 ---
 
 ## Zur Interpretation von p-Werten ...
 
-```{r, fig.align = "center", out.width = "25%", out.height = "25%"}
-knitr::include_graphics("libs/_Images/xkcd-1478-p-values.png")
-```
+&lt;img src="libs/_Images/xkcd-1478-p-values.png" width="25%" height="25%" style="display: block; margin: auto;" /&gt;
 
 Quelle: https://xkcd.com/1478/
 
@@ -656,7 +678,7 @@ class: agenda
 ### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
 ### 3. Let's Go International: Daten-Import und -Export
 ### 4. Datenaufbereitung und Visualisierung
-### .blue[*5. Statistik und <u>Data Mining</u>*]
+### .blue[*5. Statistik und &lt;u&gt;Data Mining&lt;/u&gt;*]
 ### 6. Automatisierte Berichte
 ### 7. Ergänzungen
 
@@ -679,9 +701,7 @@ layout: true
 ]
 
 .pull-right[
-```{r}
-knitr::include_graphics("libs/_Images/titanic.jpg")
-```
+&lt;img src="libs/_Images/titanic.jpg" width="853" /&gt;
 
 Der Untergang der Titanic  
 Gravur von Willy Stöwer  
@@ -691,9 +711,7 @@ Quelle: Wikimedia Commons
 ---
 
 .pull-left[
-```{r, out.width = "70%", out.height = "70%"}
-knitr::include_graphics("libs/_Images/Zen-Entscheidungsbaum.png")
-```
+&lt;img src="libs/_Images/Zen-Entscheidungsbaum.png" width="70%" height="70%" /&gt;
 
 ]
 .pull-right[
@@ -707,40 +725,9 @@ Quelle: https://elephantjournal.com
 
 ---
 
-```{r titanic-dataprep, echo = FALSE}
 
-library(titanic)
-titanic <- titanic_train
-titanic <- titanic %>% 
-    select(Survived, Pclass, Sex, Age) %>% 
-    rename(Alter = Age,
-           Passagierklasse = Pclass,
-           Geschlecht = Sex) %>% 
-    mutate(Survived = as.factor(Survived),
-           Survived = fct_recode(Survived,
-                        Ertrunken = "0",
-                        Gerettet = "1"),
-           Geschlecht = fct_recode(Geschlecht,
-                            weiblich = "female",
-                            männlich = "male"),
-           Passagierklasse = as.factor(Passagierklasse),
-           Passagierklasse = fct_recode(Passagierklasse,
-                                '1. Klasse' = "1",
-                                '2. Klasse' = "2",
-                                '3. Klasse' = "3"))
-```
 
-```{r rpart, fig.width = 11, fig.height = 7, message = FALSE}
-library(rpart)
-tree <- rpart(Survived ~ ., #<<
-              data = titanic,
-              method = "class")
-
-rattle::fancyRpartPlot(tree,
-          palettes = c("Greys", "Greens"),
-          sub = "", tweak = 1.2)
-
-```
+![](2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/rpart-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -763,9 +750,10 @@ rattle::fancyRpartPlot(tree,
 .pull-right[
 ### Simpler R-Code!
 
-```{r, echo = TRUE, eval = FALSE}
+
+```r
 library(rpart)
-tree <- rpart(Survived ~ ., #<<
+*tree &lt;- rpart(Survived ~ .,
               data = titanic,
               method = "class")
 ```
@@ -773,9 +761,10 @@ tree <- rpart(Survived ~ ., #<<
 * Modell: rpart; Formel wie bei Regression
 * Auch für metrische abhängige Variablen möglich: `method = "anova"`
 
-```{r, echo = TRUE, eval = FALSE}
+
+```r
 library(rattle)
-fancyRpartPlot(tree) #<<
+*fancyRpartPlot(tree)
 ```
 
 * Visualisierung: `fancyRpartPlot()`
@@ -807,9 +796,7 @@ layout: true
 
 ## Warum? Houston, wir haben ein Problem!
 
-```{r, out.height = "60%", out.width = "60%", fig.align = 'center'}
-knitr::include_graphics("libs/_Images/markdown-houston.png")
-```
+&lt;img src="libs/_Images/markdown-houston.png" width="60%" height="60%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -847,9 +834,7 @@ Weitere Markup-Sprachen: HTML, XML
 ]
 
 .pull-right[
-```{r markdown-logo, echo = FALSE, out.width = "60%", out.height = "50%", fig.align = "right"}
-knitr::include_graphics("libs/_Images/logo-markdown.png")
-```
+&lt;img src="libs/_Images/logo-markdown.png" width="60%" height="50%" style="display: block; margin: auto 0 auto auto;" /&gt;
 ]
 
 ---
@@ -858,9 +843,7 @@ knitr::include_graphics("libs/_Images/logo-markdown.png")
 
 .pull-left[
 
-```{r markdown-vorlage, echo = FALSE, out.width = "85%", out.height = "85%"}
-knitr::include_graphics("libs/_Images/Markdown-Vorlage.png")
-```
+&lt;img src="libs/_Images/Markdown-Vorlage.png" width="85%" height="85%" /&gt;
 
 ]
 
@@ -874,9 +857,7 @@ Jederzeit zwischen HTML, PDF, Word wechseln: im YAML-Header
 
 Oder:
 
-```{r knit-to, echo = FALSE, out.width = "40%", out.height = "40%"}
-knitr::include_graphics("libs/_Images/knit-to.png")
-```
+&lt;img src="libs/_Images/knit-to.png" width="40%" height="40%" /&gt;
 
 ]
 
@@ -885,24 +866,19 @@ knitr::include_graphics("libs/_Images/knit-to.png")
 ## YAML Header
 
 * Enthält Meta-Informationen, z. B. Titel, Autor, Datum, Ausgabeformat
-* YAML Ain‘t Markup Language <- Yet Another Markup Language
+* YAML Ain‘t Markup Language &lt;- Yet Another Markup Language
 * Gekennzeichnet mit jeweils drei	---	am Anfang des Dokuments
 * Grundgerüst kann aus RStudio-Vorlage übernommen und angepasst werden
 
 **Knit:** Dokument aus .Rmd-Vorlage erstellen
 
-```{r yaml, echo = FALSE, out.width = "70%", out.height = "70%"}
-knitr::include_graphics("libs/_Images/yaml-header.png")
-```
+&lt;img src="libs/_Images/yaml-header.png" width="70%" height="70%" /&gt;
 
 ---
 
 ## R-Code und Text mischen
 
-```{r R-Text-Code, echo = FALSE, out.width = "100%", out.height = "100%"}
-knitr::include_graphics("libs/_Images/Text_R-Code.png")
-knitr::include_graphics("libs/_Images/Text_R-Code_Output.png")
-```
+&lt;img src="libs/_Images/Text_R-Code.png" width="100%" height="100%" /&gt;&lt;img src="libs/_Images/Text_R-Code_Output.png" width="100%" height="100%" /&gt;
 
 ---
 
@@ -912,18 +888,18 @@ knitr::include_graphics("libs/_Images/Text_R-Code_Output.png")
 
 Markdown-Code | Ergebnis
 --------------|---------
-*'r R-code'*  |	R-Code in laufenden Text einbetten,<br>z. B. „Die Daten beruhen auf 'r nrow(albums)' Alben.“
-#<br>##| Überschrift 1 <br> Überschrift 2 … usw.
-\*Text*<br>\_Text_          | *Kursivschrift*
-\*\*Text**<br>\_\_Text__    | **Fettschrift**
+*'r R-code'*  |	R-Code in laufenden Text einbetten,&lt;br&gt;z. B. „Die Daten beruhen auf 'r nrow(albums)' Alben.“
+#&lt;br&gt;##| Überschrift 1 &lt;br&gt; Überschrift 2 … usw.
+\*Text*&lt;br&gt;\_Text_          | *Kursivschrift*
+\*\*Text**&lt;br&gt;\_\_Text__    | **Fettschrift**
 
 ]
 
 .pull-right[
 Markdown-Code | Ergebnis
 --------------|---------
-\* Punkt 1<br>\* Punkt 2<br> <center> + P 2.1 | Nicht nummerierte Liste
-1. Punkt 1<br>2. Punkt 2 | Nummerierte Liste
+\* Punkt 1&lt;br&gt;\* Punkt 2&lt;br&gt; &lt;center&gt; + P 2.1 | Nicht nummerierte Liste
+1. Punkt 1&lt;br&gt;2. Punkt 2 | Nummerierte Liste
 
 Weitere Formatierungen siehe:
 * https://rmarkdown.rstudio.com/authoring_basics.html
@@ -935,14 +911,7 @@ Weitere Formatierungen siehe:
 
 ## R Codeblock
 
-```{r Codeblock, echo = FALSE, eval = FALSE}
 
-library(tidyverse)
-ggplot(diamonds, aes(x = carat, y = price, color = color)) +
-  geom_point() + 
-  theme_dark()
-
-```
 
 ![R-Codeblock](libs/_Images/R-Codeblock.png)
 
@@ -975,10 +944,7 @@ Für weitere Chunk-Optionen neben *echo* und *eval* siehe https://yihui.org/knit
 ## Literatur
 
 .pull-left[
-```{r Markdown-book, echo = FALSE, fig.show = "hold", out.width = "45%", out.extra = 'style="border:10px solid white;"'}
-knitr::include_graphics("libs/_Images/cover-markdown.png")
-knitr::include_graphics("libs/_Images/cover-R4DS.png")
-```
+&lt;img src="libs/_Images/cover-markdown.png" width="45%" style="border:10px solid white;" /&gt;&lt;img src="libs/_Images/cover-R4DS.png" width="45%" style="border:10px solid white;" /&gt;
 ]
 
 .pull-right[
@@ -1017,9 +983,7 @@ https://bookdown.org/
 ]
 
 .pull-right[
-```{r bookdown, echo = FALSE, out.width = "55%", out.height = "55%"}
-knitr::include_graphics("libs/_Images/cover-bookdown.jpg", )
-```
+&lt;img src="libs/_Images/cover-bookdown.jpg" width="55%" height="55%" /&gt;
 
 ]
 
@@ -1042,9 +1006,7 @@ https://bookdown.org/yihui/blogdown/
 ]
 
 .pull-right[
-```{r blogdown, echo = FALSE, out.width = "57%", out.height = "57%"}
-knitr::include_graphics("libs/_Images/cover-blogdown.png", )
-```
+&lt;img src="libs/_Images/cover-blogdown.png" width="57%" height="57%" /&gt;
 
 ]
 
@@ -1066,9 +1028,7 @@ https://pkgs.rstudio.com/flexdashboard/
 ]
 
 .pull-right[
-```{r}
-knitr::include_graphics("libs/_Images/flexdashboards.png")
-```
+&lt;img src="libs/_Images/flexdashboards.png" width="911" /&gt;
 ]
 
 ---
@@ -1093,9 +1053,7 @@ Shiny lernen:
 ]
 
 .pull-right[
-```{r, echo = FALSE, out.width = "70%", out.height = "70%"}
-knitr::include_graphics("libs/_Images/cover-mastering-shiny.png")
-```
+&lt;img src="libs/_Images/cover-mastering-shiny.png" width="70%" height="70%" /&gt;
 ]
 
 ---
@@ -1123,18 +1081,18 @@ layout: true
 
 Aufgabe | Paket-Empfehlung(en)
 --------|----------------------
-Datenimport<br>.indent[.txt, .csv, .dat usw.]<br>.indent[Excel] | <br>readr<br>readxl; Pivot-Daten: tidyxl, unpivotr
+Datenimport&lt;br&gt;.indent[.txt, .csv, .dat usw.]&lt;br&gt;.indent[Excel] | &lt;br&gt;readr&lt;br&gt;readxl; Pivot-Daten: tidyxl, unpivotr
 Datenaufbereitung | dplyr, tidyr
 Umgang mit Faktorwerten (Text mit vordefinierten Kategorien) | forcats
-Grafiken<br>.indent[Statisch (.png, .jpg usw.)]<br>.indent[Interaktiv (HTML, mouse-over-Effekte)]<br>.indent[Animationen (.gif)] | <br>ggplot2<br>plotly, htmlwidgets, trelliscopejs; leaflet für Geodaten <br> gganimate
-Statistik<br>.indent[Effektstärken]<br>.indent[Stichprobenplanung] | <br>compute.es<br>pwr
-Maschinelles Lernen (Machine Learning, Predictive Modeling) | neu: tidymodels (Paketsammlung, ähnlich tidyverse)<br>alt, etabliert: caret
+Grafiken&lt;br&gt;.indent[Statisch (.png, .jpg usw.)]&lt;br&gt;.indent[Interaktiv (HTML, mouse-over-Effekte)]&lt;br&gt;.indent[Animationen (.gif)] | &lt;br&gt;ggplot2&lt;br&gt;plotly, htmlwidgets, trelliscopejs; leaflet für Geodaten &lt;br&gt; gganimate
+Statistik&lt;br&gt;.indent[Effektstärken]&lt;br&gt;.indent[Stichprobenplanung] | &lt;br&gt;compute.es&lt;br&gt;pwr
+Maschinelles Lernen (Machine Learning, Predictive Modeling) | neu: tidymodels (Paketsammlung, ähnlich tidyverse)&lt;br&gt;alt, etabliert: caret
 
 ---
 
 ## Statistik: Effektstärken und Stichpobenplanung
 
-#### Welche Stichprobengröße wird benötigt,<br>damit eine Mittelwertsdifferenz mit einer bestimmten Effektstärke signifikant wird?
+#### Welche Stichprobengröße wird benötigt,&lt;br&gt;damit eine Mittelwertsdifferenz mit einer bestimmten Effektstärke signifikant wird?
 
 Es geht um vier Größen – sind drei bekannt, kann die vierte bestimmt werden.
 
@@ -1158,14 +1116,15 @@ R-Pakete:
 * **compute.es** zur Berechnung von Effektstärken
 * **pwr** zur Stichprobenplanung
 
-```{r pwr, eval = FALSE, echo = TRUE}
+
+```r
 library(compute.es)
 library(pwr)
 
-topalbums$nach1990 <- topalbums$year > 1990
-ttest <- t.test(topalbums$final_score ~
+topalbums$nach1990 &lt;- topalbums$year &gt; 1990
+ttest &lt;- t.test(topalbums$final_score ~
                   topalbums$nach1990)
-Effekt <- tes(ttest$statistic, 1419, 1581,
+Effekt &lt;- tes(ttest$statistic, 1419, 1581,
               verbose = FALSE)
 pwr.t.test(n = NULL, 
            d = Effekt$d, 
@@ -1177,9 +1136,20 @@ pwr.t.test(n = NULL,
 ]
 
 .pull-right[
-### Welche Fallzahl n, <br>damit t-Test sig. wird?
+### Welche Fallzahl n, &lt;br&gt;damit t-Test sig. wird?
 
-```{r, ref.label = "pwr"}
+
+```
+
+     Two-sample t test power calculation 
+
+              n = 1298.293
+              d = 0.11
+      sig.level = 0.05
+          power = 0.8
+    alternative = two.sided
+
+NOTE: n is number in *each* group
 ```
 
 ]
@@ -1191,15 +1161,25 @@ pwr.t.test(n = NULL,
 .pull-left[
 #### Statistisch
 
-```{r, echo = TRUE}
+
+```r
 shapiro.test(
   topalbums$final_score
 )
 ```
 
+```
+
+	Shapiro-Wilk normality test
+
+data:  topalbums$final_score
+W = 0.6974, p-value &lt; 2.2e-16
+```
+
 #### Grafisch
 
-```{r gghistostats, echo = TRUE, eval = FALSE}
+
+```r
 ggstatsplot::gghistostats(
   topalbums, final_score,
   normal.curve = TRUE)
@@ -1208,12 +1188,7 @@ ggstatsplot::gghistostats(
 ]
 
 .pull-right[
-```{r, out.width = "94%", out.height = "94%"}
-ggstatsplot::gghistostats(
-  topalbums, final_score,
-  normal.curve = TRUE) +
-  theme_bw(base_size = 18)
-```
+&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-27-1.png" width="94%" height="94%" /&gt;
 
 ]
 
@@ -1227,33 +1202,15 @@ ggstatsplot::gghistostats(
 #### R-Paket: gganimate
 * ursprünglich von **David Robinson**
 * stark überarbeitet von **Thomas Lin Pedersen**
-<br>
+&lt;br&gt;
 * Wohlstand (GDP, Pro-Kopf-Einkommen) und Lebenserwartung im Zeitverlauf
-* 1952 – 2007; Daten in 5er-Schritten; <br>gganimate „glättet“ durch Interpolation
+* 1952 – 2007; Daten in 5er-Schritten; &lt;br&gt;gganimate „glättet“ durch Interpolation
 * Grafik enthält Informationen über einzelne Länder (Farben), Bevölkerung (Größe der Blasen) und Kontinente (Unterdiagramme = "Facetten" bzw. facets)
 
 ]
 
 .pull-right[
-```{r, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
-# Code von Thomas Lin Pedersen
-# https://github.com/thomasp85/gganimate/wiki/Gapminder
-
-library(gapminder)
-library(ggplot2)
-library(gganimate)
-
-ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
-  geom_point(alpha = 0.7) +
-  scale_colour_manual(values = country_colors) +
-  scale_size(range = c(2, 12)) +
-  scale_x_log10() +
-  facet_wrap(~continent) +
-  theme_bw(base_size = 17) +
-  theme(legend.position = 'none') +
-  labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
-  transition_time(year) 
-```
+![](2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-28-1.gif)&lt;!-- --&gt;
 
 ]
 
@@ -1264,11 +1221,11 @@ ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
 
 Datentyp | Details
 ---------|---------
-Atomare Vektoren | logisch: TRUE, FALSE <br> numerisch: integer, double <br> character (Text)
-Vektoren mit speziellen Attributen | Faktoren: Text mit festgelegten Kategorien (*factors*) <br> Datum (*date*), Datum-und-Zeit (*date-times*), Zeitintervalle (*durations*)
-Mehrdimensionale Vektoren | Matrizen: zwei Dimensionen - Zeilen und Spalten <br> Arrays: Erweiterung von Matrizen, n Dimensionen
-Listen | flexible Datenspeicher <br> können unterschiedliche Datentypen enthalten
-Datensätze <br> *data frames* | für "rechteckige" Daten, d. h. Vektoren gleicher Länge
+Atomare Vektoren | logisch: TRUE, FALSE &lt;br&gt; numerisch: integer, double &lt;br&gt; character (Text)
+Vektoren mit speziellen Attributen | Faktoren: Text mit festgelegten Kategorien (*factors*) &lt;br&gt; Datum (*date*), Datum-und-Zeit (*date-times*), Zeitintervalle (*durations*)
+Mehrdimensionale Vektoren | Matrizen: zwei Dimensionen - Zeilen und Spalten &lt;br&gt; Arrays: Erweiterung von Matrizen, n Dimensionen
+Listen | flexible Datenspeicher &lt;br&gt; können unterschiedliche Datentypen enthalten
+Datensätze &lt;br&gt; *data frames* | für "rechteckige" Daten, d. h. Vektoren gleicher Länge
 
 
 ---
@@ -1276,13 +1233,11 @@ Datensätze <br> *data frames* | für "rechteckige" Daten, d. h. Vektoren gleich
 ## ggplot2: Leicht gemacht mit esquisse!
 
 .pull-left[
-```{r}
-knitr::include_graphics("libs/_Images/esquisse.png")
-```
+&lt;img src="libs/_Images/esquisse.png" width="1649" /&gt;
 ]
 
 .pull-right[
-* Grafische Nutzeroberfläche:<br>ggplot2-Diagramme interaktiv erstellen
+* Grafische Nutzeroberfläche:&lt;br&gt;ggplot2-Diagramme interaktiv erstellen
 
 * Variablen mit der Maus in Felder ziehen, um sie Ästhetiken zuzuordnen
 
@@ -1291,10 +1246,132 @@ knitr::include_graphics("libs/_Images/esquisse.png")
 * Start: per Code oder als RStudio-Addin  
 `esquisse::esquisser()`
 
-```{r, eval = FALSE}
-# install.packages("esquisse")
-esquisse::esquisser()
-```
+
 
 ]
 
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
