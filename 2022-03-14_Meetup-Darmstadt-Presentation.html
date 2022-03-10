@@ -235,539 +235,6 @@ class: agenda, inverse
 
 
 ---
-
-layout: true
-
-
-
----
-
-## Daten: Das chartmusicdata-Paket
-
-.pull-left[
-#### https://tsort.info/ "The World's Music Charts"
-  + Songs und Alben von 1900 bis 2018
-  + Punktesystem gut geeignet für Einträge bis etwa 2012
-
-#### https://chart2000.com/ "Music Charts 2000 - 2021"
-  + Punktesystem besser für aktuellere Einträge
-
-#### Einmalig installieren; in jeder R-Session bei Bedarf laden
-
-
-```r
-# install.packages("devtools")
-library(devtools)
-install_github("fjodor/chartmusicdata")
-```
-
-
-                        
- 
-]
-
-.pull-right[
-
-Datensatz | Quelle: tsort.info
-----------|-------
-charts | Alle Songs und Alben von tsort.info von 1900 bis 2018
-topsongs | Top 5000 Songs
-topalbums | Top 3000 Alben
-
-&lt;br&gt;&lt;br&gt;
-
-Datensatz | Quelle: chart2000.com
-----------|-----------------------
-songs2000 | Top 50 Songs jedes Monats von Januar 2000 bis Juni 2021
-albums2000 | Top 50 Alben jedes Monats von Januar 2000 bis Juni 2021
-
-]
----
-
-## Die topalbums-Daten
-
-
-```r
-head(topalbums, n = 3)
-```
-
-
-| position|artist          |name                                 | year| final_score| raw_usa| raw_eng| raw_eur| raw_row|
-|--------:|:---------------|:------------------------------------|----:|-----------:|-------:|-------:|-------:|-------:|
-|        1|The Beatles     |Sgt Pepper's Lonely Hearts Club Band | 1967|      54.415|  33.740|  13.824|   9.284|   0.553|
-|        2|Michael Jackson |Thriller                             | 1982|      50.782|  29.628|  18.143|  14.952|   4.743|
-|        3|U2              |The Joshua Tree                      | 1987|      38.197|  21.342|  13.411|  17.733|   0.553|
-
---
-
-.pull-left[
-* position: Platzierung, von 1 bis 3000
-* artist: Künstler / Band
-* name: Album-Titel
-* year: Jahr der Veröffentlichung
-* final_score: Gesamt-Punkte, gewichtet nach Region und Jahr
-]
-
-.pull-right[
-* raw_usa: Rohpunkte USA
-* raw_eng: Rohpunkte in den restlichen englischsprachigen Ländern
-* raw_eur: Rohpunkte in den restlichen (nicht-englischsprachigen) europäischen Ländern
-* raw_row: Rohpunkte im Rest der Welt (ohne Europa, ohne englischsprachige Länder)
-]
----
-
-layout: false
-class: agenda, inverse
-
-# Agenda
-
-### 1. Kurzer Einstieg in R und RStudio
-### 2. Automatisierte Berichte mit R: Das Markdown-Format
-### .yellow[*3. Statistik mit R leicht gemacht*]
-### 4. Ergänzungen
-
-
----
-layout: true
-
-# Statistik mit R leicht gemacht
-
----
-
-## Lang lebe die Nullhypothese ...
-
-.pull-left[
-![xkcd Nullhyp](libs/_Images/xkcd-892-Null-hyp.png)
-]
-
-.pull-right[
-Quelle: xkcd 892  
-https://xkcd.com/892/
-]
-
----
-
-
----
-
-## Erscheinungsjahr vs. Über / Unter 5 Punkten
-
-**Forschungsfrage:** Gibt es Unterschiede im durchschnittlichen Alter (Erscheinungsjahr)  
-.indent[.indent[zwischen Alben, die über / unter 5 Punkten (~ Median) erreichten?]]
-
---
-
-**Hypothese:** Alben, die über 5 Punkte erreichten,	sind durchschnittlich älter als Alben, die weniger als 5 Punkte erreichten.
-
---
-
-**Begründung:**	Mehr Zeit für Chartplatzierungen; „Oldies“ waren langlebiger?
-
---
-
-**Methode:** t-Test für unabhängige Stichproben  
-.indent[.indent[*Statistik – Mittelwerte vergleichen*]]
-
-**Begründung der Testauswahl:**
-* keine Messwiederholung
-* keine paarweise Zuordnung der Gruppenelemente -&gt; unabhängige Stichproben
-
-
-
----
-
-## t-Test: Ergebnisse *elegant* weiterverarbeiten
-
-### Bericht in Textform (englisch): easystats / report
-
-.pull-left[
-
-
-```r
-library(report)
-my_test &lt;- t.test(year ~ ueber5,
-*  alternative = 'greater',
-   conf.level = .95, var.equal = FALSE,
-   data = topalbums)
-*report(my_test)
-```
-
-
-```
-The Welch Two Sample t-test testing the difference
-of year by ueber5 (mean in group &lt; 5 P = 1991.10,
-mean in group &gt; 5 P = 1989.62) suggests that the
-effect is positive, statistically significant, and
-very small (difference = 1.49, 95% CI [0.61, Inf],
-t(2758.20) = 2.80, p = 0.003; Cohen's d = 0.11,
-95% CI [0.04, Inf])
-```
-
-]
-
-.pull-right[
-
-&lt;img src="libs/_Images/logo-report.png" width="40%" height="40%" /&gt;
-* Kennwerte, die über die Standard-Ausgabe des t-Tests hinausgehen: **Effektstärken**
-* Teil der **easystats**-Paketsammlung
-]
-
----
-
-## t-Test: Ergebnisse *elegant* weiterverarbeiten
-
-.pull-left[
-### Visualisierung: ggstatsplot
-
-
-```r
-library(ggstatsplot)
-*ggbetweenstats(topalbums,
-  x = ueber5, y = year,
-  title = "Jahr vs. Über / Unter 5 Punkte",
-  caption = "Datenquelle: tsort.info")
-```
-
-* Boxplot
-* Violin-Plot
-* Einzelne Datenpunkte
-* Angereichert mit statistischen Kennzahlen
-
-]
-
-.pull-right[
-&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-14-1.png" width="95%" height="95%" /&gt;
-
-]
-
----
-
-## Korrelationsanalyse
-
-![xkcd Korr](libs/_Images/xkcd-925-corr.png)
-
-Quelle: http://xkcd.com/925/
-
----
-
-## Korrelationsanalyse
-
-.pull-left[
-
-* Korrelation zwischen Rohpunkten USA und Rohpunkten Europa
-* Ergebnis: Liste
-
-
-```r
-Korrelation &lt;- cor.test(topalbums$raw_usa,
-                        topalbums$raw_eur)
-str(Korrelation, list.len = 4)
-```
-
-```
-List of 9
- $ statistic  : Named num -3.71
-  ..- attr(*, "names")= chr "t"
- $ parameter  : Named int 2998
-  ..- attr(*, "names")= chr "df"
- $ p.value    : num 0.000214
- $ estimate   : Named num -0.0675
-  ..- attr(*, "names")= chr "cor"
-  [list output truncated]
- - attr(*, "class")= chr "htest"
-```
-]
-
-.pull-right[
-### Einfach dank der R-Werkzeugkiste!
-
-* Im R Commander zusammenklicken unter `Statistik - Deskriptive Statistik - Test auf Signifikanz der Korrelation`
-* Standard-Ausgabe: `Korrelation`, bzw. `cor.test(topalbums$raw_usa, topalbums$raw_eur)` direkt ausführen
-]
-
----
-
-.pull-left[
-## Korrelation grafisch
-
-
-```r
-ggscatterstats(data = topalbums,
-    x = raw_usa, y = raw_eur)
-```
-
-### Simple Syntax - informative Ausgabe!
-
-* Streudiagramm: bivariate Verteilungen
-* Dichte + Histogramm: *"marginal densigram"* - Verteilungen 
-* Anpassungsgerade mit Konfidenzband: Linearer Zusammenhang?
-* Korrelationskoeffizient *Pearson's r*
-* t-Wert, p-Wert, Konfidenzintervall für r, Fallzahl
-* Bayes Factor
-]
-
-.pull-right[
-&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-16-1.png" width="100%" height="100%" /&gt;
-
-]
-
----
-
-## Regressionsanalyse
-
-.pull-left[
-
-* Nimmt im Gegensatz zur Korrelation eine Wirkungsrichtung an
-* Unterscheidung zwischen **unabhängigen Variablen** *(Prädiktoren, Regressoren)* und **abhängiger Variable** *(Zielgröße, Regressand)*
-
-
-```r
-*reg &lt;- lm(raw_eur ~ raw_usa,
-*         data = topalbums)
-reg
-```
-
-```
-
-Call:
-lm(formula = raw_eur ~ raw_usa, data = topalbums)
-
-Coefficients:
-(Intercept)      raw_usa  
-    4.51192     -0.07867  
-```
-
-]
-
-.pull-right[
-* Im R Commander zusammenklicken unter `Statistik - Modelle anpassen - Lineare Regression`
-* In Base R ist die direkte Ausgabe (`reg`) minimal: sie gibt lediglich die Koeffizienten an
-
-]
-
----
-
-## Regressionsanalyse: `summary()`
-
-.small[
-
-```r
-*summary(reg)
-```
-
-```
-
-Call:
-lm(formula = raw_eur ~ raw_usa, data = topalbums)
-
-Residuals:
-   Min     1Q Median     3Q    Max 
--4.403 -2.923 -1.079  1.761 14.900 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  4.51192    0.11626  38.809  &lt; 2e-16 ***
-raw_usa     -0.07867    0.02122  -3.707 0.000214 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 3.793 on 2998 degrees of freedom
-Multiple R-squared:  0.004562,	Adjusted R-squared:  0.00423 
-F-statistic: 13.74 on 1 and 2998 DF,  p-value: 0.0002139
-```
-]
-
----
-
-## Regressionsanalyse: Text-Interpretation mit dem report-Paket
-
-
-```r
-*report::report(reg)
-```
-
-
-```
-We fitted a linear model (estimated using OLS) to predict raw_eur with raw_usa (formula:
-raw_eur ~ raw_usa). The model explains a statistically significant and very weak
-proportion of variance (R2 = 4.56e-03, F(1, 2998) = 13.74, p &lt; .001, adj. R2 = 4.23e-03).
-The model's intercept, corresponding to raw_usa = 0, is at 4.51 (95% CI [4.28, 4.74],
-t(2998) = 38.81, p &lt; .001). Within this model: - The effect of raw usa is statistically
-significant and negative (beta = -0.08, 95% CI [-0.12, -0.04], t(2998) = -3.71, p &lt; .001;
-Std. beta = -0.07, 95% CI [-0.10, -0.03]) Standardized parameters were obtained by fitting
-the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-
-values were computed using the Wald approximation.
-```
-
----
-
-## Zur Interpretation von p-Werten ...
-
-&lt;img src="libs/_Images/xkcd-1478-p-values.png" width="25%" height="25%" style="display: block; margin: auto;" /&gt;
-
-Quelle: https://xkcd.com/1478/
-
----
-
----
-
-### Normalverteilung: Voraussetzung parametrischer Tests wie t-Test
-
-.pull-left[
-#### Statistisch
-
-
-```r
-shapiro.test(
-  topalbums$final_score
-)
-```
-
-```
-
-	Shapiro-Wilk normality test
-
-data:  topalbums$final_score
-W = 0.6974, p-value &lt; 2.2e-16
-```
-
-#### Grafisch
-
-
-```r
-ggstatsplot::gghistostats(
-  topalbums, final_score,
-  normal.curve = TRUE)
-```
-
-]
-
-.pull-right[
-&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-20-1.png" width="94%" height="94%" /&gt;
-
-]
-
-
----
-layout: false
-class: agenda
-
-# Agenda
-
-### 1. Erstes Date: R und RStudio
-### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
-### 3. Let's Go International: Daten-Import und -Export
-### 4. Datenaufbereitung und Visualisierung
-### .blue[*5. Statistik und &lt;u&gt;Data Mining&lt;/u&gt;*]
-### 6. Automatisierte Berichte
-### 7. Ergänzungen
-
----
-layout: true
-
-# Data Mining-Beispiel: Titanic
-
----
-
-.pull-left[
-## Wurden Frauen und Kinder zuerst gerettet?
-
-* Daten zu 891 Passagieren (Trainingsdaten für maschinelles Lernen)
-* Variablen:
-  + Abhängige Variable (AV): Überlebt ja / nein
-  + Unabhängige Variablen (UV): Alter, Geschlecht, Passagierklasse (1-3)
-* Wie hängen Alter, Geschlecht und Passagierklasse mit den Überlebenschancen zusammen?
-* Ziel: Ein Ergebnis, das auch Nicht-Statistikern leicht erklärt werden kann
-]
-
-.pull-right[
-&lt;img src="libs/_Images/titanic.jpg" width="853" /&gt;
-
-Der Untergang der Titanic  
-Gravur von Willy Stöwer  
-Quelle: Wikimedia Commons
-]
-
----
-
-.pull-left[
-&lt;img src="libs/_Images/Zen-Entscheidungsbaum.png" width="70%" height="70%" /&gt;
-
-]
-.pull-right[
-### Entscheidungsbaum
-
-* Leicht interpretierbar
-* Nicht nur für Yogis geeignet
-
-Quelle: https://elephantjournal.com
-]
-
----
-
-
-
-![](2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/rpart-1.png)&lt;!-- --&gt;
-
----
-
-.pull-left[
-### Interpretation
-
-* Ausgangspunkt: Knoten 1 oben; enthält gesamte Stichprobe
-* Aufteilung in Unterknoten, sodass möglichst „reine“ Knoten entstehen, d. h. möglichst eindeutig nach Ertrunkenen und Geretteten unterschieden
-* Algorithmus: `rpart`
-
-#### Ergebnisse
-
-* **Geschlecht** ist das wichtigste Kriterium
-  + Klare Mehrheit der Frauen überlebte
-  + Klare Mehrheit der Männer starb
-  + „Kinder zuerst“ bei Männern ok: die meisten Jungs bis 6 Jahre überlebten
-* Frauen: **Passagierklasse** wichtiger als Geschlecht
-]
-
-.pull-right[
-### Simpler R-Code!
-
-
-```r
-library(rpart)
-*tree &lt;- rpart(Survived ~ .,
-              data = titanic,
-              method = "class")
-```
-
-* Modell: rpart; Formel wie bei Regression
-* Auch für metrische abhängige Variablen möglich: `method = "anova"`
-
-
-```r
-library(rattle)
-*fancyRpartPlot(tree)
-```
-
-* Visualisierung: `fancyRpartPlot()`
-* Mehr Einstellmöglichkeiten: Paket **rpart.plot**, Funktion `prp()`
-
-]
-
-
----
-layout: false
-class: agenda
-
-# Agenda
-
-### 1. Erstes Date: R und RStudio
-### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
-### 3. Let's Go International: Daten-Import und -Export
-### 4. Datenaufbereitung und Visualisierung
-### 5. Statistik und Data Mining
-### .blue[*6. Automatisierte Berichte mit R*]
-### 7. Ergänzungen
-
----
 layout: true
 
 # Automatisierte Berichte mit R
@@ -1036,19 +503,509 @@ Shiny lernen:
 &lt;img src="libs/_Images/cover-mastering-shiny.png" width="70%" height="70%" /&gt;
 ]
 
+
 ---
+
 layout: false
-class: agenda
+class: agenda, inverse
 
 # Agenda
 
-### 1. Erstes Date: R und RStudio
-### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
-### 3. Let's Go International: Daten-Import und -Export
-### 4. Datenaufbereitung und Visualisierung
-### 5. Statistik und Data Mining
-### 6. Automatisierte Berichte mit R
-### .blue[*7. Ergänzungen*]
+### 1. Kurzer Einstieg in R und RStudio
+### 2. Automatisierte Berichte mit R: Das Markdown-Format
+### .yellow[*3. Statistik mit R leicht gemacht*]
+### 4. Ergänzungen
+
+
+---
+layout: true
+
+# Statistik mit R leicht gemacht
+
+---
+
+## Lang lebe die Nullhypothese ...
+
+.pull-left[
+![xkcd Nullhyp](libs/_Images/xkcd-892-Null-hyp.png)
+]
+
+.pull-right[
+Quelle: xkcd 892  
+https://xkcd.com/892/
+]
+
+---
+
+## Daten: Das chartmusicdata-Paket
+
+.pull-left[
+#### https://tsort.info/ "The World's Music Charts"
+  + Songs und Alben von 1900 bis 2018
+  + Punktesystem gut geeignet für Einträge bis etwa 2012
+
+#### https://chart2000.com/ "Music Charts 2000 - 2021"
+  + Punktesystem besser für aktuellere Einträge
+
+#### Einmalig installieren; in jeder R-Session bei Bedarf laden
+
+
+```r
+# install.packages("devtools")
+library(devtools)
+install_github("fjodor/chartmusicdata")
+```
+
+
+                        
+ 
+]
+
+.pull-right[
+
+Datensatz | Quelle: tsort.info
+----------|-------
+charts | Alle Songs und Alben von tsort.info von 1900 bis 2018
+topsongs | Top 5000 Songs
+topalbums | Top 3000 Alben
+
+&lt;br&gt;&lt;br&gt;
+
+Datensatz | Quelle: chart2000.com
+----------|-----------------------
+songs2000 | Top 50 Songs jedes Monats von Januar 2000 bis Juni 2021
+albums2000 | Top 50 Alben jedes Monats von Januar 2000 bis Juni 2021
+
+]
+---
+
+## Die topalbums-Daten
+
+
+```r
+head(topalbums, n = 3)
+```
+
+
+| position|artist          |name                                 | year| final_score| raw_usa| raw_eng| raw_eur| raw_row|
+|--------:|:---------------|:------------------------------------|----:|-----------:|-------:|-------:|-------:|-------:|
+|        1|The Beatles     |Sgt Pepper's Lonely Hearts Club Band | 1967|      54.415|  33.740|  13.824|   9.284|   0.553|
+|        2|Michael Jackson |Thriller                             | 1982|      50.782|  29.628|  18.143|  14.952|   4.743|
+|        3|U2              |The Joshua Tree                      | 1987|      38.197|  21.342|  13.411|  17.733|   0.553|
+
+--
+
+.pull-left[
+* position: Platzierung, von 1 bis 3000
+* artist: Künstler / Band
+* name: Album-Titel
+* year: Jahr der Veröffentlichung
+* final_score: Gesamt-Punkte, gewichtet nach Region und Jahr
+]
+
+.pull-right[
+* raw_usa: Rohpunkte USA
+* raw_eng: Rohpunkte in den restlichen englischsprachigen Ländern
+* raw_eur: Rohpunkte in den restlichen (nicht-englischsprachigen) europäischen Ländern
+* raw_row: Rohpunkte im Rest der Welt (ohne Europa, ohne englischsprachige Länder)
+]
+
+
+---
+
+## Erscheinungsjahr vs. Über / Unter 5 Punkten
+
+**Forschungsfrage:** Gibt es Unterschiede im durchschnittlichen Alter (Erscheinungsjahr)  
+.indent[.indent[zwischen Alben, die über / unter 5 Punkten (~ Median) erreichten?]]
+
+--
+
+**Hypothese:** Alben, die über 5 Punkte erreichten,	sind durchschnittlich älter als Alben, die weniger als 5 Punkte erreichten.
+
+--
+
+**Begründung:**	Mehr Zeit für Chartplatzierungen; „Oldies“ waren langlebiger?
+
+--
+
+**Methode:** t-Test für unabhängige Stichproben  
+.indent[.indent[*Statistik – Mittelwerte vergleichen*]]
+
+**Begründung der Testauswahl:**
+* keine Messwiederholung
+* keine paarweise Zuordnung der Gruppenelemente -&gt; unabhängige Stichproben
+
+
+
+---
+
+## t-Test: Ergebnisse *elegant* weiterverarbeiten
+
+### Bericht in Textform (englisch): easystats / report
+
+.pull-left[
+
+
+```r
+library(report)
+my_test &lt;- t.test(year ~ ueber5,
+*  alternative = 'greater',
+   conf.level = .95, var.equal = FALSE,
+   data = topalbums)
+*report(my_test)
+```
+
+
+```
+The Welch Two Sample t-test testing the difference
+of year by ueber5 (mean in group &lt; 5 P = 1991.10,
+mean in group &gt; 5 P = 1989.62) suggests that the
+effect is positive, statistically significant, and
+very small (difference = 1.49, 95% CI [0.61, Inf],
+t(2758.20) = 2.80, p = 0.003; Cohen's d = 0.11,
+95% CI [0.04, Inf])
+```
+
+]
+
+.pull-right[
+
+&lt;img src="libs/_Images/logo-report.png" width="40%" height="40%" /&gt;
+* Kennwerte, die über die Standard-Ausgabe des t-Tests hinausgehen: **Effektstärken**
+* Teil der **easystats**-Paketsammlung
+]
+
+---
+
+## t-Test: Ergebnisse *elegant* weiterverarbeiten
+
+.pull-left[
+### Visualisierung: ggstatsplot
+
+
+```r
+library(ggstatsplot)
+*ggbetweenstats(topalbums,
+  x = ueber5, y = year,
+  title = "Jahr vs. Über / Unter 5 Punkte",
+  caption = "Datenquelle: tsort.info")
+```
+
+* Boxplot
+* Violin-Plot
+* Einzelne Datenpunkte
+* Angereichert mit statistischen Kennzahlen
+
+]
+
+.pull-right[
+&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-17-1.png" width="95%" height="95%" /&gt;
+
+]
+
+---
+
+## Korrelationsanalyse
+
+![xkcd Korr](libs/_Images/xkcd-925-corr.png)
+
+Quelle: http://xkcd.com/925/
+
+---
+
+## Korrelationsanalyse
+
+.pull-left[
+
+* Korrelation zwischen Rohpunkten USA und Rohpunkten Europa
+* Ergebnis: Liste
+
+
+```r
+Korrelation &lt;- cor.test(topalbums$raw_usa,
+                        topalbums$raw_eur)
+str(Korrelation, list.len = 4)
+```
+
+```
+List of 9
+ $ statistic  : Named num -3.71
+  ..- attr(*, "names")= chr "t"
+ $ parameter  : Named int 2998
+  ..- attr(*, "names")= chr "df"
+ $ p.value    : num 0.000214
+ $ estimate   : Named num -0.0675
+  ..- attr(*, "names")= chr "cor"
+  [list output truncated]
+ - attr(*, "class")= chr "htest"
+```
+]
+
+.pull-right[
+### Einfach dank der R-Werkzeugkiste!
+
+* Im R Commander zusammenklicken unter `Statistik - Deskriptive Statistik - Test auf Signifikanz der Korrelation`
+* Standard-Ausgabe: `Korrelation`, bzw. `cor.test(topalbums$raw_usa, topalbums$raw_eur)` direkt ausführen
+]
+
+---
+
+.pull-left[
+## Korrelation grafisch
+
+
+```r
+ggscatterstats(data = topalbums,
+    x = raw_usa, y = raw_eur)
+```
+
+### Simple Syntax - informative Ausgabe!
+
+* Streudiagramm: bivariate Verteilungen
+* Dichte + Histogramm: *"marginal densigram"* - Verteilungen 
+* Anpassungsgerade mit Konfidenzband: Linearer Zusammenhang?
+* Korrelationskoeffizient *Pearson's r*
+* t-Wert, p-Wert, Konfidenzintervall für r, Fallzahl
+* Bayes Factor
+]
+
+.pull-right[
+&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-19-1.png" width="100%" height="100%" /&gt;
+
+]
+
+---
+
+## Regressionsanalyse
+
+.pull-left[
+
+* Nimmt im Gegensatz zur Korrelation eine Wirkungsrichtung an
+* Unterscheidung zwischen **unabhängigen Variablen** *(Prädiktoren, Regressoren)* und **abhängiger Variable** *(Zielgröße, Regressand)*
+
+
+```r
+*reg &lt;- lm(raw_eur ~ raw_usa,
+*         data = topalbums)
+reg
+```
+
+```
+
+Call:
+lm(formula = raw_eur ~ raw_usa, data = topalbums)
+
+Coefficients:
+(Intercept)      raw_usa  
+    4.51192     -0.07867  
+```
+
+]
+
+.pull-right[
+* Im R Commander zusammenklicken unter `Statistik - Modelle anpassen - Lineare Regression`
+* In Base R ist die direkte Ausgabe (`reg`) minimal: sie gibt lediglich die Koeffizienten an
+
+]
+
+---
+
+## Regressionsanalyse: `summary()`
+
+.small[
+
+```r
+*summary(reg)
+```
+
+```
+
+Call:
+lm(formula = raw_eur ~ raw_usa, data = topalbums)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-4.403 -2.923 -1.079  1.761 14.900 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  4.51192    0.11626  38.809  &lt; 2e-16 ***
+raw_usa     -0.07867    0.02122  -3.707 0.000214 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.793 on 2998 degrees of freedom
+Multiple R-squared:  0.004562,	Adjusted R-squared:  0.00423 
+F-statistic: 13.74 on 1 and 2998 DF,  p-value: 0.0002139
+```
+]
+
+---
+
+## Regressionsanalyse: Text-Interpretation mit dem report-Paket
+
+
+```r
+*report::report(reg)
+```
+
+
+```
+We fitted a linear model (estimated using OLS) to predict raw_eur with raw_usa (formula:
+raw_eur ~ raw_usa). The model explains a statistically significant and very weak
+proportion of variance (R2 = 4.56e-03, F(1, 2998) = 13.74, p &lt; .001, adj. R2 = 4.23e-03).
+The model's intercept, corresponding to raw_usa = 0, is at 4.51 (95% CI [4.28, 4.74],
+t(2998) = 38.81, p &lt; .001). Within this model: - The effect of raw usa is statistically
+significant and negative (beta = -0.08, 95% CI [-0.12, -0.04], t(2998) = -3.71, p &lt; .001;
+Std. beta = -0.07, 95% CI [-0.10, -0.03]) Standardized parameters were obtained by fitting
+the model on a standardized version of the dataset. 95% Confidence Intervals (CIs) and p-
+values were computed using the Wald approximation.
+```
+
+---
+
+## Zur Interpretation von p-Werten ...
+
+&lt;img src="libs/_Images/xkcd-1478-p-values.png" width="25%" height="25%" style="display: block; margin: auto;" /&gt;
+
+Quelle: https://xkcd.com/1478/
+
+---
+
+### Normalverteilung: Voraussetzung parametrischer Tests wie t-Test
+
+.pull-left[
+#### Statistisch
+
+
+```r
+shapiro.test(
+  topalbums$final_score
+)
+```
+
+```
+
+	Shapiro-Wilk normality test
+
+data:  topalbums$final_score
+W = 0.6974, p-value &lt; 2.2e-16
+```
+
+#### Grafisch
+
+
+```r
+ggstatsplot::gghistostats(
+  topalbums, final_score,
+  normal.curve = TRUE)
+```
+
+]
+
+.pull-right[
+&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-23-1.png" width="94%" height="94%" /&gt;
+
+]
+
+---
+
+## Data Mining-Beispiel: Titanic
+
+.pull-left[
+## Wurden Frauen und Kinder zuerst gerettet?
+
+* Daten zu 891 Passagieren (Trainingsdaten für maschinelles Lernen)
+* Variablen:
+  + Abhängige Variable (AV): Überlebt ja / nein
+  + Unabhängige Variablen (UV): Alter, Geschlecht, Passagierklasse (1-3)
+* Wie hängen Alter, Geschlecht und Passagierklasse mit den Überlebenschancen zusammen?
+* Ziel: Ein Ergebnis, das auch Nicht-Statistikern leicht erklärt werden kann
+]
+
+.pull-right[
+&lt;img src="libs/_Images/titanic.jpg" width="853" /&gt;
+
+Der Untergang der Titanic  
+Gravur von Willy Stöwer  
+Quelle: Wikimedia Commons
+]
+
+---
+
+.pull-left[
+&lt;img src="libs/_Images/Zen-Entscheidungsbaum.png" width="70%" height="70%" /&gt;
+
+]
+.pull-right[
+### Entscheidungsbaum
+
+* Leicht interpretierbar
+* Nicht nur für Yogis geeignet
+
+Quelle: https://elephantjournal.com
+]
+
+---
+
+
+
+![](2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/rpart-1.png)&lt;!-- --&gt;
+
+---
+
+.pull-left[
+### Interpretation
+
+* Ausgangspunkt: Knoten 1 oben; enthält gesamte Stichprobe
+* Aufteilung in Unterknoten, sodass möglichst „reine“ Knoten entstehen, d. h. möglichst eindeutig nach Ertrunkenen und Geretteten unterschieden
+* Algorithmus: `rpart`
+
+#### Ergebnisse
+
+* **Geschlecht** ist das wichtigste Kriterium
+  + Klare Mehrheit der Frauen überlebte
+  + Klare Mehrheit der Männer starb
+  + „Kinder zuerst“ bei Männern ok: die meisten Jungs bis 6 Jahre überlebten
+* Frauen: **Passagierklasse** wichtiger als Geschlecht
+]
+
+.pull-right[
+### Simpler R-Code!
+
+
+```r
+library(rpart)
+*tree &lt;- rpart(Survived ~ .,
+              data = titanic,
+              method = "class")
+```
+
+* Modell: rpart; Formel wie bei Regression
+* Auch für metrische abhängige Variablen möglich: `method = "anova"`
+
+
+```r
+library(rattle)
+*fancyRpartPlot(tree)
+```
+
+* Visualisierung: `fancyRpartPlot()`
+* Mehr Einstellmöglichkeiten: Paket **rpart.plot**, Funktion `prp()`
+
+]
+
+
+
+---
+class: agenda, inverse
+
+# Agenda
+
+### 1. Kurzer Einstieg in R und RStudio
+### 2. Automatisierte Berichte mit R: Das Markdown-Format
+### 3. Statistik mit R leicht gemacht
+### .yellow[*4. Ergänzungen*]
 
 ---
 

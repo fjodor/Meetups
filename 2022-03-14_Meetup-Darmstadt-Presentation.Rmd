@@ -261,522 +261,6 @@ class: agenda, inverse
 
 
 ---
-
-layout: true
-
-
-
----
-
-## Daten: Das chartmusicdata-Paket
-
-.pull-left[
-#### https://tsort.info/ "The World's Music Charts"
-  + Songs und Alben von 1900 bis 2018
-  + Punktesystem gut geeignet für Einträge bis etwa 2012
-
-#### https://chart2000.com/ "Music Charts 2000 - 2021"
-  + Punktesystem besser für aktuellere Einträge
-
-#### Einmalig installieren; in jeder R-Session bei Bedarf laden
-
-```{r, eval = FALSE, echo = TRUE}
-# install.packages("devtools")
-library(devtools)
-install_github("fjodor/chartmusicdata")
-```
-
-```{r}
-library(chartmusicdata)
-data("topalbums")
-```
-                        
- 
-]
-
-.pull-right[
-
-Datensatz | Quelle: tsort.info
-----------|-------
-charts | Alle Songs und Alben von tsort.info von 1900 bis 2018
-topsongs | Top 5000 Songs
-topalbums | Top 3000 Alben
-
-<br><br>
-
-Datensatz | Quelle: chart2000.com
-----------|-----------------------
-songs2000 | Top 50 Songs jedes Monats von Januar 2000 bis Juni 2021
-albums2000 | Top 50 Alben jedes Monats von Januar 2000 bis Juni 2021
-
-]
----
-
-## Die topalbums-Daten
-
-```{r, echo = TRUE, eval = FALSE}
-head(topalbums, n = 3)
-```
-
-```{r, echo = FALSE, eval = TRUE}
-head(topalbums, n = 3) |> knitr::kable()
-```
-
---
-
-.pull-left[
-* position: Platzierung, von 1 bis 3000
-* artist: Künstler / Band
-* name: Album-Titel
-* year: Jahr der Veröffentlichung
-* final_score: Gesamt-Punkte, gewichtet nach Region und Jahr
-]
-
-.pull-right[
-* raw_usa: Rohpunkte USA
-* raw_eng: Rohpunkte in den restlichen englischsprachigen Ländern
-* raw_eur: Rohpunkte in den restlichen (nicht-englischsprachigen) europäischen Ländern
-* raw_row: Rohpunkte im Rest der Welt (ohne Europa, ohne englischsprachige Länder)
-]
----
-
-layout: false
-class: agenda, inverse
-
-# Agenda
-
-### 1. Kurzer Einstieg in R und RStudio
-### 2. Automatisierte Berichte mit R: Das Markdown-Format
-### .yellow[*3. Statistik mit R leicht gemacht*]
-### 4. Ergänzungen
-
-
----
-layout: true
-
-# Statistik mit R leicht gemacht
-
----
-
-## Lang lebe die Nullhypothese ...
-
-.pull-left[
-![xkcd Nullhyp](libs/_Images/xkcd-892-Null-hyp.png)
-]
-
-.pull-right[
-Quelle: xkcd 892  
-https://xkcd.com/892/
-]
-
----
-
-
----
-
-## Erscheinungsjahr vs. Über / Unter 5 Punkten
-
-**Forschungsfrage:** Gibt es Unterschiede im durchschnittlichen Alter (Erscheinungsjahr)  
-.indent[.indent[zwischen Alben, die über / unter 5 Punkten (~ Median) erreichten?]]
-
---
-
-**Hypothese:** Alben, die über 5 Punkte erreichten,	sind durchschnittlich älter als Alben, die weniger als 5 Punkte erreichten.
-
---
-
-**Begründung:**	Mehr Zeit für Chartplatzierungen; „Oldies“ waren langlebiger?
-
---
-
-**Methode:** t-Test für unabhängige Stichproben  
-.indent[.indent[*Statistik – Mittelwerte vergleichen*]]
-
-**Begründung der Testauswahl:**
-* keine Messwiederholung
-* keine paarweise Zuordnung der Gruppenelemente -> unabhängige Stichproben
-
-```{r ueber-5-punkte}
-topalbums <- topalbums %>% 
-  mutate(ueber5 = ifelse(final_score > 5, "> 5 P", "< 5 P"))
-
-```
-
----
-
-## t-Test: Ergebnisse *elegant* weiterverarbeiten
-
-### Bericht in Textform (englisch): easystats / report
-
-.pull-left[
-
-```{r report, echo = TRUE, eval = FALSE}
-library(report)
-my_test <- t.test(year ~ ueber5,
-   alternative = 'greater', #<<
-   conf.level = .95, var.equal = FALSE,
-   data = topalbums)
-report(my_test) #<<
-```
-
-```{r report-wrap, message = FALSE, warning = FALSE}
-library(report)
-
-my_test <- t.test(year ~ ueber5,
-   alternative = 'greater', #<<
-   conf.level = .95, var.equal = FALSE,
-   data = topalbums)
-
-report(my_test) %>% 
-  stringr::str_wrap(width = 50) %>% 
-  cat()
-```
-
-]
-
-.pull-right[
-
-```{r, out.height = "40%", out.width = "40%"}
-knitr::include_graphics("libs/_Images/logo-report.png")
-```
-* Kennwerte, die über die Standard-Ausgabe des t-Tests hinausgehen: **Effektstärken**
-* Teil der **easystats**-Paketsammlung
-]
-
----
-
-## t-Test: Ergebnisse *elegant* weiterverarbeiten
-
-.pull-left[
-### Visualisierung: ggstatsplot
-
-```{r ggstatsplot, eval = FALSE, echo = TRUE}
-library(ggstatsplot)
-ggbetweenstats(topalbums, #<<
-  x = ueber5, y = year,
-  title = "Jahr vs. Über / Unter 5 Punkte",
-  caption = "Datenquelle: tsort.info")
-
-```
-
-* Boxplot
-* Violin-Plot
-* Einzelne Datenpunkte
-* Angereichert mit statistischen Kennzahlen
-
-]
-
-.pull-right[
-```{r, ref.label = "ggstatsplot", out.width = "95%", out.height = "95%", message = FALSE, }
-```
-
-]
-
----
-
-## Korrelationsanalyse
-
-![xkcd Korr](libs/_Images/xkcd-925-corr.png)
-
-Quelle: http://xkcd.com/925/
-
----
-
-## Korrelationsanalyse
-
-.pull-left[
-
-* Korrelation zwischen Rohpunkten USA und Rohpunkten Europa
-* Ergebnis: Liste
-
-```{r, echo = TRUE}
-
-Korrelation <- cor.test(topalbums$raw_usa,
-                        topalbums$raw_eur)
-str(Korrelation, list.len = 4)
-
-```
-]
-
-.pull-right[
-### Einfach dank der R-Werkzeugkiste!
-
-* Im R Commander zusammenklicken unter `Statistik - Deskriptive Statistik - Test auf Signifikanz der Korrelation`
-* Standard-Ausgabe: `Korrelation`, bzw. `cor.test(topalbums$raw_usa, topalbums$raw_eur)` direkt ausführen
-]
-
----
-
-.pull-left[
-## Korrelation grafisch
-
-```{r ggscatterstats, echo = TRUE, eval = FALSE}
-ggscatterstats(data = topalbums,
-    x = raw_usa, y = raw_eur)
-```
-
-### Simple Syntax - informative Ausgabe!
-
-* Streudiagramm: bivariate Verteilungen
-* Dichte + Histogramm: *"marginal densigram"* - Verteilungen 
-* Anpassungsgerade mit Konfidenzband: Linearer Zusammenhang?
-* Korrelationskoeffizient *Pearson's r*
-* t-Wert, p-Wert, Konfidenzintervall für r, Fallzahl
-* Bayes Factor
-]
-
-.pull-right[
-```{r, ref.label = "ggscatterstats", message = FALSE, warning = FALSE, out.width = "100%", out.height = "100%", dpi = 300}
-```
-
-]
-
----
-
-## Regressionsanalyse
-
-.pull-left[
-
-* Nimmt im Gegensatz zur Korrelation eine Wirkungsrichtung an
-* Unterscheidung zwischen **unabhängigen Variablen** *(Prädiktoren, Regressoren)* und **abhängiger Variable** *(Zielgröße, Regressand)*
-
-```{r reg1, echo = TRUE}
-reg <- lm(raw_eur ~ raw_usa, #<<
-          data = topalbums) #<<
-reg
-```
-
-]
-
-.pull-right[
-* Im R Commander zusammenklicken unter `Statistik - Modelle anpassen - Lineare Regression`
-* In Base R ist die direkte Ausgabe (`reg`) minimal: sie gibt lediglich die Koeffizienten an
-
-]
-
----
-
-## Regressionsanalyse: `summary()`
-
-.small[
-```{r reg2, echo = TRUE}
-summary(reg) #<<
-```
-]
-
----
-
-## Regressionsanalyse: Text-Interpretation mit dem report-Paket
-
-```{r report-reg, echo = TRUE, eval = FALSE}
-report::report(reg) #<<
-```
-
-```{r, message = FALSE}
-report(reg) %>% 
-  stringr::str_wrap(width = 90) %>% 
-  cat()
-```
-
----
-
-## Zur Interpretation von p-Werten ...
-
-```{r, fig.align = "center", out.width = "25%", out.height = "25%"}
-knitr::include_graphics("libs/_Images/xkcd-1478-p-values.png")
-```
-
-Quelle: https://xkcd.com/1478/
-
----
-
----
-
-### Normalverteilung: Voraussetzung parametrischer Tests wie t-Test
-
-.pull-left[
-#### Statistisch
-
-```{r, echo = TRUE}
-shapiro.test(
-  topalbums$final_score
-)
-```
-
-#### Grafisch
-
-```{r gghistostats, echo = TRUE, eval = FALSE}
-ggstatsplot::gghistostats(
-  topalbums, final_score,
-  normal.curve = TRUE)
-```
-
-]
-
-.pull-right[
-```{r, out.width = "94%", out.height = "94%"}
-ggstatsplot::gghistostats(
-  topalbums, final_score,
-  normal.curve = TRUE) +
-  theme_bw(base_size = 18)
-```
-
-]
-
-
----
-layout: false
-class: agenda
-
-# Agenda
-
-### 1. Erstes Date: R und RStudio
-### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
-### 3. Let's Go International: Daten-Import und -Export
-### 4. Datenaufbereitung und Visualisierung
-### .blue[*5. Statistik und <u>Data Mining</u>*]
-### 6. Automatisierte Berichte
-### 7. Ergänzungen
-
----
-layout: true
-
-# Data Mining-Beispiel: Titanic
-
----
-
-.pull-left[
-## Wurden Frauen und Kinder zuerst gerettet?
-
-* Daten zu 891 Passagieren (Trainingsdaten für maschinelles Lernen)
-* Variablen:
-  + Abhängige Variable (AV): Überlebt ja / nein
-  + Unabhängige Variablen (UV): Alter, Geschlecht, Passagierklasse (1-3)
-* Wie hängen Alter, Geschlecht und Passagierklasse mit den Überlebenschancen zusammen?
-* Ziel: Ein Ergebnis, das auch Nicht-Statistikern leicht erklärt werden kann
-]
-
-.pull-right[
-```{r}
-knitr::include_graphics("libs/_Images/titanic.jpg")
-```
-
-Der Untergang der Titanic  
-Gravur von Willy Stöwer  
-Quelle: Wikimedia Commons
-]
-
----
-
-.pull-left[
-```{r, out.width = "70%", out.height = "70%"}
-knitr::include_graphics("libs/_Images/Zen-Entscheidungsbaum.png")
-```
-
-]
-.pull-right[
-### Entscheidungsbaum
-
-* Leicht interpretierbar
-* Nicht nur für Yogis geeignet
-
-Quelle: https://elephantjournal.com
-]
-
----
-
-```{r titanic-dataprep, echo = FALSE}
-
-library(titanic)
-titanic <- titanic_train
-titanic <- titanic %>% 
-    select(Survived, Pclass, Sex, Age) %>% 
-    rename(Alter = Age,
-           Passagierklasse = Pclass,
-           Geschlecht = Sex) %>% 
-    mutate(Survived = as.factor(Survived),
-           Survived = fct_recode(Survived,
-                        Ertrunken = "0",
-                        Gerettet = "1"),
-           Geschlecht = fct_recode(Geschlecht,
-                            weiblich = "female",
-                            männlich = "male"),
-           Passagierklasse = as.factor(Passagierklasse),
-           Passagierklasse = fct_recode(Passagierklasse,
-                                '1. Klasse' = "1",
-                                '2. Klasse' = "2",
-                                '3. Klasse' = "3"))
-```
-
-```{r rpart, fig.width = 11, fig.height = 7, message = FALSE}
-library(rpart)
-tree <- rpart(Survived ~ ., #<<
-              data = titanic,
-              method = "class")
-
-rattle::fancyRpartPlot(tree,
-          palettes = c("Greys", "Greens"),
-          sub = "", tweak = 1.2)
-
-```
-
----
-
-.pull-left[
-### Interpretation
-
-* Ausgangspunkt: Knoten 1 oben; enthält gesamte Stichprobe
-* Aufteilung in Unterknoten, sodass möglichst „reine“ Knoten entstehen, d. h. möglichst eindeutig nach Ertrunkenen und Geretteten unterschieden
-* Algorithmus: `rpart`
-
-#### Ergebnisse
-
-* **Geschlecht** ist das wichtigste Kriterium
-  + Klare Mehrheit der Frauen überlebte
-  + Klare Mehrheit der Männer starb
-  + „Kinder zuerst“ bei Männern ok: die meisten Jungs bis 6 Jahre überlebten
-* Frauen: **Passagierklasse** wichtiger als Geschlecht
-]
-
-.pull-right[
-### Simpler R-Code!
-
-```{r, echo = TRUE, eval = FALSE}
-library(rpart)
-tree <- rpart(Survived ~ ., #<<
-              data = titanic,
-              method = "class")
-```
-
-* Modell: rpart; Formel wie bei Regression
-* Auch für metrische abhängige Variablen möglich: `method = "anova"`
-
-```{r, echo = TRUE, eval = FALSE}
-library(rattle)
-fancyRpartPlot(tree) #<<
-```
-
-* Visualisierung: `fancyRpartPlot()`
-* Mehr Einstellmöglichkeiten: Paket **rpart.plot**, Funktion `prp()`
-
-]
-
-
----
-layout: false
-class: agenda
-
-# Agenda
-
-### 1. Erstes Date: R und RStudio
-### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
-### 3. Let's Go International: Daten-Import und -Export
-### 4. Datenaufbereitung und Visualisierung
-### 5. Statistik und Data Mining
-### .blue[*6. Automatisierte Berichte mit R*]
-### 7. Ergänzungen
-
----
 layout: true
 
 # Automatisierte Berichte mit R
@@ -1076,19 +560,492 @@ knitr::include_graphics("libs/_Images/cover-mastering-shiny.png")
 ```
 ]
 
+
 ---
+
 layout: false
-class: agenda
+class: agenda, inverse
 
 # Agenda
 
-### 1. Erstes Date: R und RStudio
-### 2. Rock- und Popmusik erforschen mit R / Datenstrukturen
-### 3. Let's Go International: Daten-Import und -Export
-### 4. Datenaufbereitung und Visualisierung
-### 5. Statistik und Data Mining
-### 6. Automatisierte Berichte mit R
-### .blue[*7. Ergänzungen*]
+### 1. Kurzer Einstieg in R und RStudio
+### 2. Automatisierte Berichte mit R: Das Markdown-Format
+### .yellow[*3. Statistik mit R leicht gemacht*]
+### 4. Ergänzungen
+
+
+---
+layout: true
+
+# Statistik mit R leicht gemacht
+
+---
+
+## Lang lebe die Nullhypothese ...
+
+.pull-left[
+![xkcd Nullhyp](libs/_Images/xkcd-892-Null-hyp.png)
+]
+
+.pull-right[
+Quelle: xkcd 892  
+https://xkcd.com/892/
+]
+
+---
+
+## Daten: Das chartmusicdata-Paket
+
+.pull-left[
+#### https://tsort.info/ "The World's Music Charts"
+  + Songs und Alben von 1900 bis 2018
+  + Punktesystem gut geeignet für Einträge bis etwa 2012
+
+#### https://chart2000.com/ "Music Charts 2000 - 2021"
+  + Punktesystem besser für aktuellere Einträge
+
+#### Einmalig installieren; in jeder R-Session bei Bedarf laden
+
+```{r, eval = FALSE, echo = TRUE}
+# install.packages("devtools")
+library(devtools)
+install_github("fjodor/chartmusicdata")
+```
+
+```{r}
+library(chartmusicdata)
+data("topalbums")
+```
+                        
+ 
+]
+
+.pull-right[
+
+Datensatz | Quelle: tsort.info
+----------|-------
+charts | Alle Songs und Alben von tsort.info von 1900 bis 2018
+topsongs | Top 5000 Songs
+topalbums | Top 3000 Alben
+
+<br><br>
+
+Datensatz | Quelle: chart2000.com
+----------|-----------------------
+songs2000 | Top 50 Songs jedes Monats von Januar 2000 bis Juni 2021
+albums2000 | Top 50 Alben jedes Monats von Januar 2000 bis Juni 2021
+
+]
+---
+
+## Die topalbums-Daten
+
+```{r, echo = TRUE, eval = FALSE}
+head(topalbums, n = 3)
+```
+
+```{r, echo = FALSE, eval = TRUE}
+head(topalbums, n = 3) |> knitr::kable()
+```
+
+--
+
+.pull-left[
+* position: Platzierung, von 1 bis 3000
+* artist: Künstler / Band
+* name: Album-Titel
+* year: Jahr der Veröffentlichung
+* final_score: Gesamt-Punkte, gewichtet nach Region und Jahr
+]
+
+.pull-right[
+* raw_usa: Rohpunkte USA
+* raw_eng: Rohpunkte in den restlichen englischsprachigen Ländern
+* raw_eur: Rohpunkte in den restlichen (nicht-englischsprachigen) europäischen Ländern
+* raw_row: Rohpunkte im Rest der Welt (ohne Europa, ohne englischsprachige Länder)
+]
+
+
+---
+
+## Erscheinungsjahr vs. Über / Unter 5 Punkten
+
+**Forschungsfrage:** Gibt es Unterschiede im durchschnittlichen Alter (Erscheinungsjahr)  
+.indent[.indent[zwischen Alben, die über / unter 5 Punkten (~ Median) erreichten?]]
+
+--
+
+**Hypothese:** Alben, die über 5 Punkte erreichten,	sind durchschnittlich älter als Alben, die weniger als 5 Punkte erreichten.
+
+--
+
+**Begründung:**	Mehr Zeit für Chartplatzierungen; „Oldies“ waren langlebiger?
+
+--
+
+**Methode:** t-Test für unabhängige Stichproben  
+.indent[.indent[*Statistik – Mittelwerte vergleichen*]]
+
+**Begründung der Testauswahl:**
+* keine Messwiederholung
+* keine paarweise Zuordnung der Gruppenelemente -> unabhängige Stichproben
+
+```{r ueber-5-punkte}
+topalbums <- topalbums %>% 
+  mutate(ueber5 = ifelse(final_score > 5, "> 5 P", "< 5 P"))
+
+```
+
+---
+
+## t-Test: Ergebnisse *elegant* weiterverarbeiten
+
+### Bericht in Textform (englisch): easystats / report
+
+.pull-left[
+
+```{r report, echo = TRUE, eval = FALSE}
+library(report)
+my_test <- t.test(year ~ ueber5,
+   alternative = 'greater', #<<
+   conf.level = .95, var.equal = FALSE,
+   data = topalbums)
+report(my_test) #<<
+```
+
+```{r report-wrap, message = FALSE, warning = FALSE}
+library(report)
+
+my_test <- t.test(year ~ ueber5,
+   alternative = 'greater', #<<
+   conf.level = .95, var.equal = FALSE,
+   data = topalbums)
+
+report(my_test) %>% 
+  stringr::str_wrap(width = 50) %>% 
+  cat()
+```
+
+]
+
+.pull-right[
+
+```{r, out.height = "40%", out.width = "40%"}
+knitr::include_graphics("libs/_Images/logo-report.png")
+```
+* Kennwerte, die über die Standard-Ausgabe des t-Tests hinausgehen: **Effektstärken**
+* Teil der **easystats**-Paketsammlung
+]
+
+---
+
+## t-Test: Ergebnisse *elegant* weiterverarbeiten
+
+.pull-left[
+### Visualisierung: ggstatsplot
+
+```{r ggstatsplot, eval = FALSE, echo = TRUE}
+library(ggstatsplot)
+ggbetweenstats(topalbums, #<<
+  x = ueber5, y = year,
+  title = "Jahr vs. Über / Unter 5 Punkte",
+  caption = "Datenquelle: tsort.info")
+
+```
+
+* Boxplot
+* Violin-Plot
+* Einzelne Datenpunkte
+* Angereichert mit statistischen Kennzahlen
+
+]
+
+.pull-right[
+```{r, ref.label = "ggstatsplot", out.width = "95%", out.height = "95%", message = FALSE, }
+```
+
+]
+
+---
+
+## Korrelationsanalyse
+
+![xkcd Korr](libs/_Images/xkcd-925-corr.png)
+
+Quelle: http://xkcd.com/925/
+
+---
+
+## Korrelationsanalyse
+
+.pull-left[
+
+* Korrelation zwischen Rohpunkten USA und Rohpunkten Europa
+* Ergebnis: Liste
+
+```{r, echo = TRUE}
+
+Korrelation <- cor.test(topalbums$raw_usa,
+                        topalbums$raw_eur)
+str(Korrelation, list.len = 4)
+
+```
+]
+
+.pull-right[
+### Einfach dank der R-Werkzeugkiste!
+
+* Im R Commander zusammenklicken unter `Statistik - Deskriptive Statistik - Test auf Signifikanz der Korrelation`
+* Standard-Ausgabe: `Korrelation`, bzw. `cor.test(topalbums$raw_usa, topalbums$raw_eur)` direkt ausführen
+]
+
+---
+
+.pull-left[
+## Korrelation grafisch
+
+```{r ggscatterstats, echo = TRUE, eval = FALSE}
+ggscatterstats(data = topalbums,
+    x = raw_usa, y = raw_eur)
+```
+
+### Simple Syntax - informative Ausgabe!
+
+* Streudiagramm: bivariate Verteilungen
+* Dichte + Histogramm: *"marginal densigram"* - Verteilungen 
+* Anpassungsgerade mit Konfidenzband: Linearer Zusammenhang?
+* Korrelationskoeffizient *Pearson's r*
+* t-Wert, p-Wert, Konfidenzintervall für r, Fallzahl
+* Bayes Factor
+]
+
+.pull-right[
+```{r, ref.label = "ggscatterstats", message = FALSE, warning = FALSE, out.width = "100%", out.height = "100%", dpi = 300}
+```
+
+]
+
+---
+
+## Regressionsanalyse
+
+.pull-left[
+
+* Nimmt im Gegensatz zur Korrelation eine Wirkungsrichtung an
+* Unterscheidung zwischen **unabhängigen Variablen** *(Prädiktoren, Regressoren)* und **abhängiger Variable** *(Zielgröße, Regressand)*
+
+```{r reg1, echo = TRUE}
+reg <- lm(raw_eur ~ raw_usa, #<<
+          data = topalbums) #<<
+reg
+```
+
+]
+
+.pull-right[
+* Im R Commander zusammenklicken unter `Statistik - Modelle anpassen - Lineare Regression`
+* In Base R ist die direkte Ausgabe (`reg`) minimal: sie gibt lediglich die Koeffizienten an
+
+]
+
+---
+
+## Regressionsanalyse: `summary()`
+
+.small[
+```{r reg2, echo = TRUE}
+summary(reg) #<<
+```
+]
+
+---
+
+## Regressionsanalyse: Text-Interpretation mit dem report-Paket
+
+```{r report-reg, echo = TRUE, eval = FALSE}
+report::report(reg) #<<
+```
+
+```{r, message = FALSE}
+report(reg) %>% 
+  stringr::str_wrap(width = 90) %>% 
+  cat()
+```
+
+---
+
+## Zur Interpretation von p-Werten ...
+
+```{r, fig.align = "center", out.width = "25%", out.height = "25%"}
+knitr::include_graphics("libs/_Images/xkcd-1478-p-values.png")
+```
+
+Quelle: https://xkcd.com/1478/
+
+---
+
+### Normalverteilung: Voraussetzung parametrischer Tests wie t-Test
+
+.pull-left[
+#### Statistisch
+
+```{r, echo = TRUE}
+shapiro.test(
+  topalbums$final_score
+)
+```
+
+#### Grafisch
+
+```{r gghistostats, echo = TRUE, eval = FALSE}
+ggstatsplot::gghistostats(
+  topalbums, final_score,
+  normal.curve = TRUE)
+```
+
+]
+
+.pull-right[
+```{r, out.width = "94%", out.height = "94%"}
+ggstatsplot::gghistostats(
+  topalbums, final_score,
+  normal.curve = TRUE) +
+  theme_bw(base_size = 18)
+```
+
+]
+
+---
+
+## Data Mining-Beispiel: Titanic
+
+.pull-left[
+## Wurden Frauen und Kinder zuerst gerettet?
+
+* Daten zu 891 Passagieren (Trainingsdaten für maschinelles Lernen)
+* Variablen:
+  + Abhängige Variable (AV): Überlebt ja / nein
+  + Unabhängige Variablen (UV): Alter, Geschlecht, Passagierklasse (1-3)
+* Wie hängen Alter, Geschlecht und Passagierklasse mit den Überlebenschancen zusammen?
+* Ziel: Ein Ergebnis, das auch Nicht-Statistikern leicht erklärt werden kann
+]
+
+.pull-right[
+```{r}
+knitr::include_graphics("libs/_Images/titanic.jpg")
+```
+
+Der Untergang der Titanic  
+Gravur von Willy Stöwer  
+Quelle: Wikimedia Commons
+]
+
+---
+
+.pull-left[
+```{r, out.width = "70%", out.height = "70%"}
+knitr::include_graphics("libs/_Images/Zen-Entscheidungsbaum.png")
+```
+
+]
+.pull-right[
+### Entscheidungsbaum
+
+* Leicht interpretierbar
+* Nicht nur für Yogis geeignet
+
+Quelle: https://elephantjournal.com
+]
+
+---
+
+```{r titanic-dataprep, echo = FALSE}
+
+library(titanic)
+titanic <- titanic_train
+titanic <- titanic %>% 
+    select(Survived, Pclass, Sex, Age) %>% 
+    rename(Alter = Age,
+           Passagierklasse = Pclass,
+           Geschlecht = Sex) %>% 
+    mutate(Survived = as.factor(Survived),
+           Survived = fct_recode(Survived,
+                        Ertrunken = "0",
+                        Gerettet = "1"),
+           Geschlecht = fct_recode(Geschlecht,
+                            weiblich = "female",
+                            männlich = "male"),
+           Passagierklasse = as.factor(Passagierklasse),
+           Passagierklasse = fct_recode(Passagierklasse,
+                                '1. Klasse' = "1",
+                                '2. Klasse' = "2",
+                                '3. Klasse' = "3"))
+```
+
+```{r rpart, fig.width = 11, fig.height = 7, message = FALSE}
+library(rpart)
+tree <- rpart(Survived ~ ., #<<
+              data = titanic,
+              method = "class")
+
+rattle::fancyRpartPlot(tree,
+          palettes = c("Greys", "Greens"),
+          sub = "", tweak = 1.2)
+
+```
+
+---
+
+.pull-left[
+### Interpretation
+
+* Ausgangspunkt: Knoten 1 oben; enthält gesamte Stichprobe
+* Aufteilung in Unterknoten, sodass möglichst „reine“ Knoten entstehen, d. h. möglichst eindeutig nach Ertrunkenen und Geretteten unterschieden
+* Algorithmus: `rpart`
+
+#### Ergebnisse
+
+* **Geschlecht** ist das wichtigste Kriterium
+  + Klare Mehrheit der Frauen überlebte
+  + Klare Mehrheit der Männer starb
+  + „Kinder zuerst“ bei Männern ok: die meisten Jungs bis 6 Jahre überlebten
+* Frauen: **Passagierklasse** wichtiger als Geschlecht
+]
+
+.pull-right[
+### Simpler R-Code!
+
+```{r, echo = TRUE, eval = FALSE}
+library(rpart)
+tree <- rpart(Survived ~ ., #<<
+              data = titanic,
+              method = "class")
+```
+
+* Modell: rpart; Formel wie bei Regression
+* Auch für metrische abhängige Variablen möglich: `method = "anova"`
+
+```{r, echo = TRUE, eval = FALSE}
+library(rattle)
+fancyRpartPlot(tree) #<<
+```
+
+* Visualisierung: `fancyRpartPlot()`
+* Mehr Einstellmöglichkeiten: Paket **rpart.plot**, Funktion `prp()`
+
+]
+
+
+
+---
+class: agenda, inverse
+
+# Agenda
+
+### 1. Kurzer Einstieg in R und RStudio
+### 2. Automatisierte Berichte mit R: Das Markdown-Format
+### 3. Statistik mit R leicht gemacht
+### .yellow[*4. Ergänzungen*]
 
 ---
 
