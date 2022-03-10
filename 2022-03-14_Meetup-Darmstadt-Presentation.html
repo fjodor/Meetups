@@ -218,7 +218,7 @@ layout: false
 
 # Erstes Date: R und RStudio - Projekte
 
-&lt;img src="libs/_Images/RStudio-Projekt-anlegen.png" width="501" style="display: block; margin: auto;" /&gt;
+&lt;img src="libs/_Images/RStudio-Projekt-anlegen.png" width="80%" height="80%" style="display: block; margin: auto;" /&gt;
 
 ** Projektspezifische Arbeitsumgebung mit Skripten, Daten, Befehlsgeschichte**
 
@@ -717,35 +717,34 @@ Quelle: http://xkcd.com/925/
 
 .pull-left[
 
-* Korrelation zwischen Rohpunkten USA und Rohpunkten Europa
-* Ergebnis: Liste
+### Korrelation zwischen Rohpunkten USA und Rohpunkten Europa
 
 
 ```r
-Korrelation &lt;- cor.test(topalbums$raw_usa,
-                        topalbums$raw_eur)
-str(Korrelation, list.len = 4)
-```
-
-```
-List of 9
- $ statistic  : Named num -3.71
-  ..- attr(*, "names")= chr "t"
- $ parameter  : Named int 2998
-  ..- attr(*, "names")= chr "df"
- $ p.value    : num 0.000214
- $ estimate   : Named num -0.0675
-  ..- attr(*, "names")= chr "cor"
-  [list output truncated]
- - attr(*, "class")= chr "htest"
+*Korrelation &lt;- cor.test(topalbums$raw_usa,
+*                       topalbums$raw_eur)
 ```
 ]
 
 .pull-right[
-### Einfach dank der R-Werkzeugkiste!
 
-* Im R Commander zusammenklicken unter `Statistik - Deskriptive Statistik - Test auf Signifikanz der Korrelation`
-* Standard-Ausgabe: `Korrelation`, bzw. `cor.test(topalbums$raw_usa, topalbums$raw_eur)` direkt ausführen
+### Text-Interpretation
+
+
+```r
+*report(Korrelation)
+```
+
+
+```
+The Pearson's product-moment correlation
+between topalbums$raw_usa and
+topalbums$raw_eur is negative, statistically
+significant, and very small (r = -0.07, 95%
+CI [-0.10, -0.03], t(2998) = -3.71, p &lt; .001)
+```
+
+
 ]
 
 ---
@@ -755,8 +754,8 @@ List of 9
 
 
 ```r
-ggscatterstats(data = topalbums,
-    x = raw_usa, y = raw_eur)
+*ggscatterstats(data = topalbums,
+*   x = raw_usa, y = raw_eur)
 ```
 
 ### Simple Syntax - informative Ausgabe!
@@ -770,7 +769,7 @@ ggscatterstats(data = topalbums,
 ]
 
 .pull-right[
-&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-19-1.png" width="100%" height="100%" /&gt;
+&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-21-1.png" width="100%" height="100%" /&gt;
 
 ]
 
@@ -904,7 +903,7 @@ ggstatsplot::gghistostats(
 ]
 
 .pull-right[
-&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-23-1.png" width="94%" height="94%" /&gt;
+&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-25-1.png" width="94%" height="94%" /&gt;
 
 ]
 
@@ -1014,7 +1013,7 @@ layout: true
 
 ---
 
-## Einführung in den R Commander
+## R Commander: Grafische Oberfläche für Statistik
 
 .left-column[
 .black[* GUI = *graphical user interface* für R
@@ -1114,7 +1113,7 @@ NOTE: n is number in *each* group
 ]
 
 .pull-right[
-![](2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-29-1.gif)&lt;!-- --&gt;
+![](2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-31-1.gif)&lt;!-- --&gt;
 
 ]
 

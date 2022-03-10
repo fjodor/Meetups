@@ -242,7 +242,7 @@ layout: false
 
 # Erstes Date: R und RStudio - Projekte
 
-```{r, fig.align = "center"}
+```{r, fig.align = "center", out.width = "80%", out.height = "80%"}
 include_graphics("libs/_Images/RStudio-Projekt-anlegen.png")
 ```
 
@@ -780,23 +780,31 @@ Quelle: http://xkcd.com/925/
 
 .pull-left[
 
-* Korrelation zwischen Rohpunkten USA und Rohpunkten Europa
-* Ergebnis: Liste
+### Korrelation zwischen Rohpunkten USA und Rohpunkten Europa
 
 ```{r, echo = TRUE}
 
-Korrelation <- cor.test(topalbums$raw_usa,
-                        topalbums$raw_eur)
-str(Korrelation, list.len = 4)
+Korrelation <- cor.test(topalbums$raw_usa, #<<
+                        topalbums$raw_eur) #<<
 
 ```
 ]
 
 .pull-right[
-### Einfach dank der R-Werkzeugkiste!
 
-* Im R Commander zusammenklicken unter `Statistik - Deskriptive Statistik - Test auf Signifikanz der Korrelation`
-* Standard-Ausgabe: `Korrelation`, bzw. `cor.test(topalbums$raw_usa, topalbums$raw_eur)` direkt ausführen
+### Text-Interpretation
+
+```{r, echo = TRUE, eval = FALSE}
+report(Korrelation) #<<
+```
+
+```{r}
+report(Korrelation) %>% 
+  stringr::str_wrap(width = 45) %>% 
+  cat()
+```
+
+
 ]
 
 ---
@@ -805,8 +813,8 @@ str(Korrelation, list.len = 4)
 ## Korrelation grafisch
 
 ```{r ggscatterstats, echo = TRUE, eval = FALSE}
-ggscatterstats(data = topalbums,
-    x = raw_usa, y = raw_eur)
+ggscatterstats(data = topalbums, #<<
+    x = raw_usa, y = raw_eur) #<<
 ```
 
 ### Simple Syntax - informative Ausgabe!
@@ -1054,7 +1062,7 @@ layout: true
 
 ---
 
-## Einführung in den R Commander
+## R Commander: Grafische Oberfläche für Statistik
 
 .left-column[
 .black[* GUI = *graphical user interface* für R
