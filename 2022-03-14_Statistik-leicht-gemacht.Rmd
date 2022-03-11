@@ -23,6 +23,7 @@ library(gt)
 library(gtsummary)
 
 library(chartmusicdata)
+data(topsongs)
 data(topalbums)
 
 # Spalte "raw_row" entfernen für übersichtlichere Darstellungen
@@ -60,16 +61,19 @@ DT::datatable(topalbums)
 
 # Gruppenvergleiche
 
-## t-Test
+## t-Test: Standard-Ausgabe
+
+Rs Standard-Ausgabe ist nicht direkt für Publikationen verwendbar ...
 
 ```{r}
-topalbums <- topalbums %>% 
-  mutate(ueber5 = ifelse(final_score > 5, "> 5 P", "< 5 P"))
 
-my_test <- t.test(year ~ ueber5,
-   alternative = 'greater',
+my_bands <- topalbums %>% 
+  filter(artist %in% c("Bob Dylan", "The Beatles"))
+
+my_test <- t.test(final_score ~ artist,
+   alternative = 'two.sided',
    conf.level = .95, var.equal = FALSE,
-   data = topalbums)
+   data = my_bands)
 
 my_test
 
@@ -77,10 +81,13 @@ my_test
 
 ### t-Test: Text-Interpretation mit *report*
 
+Ergebnisse wie oben textlich fundiert und publikationsfähig zu interpretieren, ist nicht für jedeN der schönste Teil der Datenanalyse. Praktisch, wenn es einfach geht:
+
 ```{r, warning = FALSE}
 # R-Paket: report
 
 report(my_test)
+
 ```
 
 
@@ -89,22 +96,30 @@ report(my_test)
 ```{r}
 # R-Paket: ggstatsplot
 
-ggbetweenstats(topalbums,
-  x = ueber5, y = year,
-  title = "Jahr vs. Über / Unter 5 Punkte",
+ggbetweenstats(my_bands,
+  x = artist, y = final_score,
+  title = "Gesamtpunkte im Vergleich",
   caption = "Datenquelle: tsort.info")
 ```
 
 
-### Gruppenvergleich: Tabellarisch mit *gtsummary*
+## Gruppenvergleich: Tabellarisch mit *gtsummary*
 
 *add_p()* wählt automatisch einen Test aus; hier: Wilcoxon Rank-Sum Test.
 
 ```{r}
 
-topalbums %>% 
-  select(year, ueber5) %>% 
-  tbl_summary(by = ueber5) %>% 
+my_bands %>% 
+  tbl_summary(by = artist) %>% 
+  add_p()
+
+
+# Alternative: Hier direkt die Bands ändern
+
+topalbums %>%
+  select(final_score, artist) %>%
+  filter(artist %in% c("Madonna", "Bruce Springsteen")) %>%
+  tbl_summary(by = artist) %>%
   add_p()
 
 ```
@@ -112,6 +127,7 @@ topalbums %>%
 Stattdessen t-Test vorgeben, siehe *?add_p()*:
 
 ```{r}
+
 topalbums %>% 
   select(year, ueber5) %>% 
   tbl_summary(by = ueber5) %>% 
@@ -121,24 +137,80 @@ topalbums %>%
     # assume equal variance in the t-test
     test.args = all_tests("t.test") ~ list(var.equal = TRUE)
 )
+
 ```
 
-Zum Üben: Stattdessen Bands / Künstler vergleichen.
 
-Vorschläge: Andere Bands auswählen; wer mag, kann, analog zu oben, Test-Einstellungen variieren (t-Test, gleiche Varianzen annehmen ja oder nein).
+## Gruppenvergleich: Vorschläge für andere Tests
+
+Für Fortgeschrittene zum Üben: Andere Fragestellungen testen.
+
+Vorschlag: Unterscheiden sich Alben, die über 5 Punkte erreicht haben, von Alben, die max. 5 Punkte erreicht haben, im durchschnittlichen Alter?
+Vermutung / Hypothese: Erfolgreichere Alben sind durchschnittlich älter.
+
+Alternative Idee: Unterscheiden sich Alben, die bis zu dem einschneidenden Jahr 1990 veröffentlicht wurden, in der durchschnittlichen Gesamtpunktzahl von Alben, die nach 1990 veröffentlicht wurden?
+
+Oder andere Bands auswählen.
+
+Oder mit anderen Daten arbeiten: ***topsongs*** bzw. für aktuellere Musik ***albums2000, songs2000***.
+
+Wer mag, kann, analog zu oben, Test-Einstellungen variieren (t-Test, gleiche Varianzen annehmen ja oder nein).
 
 ```{r}
-# topalbums %>% 
-#   select(final_score, artist) %>% 
-#   filter(artist %in% c("Madonna", "Bruce Springsteen")) %>% 
-#   tbl_summary(by = artist) %>% 
-#   add_p()
+
+# Unterscheiden sich Alben, die über 5 Punkte erreicht haben, von Alben, die max. 5 Punkte erreicht haben, im durchschnittlichen Alter?
+# Vermutung / Hypothese: Erfolgreichere Alben sind durchschnittlich älter.
+
+topalbums <- topalbums %>% 
+  mutate(ueber5 = ifelse(final_score > 5, "> 5 P", "< 5 P"))
+
+# Variable in erster Zeile einfügen
+# my_test <- t.test(year ~ xxx,
+#    alternative = 'greater',
+#    conf.level = .95, var.equal = FALSE,
+#    data = topalbums)
+# 
+# my_test
+
+# Text-Interpretation: report
+
+
+# Grafisch: ggstatsplot
+
+
+# Tabellarisch: gtsummary
+
+
 ```
+
+
+
+# Korrelation
+
+## Standard-Ausgabe
+
+
+## Text-Interpretation
+
+## Grafisch
+
+
+# Regression
+
+## Standard-Ausgabe
+
+## Text-Interpretation
+
+
+# Ergänzungen
+
+## Interaktive Grafiken
+
+
+## Animationen
 
 
 # Ergänzungen - überarbeiten und entfernen!
-
-
 
 # Interaktive Grafiken
 
