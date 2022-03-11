@@ -2,6 +2,7 @@
 
 library(tidyverse)                        # Paket-Sammlung mit intuitiver Syntax zur Datenbearbeitung
 library(ggstatsplot)                      # Diagramme mit statistischen Zusatz-Informationen
+library(ggside)                           # Ergänzung zu ggstatsplot
 library(DT)                               # Interaktive Tabellen in Markdown
 library(plotly)                           # Interaktive Diagramme
 library(gganimate)                        # Animationen
@@ -9,11 +10,11 @@ library(gt)                               # flexible Tabellen
 library(gtsummary)                        # Statistische Tests, tabellarisch
 library(texreg)                           # Regressionstabellen darstellen
 library(knitr)                            # Für Markdown
+library(gapminder)                        # Daten für Animation
 # library(ggthemes)                         # Zusätzliche Diagramm-Stile, z. B. Wall Street Journal
 
 # Paket-Sammlung zu einfachen Bearbeitung statistischer Analysen
 install.packages("easystats", repos = "https://easystats.r-universe.dev")
-
 # Daten: Charterfolg von Songs und Alben
 
 library(devtools)
