@@ -1,6 +1,27 @@
 # R-Pakete
 
-library(tidyverse)
-library(ggstatsplot)
+library(tidyverse)                        # Paket-Sammlung mit intuitiver Syntax zur Datenbearbeitung
+library(ggstatsplot)                      # Diagramme mit statistischen Zusatz-Informationen
+library(DT)                               # Interaktive Tabellen in Markdown
+library(plotly)                           # Interaktive Diagramme
 
+# Paket-Sammlung zu einfachen Bearbeitung statistischer Analysen
 install.packages("easystats", repos = "https://easystats.r-universe.dev")
+
+# Daten: Charterfolg von Songs und Alben
+
+library(devtools)
+install_github("fjodor/chartmusicdata")
+
+# Wer den R Commander ausprobieren möchte ...
+# Rauten löschen, um Code zu aktivieren
+# library(Rcmdr)                            # Grafische Oberfläche für statistische Tests
+# library(sem)                              # Wird von R Commander benötigt
+# library(rgl)                              # Wird von R Commander benötigt
+# library(multcomp)                         # Wird von R Commander benötigt
+# library(lmtest)                           # Wird von R Commander benötigt
+# library(aplpack)                          # Wird von R Commander benötigt
+# library(leaps)                            # Wird von R Commander benötigt
+
+# Wer esquisse ausprobieren möchte, die grafische Oberfläche für ggplot2 (Grafiken mit R)
+# library(esquisse)
