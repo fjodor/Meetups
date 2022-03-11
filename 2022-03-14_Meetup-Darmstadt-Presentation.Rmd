@@ -1110,16 +1110,13 @@ R-Pakete:
 library(compute.es)
 library(pwr)
 
-topalbums$nach1990 <- topalbums$year > 1990
 ttest <- t.test(topalbums$final_score ~
-                  topalbums$nach1990)
-Effekt <- tes(ttest$statistic, 1419, 1581,
+                  topalbums$ueber5)
+Effekt <- tes(ttest$statistic, 1300, 1700,
               verbose = FALSE)
 pwr.t.test(n = NULL, 
-           d = Effekt$d, 
-           sig.level = 0.05, 
-           power = 0.8, 
-           type = "two.sample",
+           d = Effekt$d, sig.level = 0.05, 
+           power = 0.8, type = "two.sample",
            alternative = "two.sided")
 ```
 ]

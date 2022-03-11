@@ -8,21 +8,23 @@ output:
   html_document:
     toc: yes
     toc_float: yes
-    code_folding: hide
+    code_folding: show
     code_download: yes
 ---
 
 ```{r setup, include = FALSE}
 
-library(tidyverse)
-library(DT)
-library(plotly)
-library(report)
+library(tidyverse)                        # Paket-Sammlung mit intuitiver Syntax zur Datenbearbeitung
+library(DT)                               # Interaktive Tabellen in Markdown
+library(report)                           # Text-Interpretation statistischer Modelle
+library(ggstatsplot)                      # Diagramme mit statistischen Zusatz-Informationen
+library(gt)                               # flexible Tabellen
+library(gtsummary)                        # Statistische Tests, tabellarisch
+library(plotly)                           # Interaktive Grafiken
+library(texreg)                           # Regressionstabellen darstellen
+# library(ggthemes)                         # # Zusätzliche Diagramm-Stile, z. B. Wall Street Journal (theme_wsj)
 
-library(gt)
-library(gtsummary)
-
-library(chartmusicdata)
+library(chartmusicdata)                   # Daten über Charterfolg von Alben und Songs
 data(topsongs)
 data(topalbums)
 
@@ -31,8 +33,9 @@ data(topalbums)
 topalbums <- topalbums %>% 
   select(-raw_row)
 
-knitr::opts_chunk$set(echo = TRUE)
-# knitr::opts_chunk$set(comment = NA)
+knitr::opts_chunk$set(echo = TRUE)        # R-Codeblöcke anzeigen, wenn nicht anders angegeben
+knitr::opts_chunk$set(cache = TRUE)       # Ergebnisse der Codeblöcke cachen für schnellere Ausführung
+knitr::opts_chunk$set(comment = NA)       # Ergebnisse nicht mit ## einbetten, sondern direkt - sieht besser aus
 
 ```
 
@@ -65,7 +68,7 @@ DT::datatable(topalbums)
 
 Rs Standard-Ausgabe ist nicht direkt für Publikationen verwendbar ...
 
-```{r}
+```{r ttest}
 
 my_bands <- topalbums %>% 
   filter(artist %in% c("Bob Dylan", "The Beatles"))
@@ -79,11 +82,12 @@ my_test
 
 ```
 
+
 ### t-Test: Text-Interpretation mit *report*
 
 Ergebnisse wie oben textlich fundiert und publikationsfähig zu interpretieren, ist nicht für jedeN der schönste Teil der Datenanalyse. Praktisch, wenn es einfach geht:
 
-```{r, warning = FALSE}
+```{r ttest-report, warning = FALSE}
 # R-Paket: report
 
 report(my_test)
@@ -93,7 +97,7 @@ report(my_test)
 
 ### t-Test: Grafische Darstellung mit *ggstatsplot*
 
-```{r}
+```{r ttest-ggstatsplot}
 # R-Paket: ggstatsplot
 
 ggbetweenstats(my_bands,
@@ -102,14 +106,20 @@ ggbetweenstats(my_bands,
   caption = "Datenquelle: tsort.info")
 ```
 
+* Boxplot
+* Violin-Plot
+* Einzelne Datenpunkte
+* Angereichert mit statistischen Kennzahlen
+
 
 ## Gruppenvergleich: Tabellarisch mit *gtsummary*
 
 *add_p()* wählt automatisch einen Test aus; hier: Wilcoxon Rank-Sum Test.
 
-```{r}
+```{r gruppenvergleich-gtsummary}
 
 my_bands %>% 
+  select(artist, final_score) %>% 
   tbl_summary(by = artist) %>% 
   add_p()
 
@@ -117,20 +127,22 @@ my_bands %>%
 # Alternative: Hier direkt die Bands ändern
 
 topalbums %>%
-  select(final_score, artist) %>%
+  select(artist, final_score) %>% 
   filter(artist %in% c("Madonna", "Bruce Springsteen")) %>%
   tbl_summary(by = artist) %>%
   add_p()
 
 ```
 
+  
 Stattdessen t-Test vorgeben, siehe *?add_p()*:
 
-```{r}
+```{r ttest-gtsummary}
 
 topalbums %>% 
-  select(year, ueber5) %>% 
-  tbl_summary(by = ueber5) %>% 
+  filter(artist %in% c("Madonna", "Bruce Springsteen")) %>%
+  select(artist, final_score) %>% 
+  tbl_summary(by = artist) %>% 
   add_p(
     # perform t-test for all variables
     test = everything() ~ "t.test",
@@ -156,7 +168,7 @@ Oder mit anderen Daten arbeiten: ***topsongs*** bzw. für aktuellere Musik ***al
 
 Wer mag, kann, analog zu oben, Test-Einstellungen variieren (t-Test, gleiche Varianzen annehmen ja oder nein).
 
-```{r}
+```{r ttest-alternativen}
 
 # Unterscheiden sich Alben, die über 5 Punkte erreicht haben, von Alben, die max. 5 Punkte erreicht haben, im durchschnittlichen Alter?
 # Vermutung / Hypothese: Erfolgreichere Alben sind durchschnittlich älter.
@@ -189,65 +201,191 @@ topalbums <- topalbums %>%
 
 ## Standard-Ausgabe
 
+```{r korr-standard}
+
+Korrelation <- cor.test(topalbums$raw_usa,
+                        topalbums$raw_eur)
+
+Korrelation
+```
+
 
 ## Text-Interpretation
 
+```{r korr-report}
+report(Korrelation)
+```
+
+
 ## Grafisch
+
+```{r korr-ggstatsplot, message = FALSE, warning = FALSE}
+
+ggscatterstats(data = topalbums,
+    x = raw_usa, y = raw_eur)
+
+```
+
+**Simple Syntax - informative Ausgabe!**
+
+* Streudiagramm: bivariate Verteilungen
+* Dichte + Histogramm: "marginal densigram" - Verteilungen
+* Anpassungsgerade mit Konfidenzband: Linearer Zusammenhang?
+* Korrelationskoeffizient Pearson's r
+* t-Wert, p-Wert, Konfidenzintervall für r, Fallzahl
+* Bayes Factor
+
+Zum Üben: Bayes-Faktor verbergen
+
+Tipp: Parameter *bf.message*; Voreinstellung: TRUE
+
+```{r korr-ggstatsplot-aufgabe}
+
+# ggscatterstats(data = topalbums,
+#     x = raw_usa, y = raw_eur,
+#     fb.message = xxx)
+
+```
 
 
 # Regression
 
+* Nimmt im Gegensatz zur Korrelation eine Wirkungsrichtung an
+* Unterscheidung zwischen unabhängigen Variablen (Prädiktoren, Regressoren) und abhängiger Variable (Zielgröße, Regressand)
+
 ## Standard-Ausgabe
 
-## Text-Interpretation
+```{r reg-standard}
+
+reg <- lm(raw_eur ~ raw_usa,
+          data = topalbums)
+
+reg
+```
+
+Hier ist das *summary* so programmiert, dass es eine ausführlichere Ausgabe enthält als das Regressionsobjekt selbst.
+
+```{r reg-summary}
+summary(reg)
+```
+
+
+## Text-Interpretation: report
+
+```{r reg-report}
+# Zum Selbst-Ausfüllen ...
+
+```
+
+Grafische Darstellung siehe Korrelation.
+
+
+# Test auf Normalverteilung
+
+Voraussetzung vieler parametrischer Verfahren wie z. B. t-Test.
+
+## Statistisch
+
+```{r nvtest-shapiro}
+shapiro.test(topalbums$final_score)
+```
+
+Anregung zum Üben: Andere Variable auswählen, z. B. *year* oder andere Punktzahl wie *raw_usa*, oder anderen Datensatz verwenden (z. B. *songs2000* mit *indicativerevenue*)
+
+
+## Grafisch: ggstatsplot
+
+```{r nvtest-ggstatsplot}
+
+ggstatsplot::gghistostats(
+  topalbums, final_score,
+  normal.curve = TRUE)
+
+```
+
+Anregungen zum Üben:
+
+* Andere Effektgröße auswählen. Voreinstellung: Hedge's g ("g"); Alternative: Cohen's d ("d")
+
+```{r nvtest-ggstatsplot-aufgabe}
+
+# ggstatsplot::gghistostats(
+#   topalbums, final_score,
+#   normal.curve = TRUE,
+#   effsize.type = "xxx")
+
+```
 
 
 # Ergänzungen
 
 ## Interaktive Grafiken
 
+Ein "normales" statisches Diagramm ...
 
-## Animationen
+Anstatt den ggplot-Befehl direkt anzuwenden, kann man das Diagramm einem Objekt zuweisen: p für plot.
 
+Dieses können wir dann später weiterverwenden.
 
-# Ergänzungen - überarbeiten und entfernen!
+```{r ggplot-statisch}
 
-# Interaktive Grafiken
-
-## Streudiagramm
-
-```{r Interaktiv}
-
-# Dynamisch: Mouse-Over. Nur in HTML! Benötigt Javascript.
-# Zuerst ggplot2 ...
-
-Top6_plot <- ggplot(Top6, aes(x = year, y = final_score, label = name, col = artist)) +
+p <- topalbums %>% 
+  filter(artist %in% c("Bob Dylan", "The Beatles", "The Rolling Stones", "Bruce Springsteen", "Madonna")) %>% 
+  ggplot(aes(x = year, y = final_score, label = name, col = artist)) +
   labs(title = "Alben & Punktzahlen",
-       subtitle = "Top 6 Bands mit den höchsten Gesamtpunkten",
+       subtitle = "Ausgewählte Bands",
        x = "Jahr", y = "Punktzahl") +
   scale_color_discrete(name = "Künstler / Band") +
   geom_point()
 
-# ... dann plotly
-ggplotly(Top6_plot)
+p
+# Kurz für: print(p)
 
 ```
 
-## Diamonds
+Was müssen wir tun, um dieses Diagramm interaktiv zu machen?
 
-```{r diamonds, message = FALSE}
-library(plotly)
-p <- ggplot(data = diamonds, aes(x = cut, fill = clarity)) +
-            geom_bar(position = "dodge")
-ggplotly(p)
+```{r plotly}
+plotly::ggplotly(p)
+```
+
+Anregung zum Üben: Andere Bands auswählen; wer mag, kann einen anderen Datensatz verwenden (z. B. songs2000 oder albums2000).
+
+
+## Animationen mit gganimate
+
+Code von Thomas L. Pedersen, siehe Dokumentation zu gganimate.
+
+```{r animation}
+
+library(gapminder)
+library(ggplot2)
+library(gganimate)
+
+ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+  geom_point(alpha = 0.7) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  theme_bw() +
+  theme(legend.position = 'none') +
+  labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
+  transition_time(year)
+
 ```
 
 
-## texreg::htmlreg
+## Regressionstabellen mit texreg::htmlreg
 
 Ein Modell:
 
 ```{r Regression_Stones_texreg, results = 'asis'}
+
+Stones_lm <- topalbums %>% 
+  filter(artist == "The Rolling Stones") %>% 
+  lm(raw_eur ~ raw_usa, data = .)
+
 htmlreg(Stones_lm, doctype = FALSE)
 htmlreg(Stones_lm, single.row = TRUE, doctype = FALSE)
 ```
@@ -255,9 +393,9 @@ htmlreg(Stones_lm, single.row = TRUE, doctype = FALSE)
 Vergleich von zwei Modellen:
 
 ```{r Regression_comparison_texreg, results = 'asis'}
-Beatles <- Top6 %>%
-  filter(artist == "The Beatles")
-Beatles_lm <- lm(raw_eur ~ raw_usa, data = Beatles)
+Beatles_lm <- topalbums %>%
+  filter(artist == "The Beatles") %>% 
+  lm(raw_eur ~ raw_usa, data = .)
 
 htmlreg(list(Stones_lm, Beatles_lm),
         custom.model.names = c("Stones", "Beatles"),
@@ -265,15 +403,13 @@ htmlreg(list(Stones_lm, Beatles_lm),
 ```
 
 
-# Statistische Ergebnisse berichten: gt und gtsummary
+## Das gt-Paket für flexibel gestaltbare Tabellen
 
-## gt
-
-Das **gt-Paket** ermöglicht sehr flexibel gestaltbare Tabellen, z. B. so:
+Das **gt-Paket** ermöglicht sehr flexibel gestaltbare Tabellen mit relativ intuitiver Syntax.
 
 ```{r gt1}
 
-Top6 %>% 
+topalbums %>% 
   head() %>% 
   gt()
 
@@ -285,13 +421,13 @@ Dazu Tabellenüberschrift und Unter-Überschrift; Zellen mit raw_usa > 24 hervor
 
 ```{r gt2}
 
-Top6 %>%
+topalbums %>%
   head() %>% 
   gt() %>% 
   fmt_currency(columns = "final_score",
                currency = "USD") %>% 
   tab_header(title = "Top Alben",
-             subtitle = glue::glue("Von {min(Top6$year)} bis {max(Top6$year)}")) %>% 
+             subtitle = glue::glue("Von {min(topalbums$year)} bis {max(topalbums$year)}")) %>% 
   tab_style(
     style = list(
       cell_fill(color = "lightblue"),
