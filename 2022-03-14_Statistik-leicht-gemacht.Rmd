@@ -3,7 +3,7 @@ title: 'Datenanalyse / Statistik mit R leicht gemacht!'
 subtitle: "Data Science Meetup Darmstadt"
 author: "Wolf Riepl"
 date: 'Bericht erstellt: `r Sys.time()`'
-# output: html_document   # Zur Erweiterung "html_document" hier löschen und in neuer Zeile verwenden wie unten
+# output: html_document
 output:
   html_document:
     toc: yes
@@ -307,9 +307,11 @@ ggstatsplot::gghistostats(
 
 ```
 
-Anregungen zum Üben:
+Anregung zum Üben:
 
 * Andere Effektgröße auswählen. Voreinstellung: Hedge's g ("g"); Alternative: Cohen's d ("d")
+* Siehe *?gghistostats*
+* Argument innerhalb gghistostats: *effsize.type = "x"*
 
 ```{r nvtest-ggstatsplot-aufgabe}
 
@@ -439,7 +441,7 @@ topalbums %>%
     ),
     locations = cells_body(
       columns = raw_usa,
-      rows = raw_usa > 24
+      rows = raw_usa > 30
     )
   )
 
