@@ -6,6 +6,7 @@ library(ggside)                           # Ergänzung zu ggstatsplot
 library(DT)                               # Interaktive Tabellen in Markdown
 library(plotly)                           # Interaktive Diagramme
 library(gganimate)                        # Animationen
+library(gifski)                           # Erstellt .gif für gganimate
 library(gt)                               # flexible Tabellen
 library(gtsummary)                        # Statistische Tests, tabellarisch
 library(texreg)                           # Regressionstabellen darstellen
