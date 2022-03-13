@@ -242,7 +242,7 @@ layout: false
 
 # Erstes Date: R und RStudio - Projekte
 
-```{r, fig.align = "center", out.width = "80%", out.height = "80%"}
+```{r, fig.align = "center", out.width = "40%", out.height = "40%"}
 include_graphics("libs/_Images/RStudio-Projekt-anlegen.png")
 ```
 
@@ -284,8 +284,8 @@ knitr::include_graphics("libs/_Images/markdown-houston.png")
 
 Quelle: Vortrag von Garrett Grolemund, EARL-Konferenz, London
 
-* Video: https://www.youtube.com/watch?v=HVlwNayog-k
-* Folien: https://earlconf.com/_downloads/london_speakers/EARL2018_-_London_-_Garrett_Grolemund.pdf
+Video: https://www.youtube.com/watch?v=HVlwNayog-k
+
 
 #### Reproduzierbare Ergebnisse dank RMarkdown!
 
@@ -707,7 +707,7 @@ topalbums <- topalbums %>%
 ```{r report, echo = TRUE, eval = FALSE}
 library(report)
 my_test <- t.test(year ~ ueber5,
-   alternative = 'greater', #<<
+   alternative = 'greater',
    conf.level = .95, var.equal = FALSE,
    data = topalbums)
 report(my_test) #<<
@@ -882,16 +882,6 @@ report(reg) %>%
 
 ---
 
-## Zur Interpretation von p-Werten ...
-
-```{r, fig.align = "center", out.width = "25%", out.height = "25%"}
-knitr::include_graphics("libs/_Images/xkcd-1478-p-values.png")
-```
-
-Quelle: https://xkcd.com/1478/
-
----
-
 ### Normalverteilung: Voraussetzung parametrischer Tests wie t-Test
 
 .pull-left[
@@ -922,6 +912,32 @@ ggstatsplot::gghistostats(
 ```
 
 ]
+
+---
+
+## Zur Interpretation von p-Werten ...
+
+```{r, fig.align = "center", out.width = "25%", out.height = "25%"}
+knitr::include_graphics("libs/_Images/xkcd-1478-p-values.png")
+```
+
+Quelle: https://xkcd.com/1478/
+
+---
+
+## Die easystats-Paketsammlung
+
+.pull-left[
+```{r}
+knitr::include_graphics("libs/_Images/logo-easystats.png")
+```
+]
+
+.pull-right[.large[
+* https://github.com/easystats/easystats  
+
+* https://easystats.github.io/blog/
+]]
 
 ---
 

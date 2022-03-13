@@ -4,7 +4,7 @@
     <title>Datenanalyse / Statistik mit R leicht gemacht!</title>
     <meta charset="utf-8" />
     <meta name="author" content="Wolf Riepl" />
-    <script src="libs/header-attrs-2.12/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.13/header-attrs.js"></script>
     <link rel="stylesheet" href="libs/_css/my_css.css" type="text/css" />
   </head>
   <body>
@@ -218,7 +218,7 @@ layout: false
 
 # Erstes Date: R und RStudio - Projekte
 
-&lt;img src="libs/_Images/RStudio-Projekt-anlegen.png" width="80%" height="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="libs/_Images/RStudio-Projekt-anlegen.png" width="40%" height="40%" style="display: block; margin: auto;" /&gt;
 
 ** Projektspezifische Arbeitsumgebung mit Skripten, Daten, Befehlsgeschichte**
 
@@ -256,8 +256,8 @@ layout: true
 
 Quelle: Vortrag von Garrett Grolemund, EARL-Konferenz, London
 
-* Video: https://www.youtube.com/watch?v=HVlwNayog-k
-* Folien: https://earlconf.com/_downloads/london_speakers/EARL2018_-_London_-_Garrett_Grolemund.pdf
+Video: https://www.youtube.com/watch?v=HVlwNayog-k
+
 
 #### Reproduzierbare Ergebnisse dank RMarkdown!
 
@@ -649,7 +649,7 @@ head(topalbums, n = 3)
 ```r
 library(report)
 my_test &lt;- t.test(year ~ ueber5,
-*  alternative = 'greater',
+   alternative = 'greater',
    conf.level = .95, var.equal = FALSE,
    data = topalbums)
 *report(my_test)
@@ -863,14 +863,6 @@ values were computed using the Wald approximation.
 
 ---
 
-## Zur Interpretation von p-Werten ...
-
-&lt;img src="libs/_Images/xkcd-1478-p-values.png" width="25%" height="25%" style="display: block; margin: auto;" /&gt;
-
-Quelle: https://xkcd.com/1478/
-
----
-
 ### Normalverteilung: Voraussetzung parametrischer Tests wie t-Test
 
 .pull-left[
@@ -903,9 +895,31 @@ ggstatsplot::gghistostats(
 ]
 
 .pull-right[
-&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-25-1.png" width="94%" height="94%" /&gt;
+&lt;img src="2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-24-1.png" width="94%" height="94%" /&gt;
 
 ]
+
+---
+
+## Zur Interpretation von p-Werten ...
+
+&lt;img src="libs/_Images/xkcd-1478-p-values.png" width="25%" height="25%" style="display: block; margin: auto;" /&gt;
+
+Quelle: https://xkcd.com/1478/
+
+---
+
+## Die easystats-Paketsammlung
+
+.pull-left[
+&lt;img src="libs/_Images/logo-easystats.png" width="1600" /&gt;
+]
+
+.pull-right[.large[
+* https://github.com/easystats/easystats  
+
+* https://easystats.github.io/blog/
+]]
 
 ---
 
@@ -1062,16 +1076,13 @@ R-Pakete:
 library(compute.es)
 library(pwr)
 
-topalbums$nach1990 &lt;- topalbums$year &gt; 1990
 ttest &lt;- t.test(topalbums$final_score ~
-                  topalbums$nach1990)
-Effekt &lt;- tes(ttest$statistic, 1419, 1581,
+                  topalbums$ueber5)
+Effekt &lt;- tes(ttest$statistic, 1300, 1700,
               verbose = FALSE)
 pwr.t.test(n = NULL, 
-           d = Effekt$d, 
-           sig.level = 0.05, 
-           power = 0.8, 
-           type = "two.sample",
+           d = Effekt$d, sig.level = 0.05, 
+           power = 0.8, type = "two.sample",
            alternative = "two.sided")
 ```
 ]
@@ -1084,8 +1095,8 @@ pwr.t.test(n = NULL,
 
      Two-sample t test power calculation 
 
-              n = 1298.293
-              d = 0.11
+              n = 7.708705
+              d = 1.54
       sig.level = 0.05
           power = 0.8
     alternative = two.sided
@@ -1113,7 +1124,7 @@ NOTE: n is number in *each* group
 ]
 
 .pull-right[
-![](2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-31-1.gif)&lt;!-- --&gt;
+![](2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-32-1.gif)&lt;!-- --&gt;
 
 ]
 

@@ -11,10 +11,16 @@ library(gtsummary)                        # Statistische Tests, tabellarisch
 library(texreg)                           # Regressionstabellen darstellen
 library(knitr)                            # Für Markdown
 library(gapminder)                        # Daten für Animation
+library(rattle)                           # Darstellung von Entscheidungsbäumen: fancyRpartPlot
 # library(ggthemes)                         # Zusätzliche Diagramm-Stile, z. B. Wall Street Journal
 
 # Paket-Sammlung zu einfachen Bearbeitung statistischer Analysen
 install.packages("easystats", repos = "https://easystats.r-universe.dev")
+
+# Wer alle Abhängigkeiten mit installieren möchte, kann das so tun:
+# easystats::install_suggested()
+# Achtung, das sind ziemlich viele Pakete!
+
 # Daten: Charterfolg von Songs und Alben
 
 library(devtools)

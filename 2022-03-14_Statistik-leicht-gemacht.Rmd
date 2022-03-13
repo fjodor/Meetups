@@ -94,6 +94,10 @@ report(my_test)
 
 ```
 
+Anregung zum Ausprobieren: einseitiger statt zweiseitiger Test, Text-Interpretation wiederholen
+
+Im Code für den t-Test anpassen: *alternative = "less"* (oder: *"greater"*) statt *"two.sided"* 
+
 
 ### t-Test: Grafische Darstellung mit *ggstatsplot*
 
