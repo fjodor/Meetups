@@ -1,0 +1,99 @@
+---
+title: 'Datenanalyse / Statistik mit R leicht gemacht!'
+subtitle: "Data Science Meetup Darmstadt"
+author: "Wolf Riepl"
+date: 'Bericht erstellt: `r Sys.time()`'
+# output: html_document
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    code_folding: show
+    code_download: yes
+params:
+  band1:
+    label: "Erste Band?"
+    value: "The Beatles"
+    input: select
+    choices: !r chartmusicdata::topalbums |> dplyr::count(artist) |> dplyr::slice_max(n = 10, order_by = n) |> dplyr::pull(artist)
+  band2:
+    label: "Zweite Band?"
+    value: "Bob Dylan"
+    input: select
+    choices: !r chartmusicdata::topalbums |> dplyr::count(artist) |> dplyr::slice_max(n = 10, order_by = n) |> dplyr::pull(artist)
+
+---
+
+```{r setup, include = FALSE}
+
+library(tidyverse)                        # Paket-Sammlung mit intuitiver Syntax zur Datenbearbeitung
+library(DT)                               # Interaktive Tabellen in Markdown
+library(report)                           # Text-Interpretation statistischer Modelle
+library(ggstatsplot)                      # Diagramme mit statistischen Zusatz-Informationen
+
+library(chartmusicdata)                   # Daten über Charterfolg von Alben und Songs
+data(topsongs)
+data(topalbums)
+
+# Spalte "raw_row" entfernen für übersichtlichere Darstellungen
+
+topalbums <- topalbums %>% 
+  select(-raw_row)
+
+knitr::opts_chunk$set(echo = TRUE)        # R-Codeblöcke anzeigen, wenn nicht anders angegeben
+knitr::opts_chunk$set(comment = NA)       # Ergebnisse nicht mit ## einbetten, sondern direkt - sieht besser aus
+
+# Bericht erstellen:
+# "Knit" -> Voreinstellung
+# "Knit with Parameters" -> Auswahlfenster
+# Programmatisch:
+# rmarkdown::render("2022-03-14_Flexibler-Bericht.Rmd", params = list(band1 = "Bob Dylan", band2 = "Elvis Presley"))
+
+```
+
+```{r}
+my_bands <- topalbums %>% 
+  filter(artist %in% c(params$band1, params$band2))
+```
+
+
+# Datenbasis
+
+## Beschreibung im Fließtext
+
+*Hier werden R-Ausdrücke direkt in den Text eingebettet. Anwendungsbeispiel: Kontinuierliche Datenerhebung mit sich ändernden Fallzahlen. Die Zahlen im Text werden bei der Berichtserstellung automatisch aktualisiert.*
+
+Die folgenden Daten beruhen auf `r nrow(data)` Alben von **`r params$band1`** und **`r params$band2`**. Sie stammen von der Webseite https://tsort.info/. Wir verwenden die Version **`r attr(topalbums, "version")`**.
+
+
+## Interaktive Daten-Tabelle
+
+```{r Daten-Tabelle}
+DT::datatable(my_bands)
+
+# Zum Ausprobieren: Argument filter; z. B. "filter = "top" oder filter = "bottom"
+# DT::datatable(topalbums, filter = "xxx")
+
+# Zum Ausprobieren: Argument options = list(pageLength = x)
+# DT::datatable(topalbums, options = list(pageLength = 7))
+
+```
+
+
+# `r params$band1` vs. `r params$band2`
+
+```{r ttest, message = FALSE, warning = FALSE}
+
+my_test <- t.test(final_score ~ artist,
+   alternative = 'two.sided',
+   conf.level = .95, var.equal = FALSE,
+   data = my_bands)
+
+report(my_test)
+
+ggbetweenstats(my_bands,
+  x = artist, y = final_score,
+  title = "Gesamtpunkte im Vergleich",
+  caption = "Datenquelle: tsort.info")
+
+```
