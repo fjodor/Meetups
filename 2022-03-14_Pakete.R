@@ -12,6 +12,7 @@ library(texreg)                           # Regressionstabellen darstellen
 library(knitr)                            # Für Markdown
 library(gapminder)                        # Daten für Animation
 library(rattle)                           # Darstellung von Entscheidungsbäumen: fancyRpartPlot
+library(pagedown)                         # PDF erzeugen aus HTML oder .Rmd
 # library(ggthemes)                         # Zusätzliche Diagramm-Stile, z. B. Wall Street Journal
 
 # Paket-Sammlung zu einfachen Bearbeitung statistischer Analysen
