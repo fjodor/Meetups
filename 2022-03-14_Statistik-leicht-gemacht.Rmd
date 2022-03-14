@@ -22,7 +22,7 @@ library(gt)                               # flexible Tabellen
 library(gtsummary)                        # Statistische Tests, tabellarisch
 library(plotly)                           # Interaktive Grafiken
 library(texreg)                           # Regressionstabellen darstellen
-# library(ggthemes)                         # # Zusätzliche Diagramm-Stile, z. B. Wall Street Journal (theme_wsj)
+# library(ggthemes)                         # Zusätzliche Diagramm-Stile, z. B. Wall Street Journal (theme_wsj)
 
 library(chartmusicdata)                   # Daten über Charterfolg von Alben und Songs
 data(topsongs)
@@ -38,6 +38,7 @@ knitr::opts_chunk$set(cache = TRUE)       # Ergebnisse der Codeblöcke cachen f�
 knitr::opts_chunk$set(comment = NA)       # Ergebnisse nicht mit ## einbetten, sondern direkt - sieht besser aus
 
 ```
+
 
 # Datenbasis
 

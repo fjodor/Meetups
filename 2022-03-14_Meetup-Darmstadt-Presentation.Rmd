@@ -888,17 +888,17 @@ report(reg) %>%
 #### Statistisch
 
 ```{r, echo = TRUE}
-shapiro.test(
-  topalbums$final_score
-)
+shapiro.test( #<<
+  topalbums$final_score #<<
+) #<<
 ```
 
 #### Grafisch
 
 ```{r gghistostats, echo = TRUE, eval = FALSE}
-ggstatsplot::gghistostats(
-  topalbums, final_score,
-  normal.curve = TRUE)
+ggstatsplot::gghistostats(  #<<
+  topalbums, final_score,  #<<
+  normal.curve = TRUE)  #<<
 ```
 
 ]
