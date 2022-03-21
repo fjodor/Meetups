@@ -941,6 +941,22 @@ knitr::include_graphics("libs/_Images/logo-easystats.png")
 
 ---
 
+## Automatisierte Explorative Datenanalyse: DataExplorer
+
+.Large[
+Zum Ausprobieren:
+
+```{r, eval = FALSE, echo = TRUE}
+
+library(DataExplorer)
+create_report(topalbums)  #<<
+
+```
+
+]
+
+---
+
 ## Data Mining-Beispiel: Titanic
 
 .pull-left[

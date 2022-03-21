@@ -870,9 +870,9 @@ values were computed using the Wald approximation.
 
 
 ```r
-shapiro.test(
-  topalbums$final_score
-)
+*shapiro.test(
+* topalbums$final_score
+*) 
 ```
 
 ```
@@ -887,9 +887,9 @@ W = 0.6974, p-value &lt; 2.2e-16
 
 
 ```r
-ggstatsplot::gghistostats(
-  topalbums, final_score,
-  normal.curve = TRUE)
+*ggstatsplot::gghistostats(
+* topalbums, final_score,
+* normal.curve = TRUE)
 ```
 
 ]
@@ -920,6 +920,21 @@ Quelle: https://xkcd.com/1478/
 
 * https://easystats.github.io/blog/
 ]]
+
+---
+
+## Automatisierte Explorative Datenanalyse: DataExplorer
+
+.Large[
+Zum Ausprobieren:
+
+
+```r
+library(DataExplorer)
+*create_report(topalbums)
+```
+
+]
 
 ---
 
@@ -1124,7 +1139,7 @@ NOTE: n is number in *each* group
 ]
 
 .pull-right[
-![](2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-32-1.gif)&lt;!-- --&gt;
+![](2022-03-14_Meetup-Darmstadt-Presentation_files/figure-html/unnamed-chunk-33-1.gif)&lt;!-- --&gt;
 
 ]
 
