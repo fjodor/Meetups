@@ -36,20 +36,22 @@ knitr::opts_chunk$set(echo = FALSE, comment = "")
 ```{r, fig.align = "center"}
 knitr::include_graphics("libs/_Images/logo-R.png")
 ```
+
+# .center[Package]
+
 ]
 
 .pull-right[
 <br><br>
-# Package
 
-## Hands-On Tutorial
+### Hands-On Tutorial
 
 ```{r, fig.align = "center", out.width = "100%", out.height = "100%"}
 knitr::include_graphics("libs/_Images/logo-R-Ladies-Tunis-Event.jpg")
 ```
 ]
 
-.left-column[<br><br><br>`` ``]
+.left-column[<br><br>`` ``March 23, 2022]
 .right-column[
 .pull-left[Wolf Riepl - R Trainer]
 .pull-right[Youtube: StatistikinDD]
@@ -67,10 +69,10 @@ knitr::include_graphics("libs/_Images/logo-R-Ladies-Tunis-Event.jpg")
 layout: false
 class: hide-footer, hide-count
 
-# .green[Now Go Build a Package ... <br> ... and Enjoy!]
+# .green[Now Go Build a Package ... <br> .center[... and Enjoy!]]
 
 .pull-left[
-```{r, fig.align = "center", out.width = "100%", out.height = "100%"}
+```{r, fig.align = "center", out.width = "55%", out.height = "55%"}
 knitr::include_graphics("libs/_Images/logo-R-Ladies-Tunis.jpg")
 ```
 ]
@@ -84,7 +86,7 @@ knitr::include_graphics("libs/_Images/coffee.jpg")
 .pull-left[
 .blue[**
 Wolf Riepl  
-Profile auf LinkedIn und Xing  
+Active on LinkedIn  
 https://statistik-dresden.de/  
 **]]
 

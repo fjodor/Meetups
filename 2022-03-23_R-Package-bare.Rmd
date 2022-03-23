@@ -179,7 +179,7 @@ layout: true
 ## First R Package - New RStudio Project
 
 .pull-left[
-```{r}
+```{r, out.width = "70%", out.height = "70%"}
 include_graphics("libs/_Images/RStudio-New-Project.png")
 ```
 ]
@@ -281,7 +281,7 @@ include_graphics("libs/_Images/RStudio-Build-Installation.png")
 
 ## Creating Our First Package: Build
 
-.large[**Build -> Install and Restart:** Package gets intalled]
+.large[**Build -> Install and Restart:** Package gets installed]
 
 .pull-left[
 ```{r}
@@ -304,7 +304,7 @@ include_graphics("libs/_Images/RStudio-Environment-Empty.png")
 ## Creating Our First Package: Build
 
 .pull-left[
-.large[**Build -> Install and Restart:** Package gets intalled
+.large[**Build -> Install and Restart:** Package gets installed
 
 * Example function `hello()` ready to use
 * `hello()` function **not** in Global Environment - just like in other packages!
@@ -325,7 +325,7 @@ include_graphics("libs/_Images/RStudio-Hello-World-Help.png")
 ## Creating Our First Package: Build
 
 .pull-left[
-```{r}
+```{r, out.width = "85%", out.height = "85%"}
 include_graphics("libs/_Images/RStudio-Hello-World-Help.png")
 ```
 ]
@@ -334,7 +334,7 @@ include_graphics("libs/_Images/RStudio-Hello-World-Help.png")
 #### Where does this documentation come from?
 
 Folder `man/hello.Rd`
-```{r}
+```{r, out.width = "90%", out.height = "90%"}
 include_graphics("libs/_Images/RStudio-hello-Rd.png")
 ```
 ]
@@ -735,7 +735,7 @@ Details: https://r-pkgs.org/description.html
 Task | Working in R Scripts | Creating a Package
 -----|----------------------|-------------------
 Use functions from an extension package | `library(ggplot2)` or `require(ggplot2)` <br> Use functions directly, e. g. <br> `ggplot(mtcars, aes(...))` | ~~`library() / require()`~~ Never! <br> DESCRIPTION: *Imports / Depends*; `usethis::use_package()`<br> If *Imports* is used: Explicitly specify package in each function call, e. g. `ggplot2::ggplot(mtcars, ggplot2::aes(...))`
-Use your own functions | Functions are objects in your *Global Environment*<br>Define functions from a script: `source()` | Functions **not** in Global Environment (source of confusion!) <br> Quickly update functions using `devtools::load_all()` or **Ctrl + Shift + L** or *Build - Load All* <br> Alternative (slower): *Build - Install and Restart*
+Use your own functions | Functions are objects in your *Global Environment*<br>Define functions from a script: `source()` | Functions **not** in Global Environment (source of confusion!) <br> Quickly update functions using `devtools::load_all()` or <br> **Ctrl + Shift + L** or *Build - Load All* <br> Alternative (slower): *Build - Install and Restart*
 
 ---
 
@@ -788,15 +788,22 @@ include_graphics("libs/_Images/logo-R-Packages.png")
 ## Integrating and Documenting Data
 
 * Data are often just as useful in a package as functions
+
 * Documentation similar, but somewhat different
+
 * There are numerous pure data packages, e. g. *datasets* (Base R), *nycflights13*, *gapminder*
+
 * Data stored in subfolder `data/`
+
 * Helper function: `usethis::use_data()`
+
 * Must be documented
   + Separate file: script `data.R`, stored in `R/` folder
   + roxygen tags: @format, @source
   + End of script, without roxygen comment: *"name-of-dataset"*
+
 * Access help file: `?data`, e. g. `?songs2000` 
+
 
 ---
 
@@ -857,3 +864,13 @@ include_graphics("libs/_Images/data-roxygen.png")
   + `expect_equal(), expect_output()`
   + `expect_message(), expect_warning(), expect_error()`
   + see `?expect_`
+  
+---
+
+## A Last Word on Documentation ...
+
+```{r}
+include_graphics("libs/_Images/xkcd-1343-manuals.png")
+```
+
+Source: https://xkcd.com/1343/
