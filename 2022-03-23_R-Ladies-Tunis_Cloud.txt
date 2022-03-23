@@ -1,0 +1,17 @@
+R Ladies Tunis: R Packages on RStudio Cloud
+
+https://rstudio.cloud/project/3777374
+
+How to:
+* Under the Files tab, click on the subfolder (myFirstPackager or tsortmusicr)
+* Then click on the respective .Rproj file and confirm opening the project
+* Interact with the package, e. g. via the Build tab next to Environment / History
+* Load All, Document, Install and Restart, try out function, check help page of function
+
+Helper File for use on own system:
+
+Folder:
+https://c.gmx.net/@330250598752459575/i6cBqDJSQuWNCHB0bu2lMg
+
+File:
+https://c.gmx.net/@330250598752459575/2rXPw82sTK2x4BPl9Be6IQ

@@ -41,3 +41,14 @@ random_song <- function(artist = "Taylor Swift", data = songs2000) {
   song <- base::sample(banddata$song, 1)
   paste0("Randomly selected song by ", artist, ": ", song)
 }
+
+
+#### Using RStudio Cloud ####
+
+# https://rstudio.cloud/project/3777374
+
+# How to:
+# * Under the Files tab, click on the subfolder (myFirstPackager or tsortmusicr)
+# * Then click on the respective .Rproj file and confirm opening the project
+# * Interact with the package, e. g. via the Build tab next to Environment / History
+# Load All, Document, Install and Restart, try out function, check help page of function
