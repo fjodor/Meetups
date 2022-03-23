@@ -6,6 +6,8 @@ library(devtools)
 install_github("fjodor/chartmusicdata")
 
 # Code snippets for package creation
+# For the package to work, we need to make the data available:
+# library(chartmusicdata)
 
 
 #### Function ####
