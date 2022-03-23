@@ -74,7 +74,7 @@ a, a > code {
 .right-column {
   width: 75%;
   float: right;
-  padding-top: 1em;
+  /* padding-top: 1em; */
 }
 
 .pull-left {
@@ -132,6 +132,10 @@ th, td { padding: 5px; }
 
 .content-box-grey {
 	background-color: #F5F5F5;
+}
+
+.content-box-green {
+  background-color: #90EE90;
 }
 
 /* From Garrick Aden-Buie
