@@ -672,7 +672,7 @@ roxygen Code | Description | Example: function `random_song()`
 #' <br> #' More text | Description | #' <br> #' Displays a randomly selected song by a specified artist.
 #' @param | Function parameter | #' @param artist Artist / band as string.
 #' @return | Return value | #' @return string: Title of a randomly selected song by {artist}.
-#' @examples | Examples | #' examples `random_song()` <br> #' @examples `random_song("Elvis Presley")` <br> #' @examples `random_song(artist = "Eminem", data = songs2000)`
+#' @examples | Examples | #' examples `random_song()` <br> #' @examples `random_song("Rihanna")` <br> #' @examples `random_song(artist = "Eminem", data = songs2000)`
 #' @export | Adds function to NAMESPACE <br> Makes it accessible to user | *No parameters; specify exactly like so:* <br>#' @export
 
 ---
