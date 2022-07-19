@@ -362,13 +362,13 @@ class: hide-footer, hide-count
 # .green[Now Apply Your Own Magic ... <br> .center[... and Enjoy!]]
 
 .pull-left[
-```{r, fig.align = "center", out.width = "55%", out.height = "55%"}
+```{r, echo = FALSE, fig.align = "center", out.width = "55%", out.height = "55%"}
 knitr::include_graphics("libs/_Images/logo-Abuja-R-User.png")
 ```
 ]
 
 .pull-right[
-```{r, fig.align = "center", out.width = "100%", out.height = "100%"}
+```{r, echo = FALSE, fig.align = "center", out.width = "100%", out.height = "100%"}
 knitr::include_graphics("libs/_Images/coffee.jpg")
 ```
 ]
