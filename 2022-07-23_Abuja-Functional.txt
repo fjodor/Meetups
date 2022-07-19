@@ -1,0 +1,12 @@
+Functional Programming including some purrr MAGIC
+
+Description for Meetup: Abuja R user Group, July 23rd, 2022
+
+Functional Programming offers powerful tools and can be fun! In this meetup we'll use MAGIC two-fold:
+
+- discover the magic of the purrr package to elegantly iterate over 1, 2, or more vectors at the same time; 
+- use magic numbers to generate messages from random samples of letters.
+
+This meetup is designed as a hands-on session, so you're invited to try out some of the tricks. R code will be provided, so you can experiment with the code and test variations.
+
+We'll create a function to generate messages, build it up step by step to make it more flexible, and iterate over arguments to apply it elegantly. We'll talk about Base R's lapply and compare it to purrr's map functions.
