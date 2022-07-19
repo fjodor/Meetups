@@ -24,7 +24,7 @@ background-color: #EFEFEF
 library(fontawesome)
 library(tidyverse)
 library(knitr)
-knitr::opts_chunk$set(echo = FALSE, comment = "")
+knitr::opts_chunk$set(echo = TRUE, comment = "")
 
 options(htmltools.dir.version = FALSE)
 xaringanthemer::style_mono_accent(title_slide_background_color = "#EDF4FB",
@@ -52,14 +52,14 @@ knitr::knit_hooks$set(output = function(x, options) {
 
 .pull-left[
 <br><br>
-```{r, fig.align = "center"}
+```{r, echo = FALSE, fig.align = "center"}
 knitr::include_graphics("libs/_Images/logo-purrr.png")
 ```
 ]
 
 .pull-right[
 <br><br>
-```{r, fig.align = "center"}
+```{r, echo = FALSE, fig.align = "center"}
 knitr::include_graphics("libs/_Images/logo-R.png")
 ```
 ]]
@@ -69,7 +69,7 @@ knitr::include_graphics("libs/_Images/logo-R.png")
 
 ### Let's Turn On the Magic!
 
-```{r, fig.align = "center", out.width = "100%", out.height = "100%"}
+```{r, echo = FALSE, fig.align = "center", out.width = "100%", out.height = "100%"}
 knitr::include_graphics("libs/_Images/2022-07-23-Abuja-purrr.webp")
 ```
 ]
@@ -84,8 +84,277 @@ knitr::include_graphics("libs/_Images/2022-07-23-Abuja-purrr.webp")
 
 ---
 
-# bla
+# What We Want to Achieve
 
+## Iterate over Several Vectors in One Line of R Code
+
+```{r, echo = FALSE}
+
+seeds <- c(2219868, 110454, 639, 1750, 690, 9487)
+word_lengths <- c(5, 4, 2, 3, 2, 4)
+choices <- c(rep(list(letters), 5), list(0:9))
+
+magic_message <- function(seed, choices, word_length) {
+  set.seed(seed)
+  sample(choices, size = word_length, replace = TRUE) |>
+    paste(collapse = "") |>
+    stringr::str_to_title()
+}
+
+```
+
+.pull-left[
+```{r}
+
+set.seed(1)
+sample(letters, size = 5, replace = TRUE) |>
+  paste(collapse = "")
+
+set.seed(2)
+sample(letters, size = 5, replace = TRUE) |>
+  paste(collapse = "")
+
+```
+]
+
+--
+
+.pull-right[
+```{r pmap-chr}
+
+purrr::pmap_chr(   #<<
+  # list of vectors to iterate over
+  list(seeds, choices, word_lengths),
+  
+  # function that takes 3 arguments
+  magic_message
+) |>
+
+# remove quotes around each word
+cat()
+
+```
+]
+
+---
+
+# Knowing a Few Magic Seeds ...
+
+.pull-left[
+
+### Manually build up words
+
+```{r}
+set.seed(1982138)
+sample(letters, size = 4, replace = TRUE) |>
+  paste(collapse = "") |>
+  stringr::str_to_title()
+
+set.seed(942538)
+sample(letters, size = 4, replace = TRUE) |> 
+  paste(collapse = "") |>
+  stringr::str_to_title()
+
+```
+
+]
+
+--
+
+.pull-right[
+
+### Improve code
+
+```{r}
+
+magic_message <- function(seed) {
+  set.seed(seed)
+  sample(letters, size = 4, 
+         replace = TRUE) |>
+  paste(collapse = "") |>
+  stringr::str_to_title()
+}
+
+```
+
+```{r}
+seeds <- c(1982138, 942538)
+lapply(seeds, magic_message) |> unlist()
+```
+
+#### What if word lengths differ?
+
+]
+
+---
+
+# Enter purrr
+
+## Specify Data Type of Return Value 
+
+.pull-left[
+
+![logo purrr](libs/_Images/logo-purrr.png)
+
+* `map()` corresponds to `lapply()`: returns a list
+* `map_` variants return other data types
+* `map_chr(), map_int(), map_dbl, map_lgl()` etc.
+
+]
+
+.pull-right[
+~~lapply(seeds, magic_message) |> unlist()~~
+
+```{r}
+seeds <- c(1982138, 942538)
+lapply(seeds, magic_message)
+
+library(purrr) #<<
+map_chr(seeds, magic_message) #<<
+```
+
+]
+
+---
+
+# purrr: Iterating over Two Vectors
+
+.pull-left[
+
+### Love is just a four-letter-word ...
+
+So far, our `magic_message()` function can only return 4-letter-words:
+
+```{r}
+magic_message <- function(seed) {
+  set.seed(seed)
+  sample(letters,
+         size = 4,  #<<
+         replace = TRUE) |>
+  paste(collapse = "") |>
+  stringr::str_to_title()
+}
+```
+]
+
+.pull-right[
+
+### Flexible word lengths
+
+Let's change that:
+
+```{r}
+magic_message <- function(seed, word_length) {
+  set.seed(seed)
+  sample(letters,
+         size = word_length,  #<<
+         replace = TRUE) |>
+  paste(collapse = "") |>
+  stringr::str_to_title()
+}
+
+```
+
+]
+
+---
+
+# purrr: Iterating over Two Vectors
+
+## `map2(.x, .y, .f, ...)`
+
+Let's apply the new function:
+
+```{r}
+seeds <- c(2219868, 110454)
+word_lengths <- c(5, 4)
+
+map2_chr(seeds, word_lengths, #<<
+         magic_message)
+```
+
+#### What if we have more than 2 vectors to iterate over?
+
+#### There is no `map3()` function in purrr
+
+---
+
+# purrr: Iterating over Multiple Vectors
+
+## Adding Flexibility: Choices to Sample From
+
+.pull-left[
+Remember the original *"magic message"*?
+
+### `Happy Bday To You In 2022`
+
+So far, our `magic_message()` function can only output letters, not numbers.
+
+#### Let's change that.
+]
+
+.pull-right[
+### Flexible choices
+
+```{r}
+magic_message <- function(seed, 
+        choices, word_length) { #<<
+  set.seed(seed)
+  sample(choices, #<<
+         size = word_length, #<<
+         replace = TRUE) |>
+    paste(collapse = "") |>
+    stringr::str_to_title()
+}
+```
+
+]
+---
+
+# purrr: Iterating over Multiple Vectors
+
+## `pmap(.l, .f, ...)`
+
+`.l = list of vectors`
+
+```{r}
+seeds <- c(2219868, 110454, 639, 1750, 690, 9487)
+word_lengths <- c(5, 4, 2, 3, 2, 4)
+choices <- c(rep(list(letters), 5), list(0:9))
+
+```
+
+--
+
+```{r, ref.label = "pmap-chr"}
+```
+
+---
+
+# purrr: Learning More
+
+.left-column[
+```{r, echo = FALSE}
+include_graphics("libs/_Images/logo-purrr.png")
+```
+]
+
+.right-column[
+**RStudio CheatSheet** https://raw.githubusercontent.com/rstudio/cheatsheets/main/purrr.pdf
+
+**R for Data Science (R4DS)**, Chapter 21: Iteration https://r4ds.had.co.nz/
+
+**Jenny Bryan**, R Package *repurrrsive:*
+  + https://github.com/jennybc/repurrrsive
+  + https://jennybc.github.io/purrr-tutorial/
+
+**Charlotte Wickham**
+  + https://github.com/cwickham/purrr-tutorial
+  + https://resources.rstudio.com/wistia-rstudio-conf-2017/happy-r-users-purrr-tutorial-charlotte-wickham
+
+**Colin Fay**: Vous allez aimer avoir {purrr} (Artile in English)  
+https://colinfay.me/happy-dev-purrr/
+]
 ---
 layout: false
 class: hide-footer, hide-count
