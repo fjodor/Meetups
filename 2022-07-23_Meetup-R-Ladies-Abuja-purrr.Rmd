@@ -85,6 +85,9 @@ knitr::include_graphics("libs/_Images/2022-07-23-Abuja-purrr.webp")
 
 .pull-left[
 ![](https://media.giphy.com/media/lzL6avFZQ8PJEjdFgS/giphy.gif)
+
+Source: giphy.com
+
 ]
 
 --
@@ -231,8 +234,17 @@ magic_message(942538)
 ```{r}
 seeds <- c(1982138, 942538)
 lapply(seeds, magic_message)  #<<
-sapply(seeds, magic_message)  #<<
+```
 
+--
+
+```{r}
+sapply(seeds, magic_message)  #<<
+```
+
+--
+
+```{r}
 lapply(seeds, magic_message) |> unlist()  #<<
 ```
 
@@ -241,7 +253,7 @@ lapply(seeds, magic_message) |> unlist()  #<<
 
 # Enter purrr
 
-## Specify Data Type of Return Value 
+## Specify Data Type of Return Value: `map_...()`
 
 .pull-left[
 
@@ -512,7 +524,8 @@ Function | Description
 `partial()` | pre-fill function arguments, e. g.: <br> `mean_na_rm <- partial(mean, na.rm = TRUE)` <br> `mean_na_rm(c(1, 2, 3, NA))` <br> [1] 2
 `compact()` | Discard elements that are NULL or of length 0, e. g.: <br> `list(a = 1:3, b = NULL, c = "text") %>% compact()`
 `flatten()` | Remove a level of hierarchy from a list to make it less nested, e. g.: <br> `rerun(2, sample(4)) %>% flatten_int()` <br> compare to `rerun(2, sample(4))`
-
+`safely()` | Modify a function: instead of aborting with an error, return a list with components *result* and *error*, e. g. <br> `log_safe <- safely(log); log_safe("text")`
+`possibly()` | Modify a function: instead of aborting with an error, return a default value *(otherwise)*, e. g. <br> `log_pos <- possibly(log, otherwise = "Doesn't make sense!"); log_pos("text")`
 
 ---
 
@@ -577,5 +590,4 @@ https://statistik-dresden.de/
 
 # .red[Todo]
 
-* Introduce walk(); use built-in dataset (diamonds?)
 * Show possibly() und safely()
