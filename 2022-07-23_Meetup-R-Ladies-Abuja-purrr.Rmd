@@ -91,8 +91,6 @@ knitr::include_graphics("libs/_Images/2022-07-23-Abuja-purrr.webp")
 
 .pull-right[
 
-## Let's make R purrr!
-
 ```{r, echo = FALSE, fig.align = "center"}
 knitr::include_graphics("libs/_Images/logo-purrr.png")
 ```
@@ -201,7 +199,8 @@ Is this code elegant, <br>especially when we create more words?
 
 magic_message <- function(seed) {  #<<
   set.seed(seed)
-  sample(letters, size = 4, 
+  sample(letters, 
+         size = 4, 
          replace = TRUE) |>
   paste(collapse = "") |>
   stringr::str_to_title()
@@ -218,17 +217,27 @@ magic_message <- function(seed) {  #<<
 
 
 ```{r}
-seeds <- c(1982138, 942538)
-lapply(seeds, magic_message)
+
+magic_message(1982138)
+magic_message(942538)
 ```
 ]
 
 
+---
+
+# Applying the Function More Elegantly
+
+```{r}
+seeds <- c(1982138, 942538)
+lapply(seeds, magic_message)  #<<
+sapply(seeds, magic_message)  #<<
+
+lapply(seeds, magic_message) |> unlist()  #<<
+```
 
 
 ---
-
-#### What if word lengths differ?
 
 # Enter purrr
 
@@ -240,18 +249,19 @@ lapply(seeds, magic_message)
 
 * `map()` corresponds to `lapply()`: returns a list
 * `map_` variants return other data types
-* `map_chr(), map_int(), map_dbl, map_lgl()` etc.
+* `map_chr(), map_int(), map_dbl(), map_lgl()` etc.
+
+For now, we will stick with **`map_chr()`**.
 
 ]
 
 .pull-right[
-~~lapply(seeds, magic_message) |> unlist()~~
 
 ```{r}
 seeds <- c(1982138, 942538)
 lapply(seeds, magic_message)
 
-library(purrr) #<<
+library(purrr)
 map_chr(seeds, magic_message) #<<
 ```
 
@@ -277,7 +287,11 @@ magic_message <- function(seed) {
   stringr::str_to_title()
 }
 ```
+
+**What if word lengths differ?**
 ]
+
+--
 
 .pull-right[
 
@@ -286,7 +300,8 @@ magic_message <- function(seed) {
 Let's change that:
 
 ```{r}
-magic_message <- function(seed, word_length) {
+magic_message <- function(seed,
+        word_length) {   #<<
   set.seed(seed)
   sample(letters,
          size = word_length,  #<<
@@ -303,9 +318,10 @@ magic_message <- function(seed, word_length) {
 
 # purrr: Iterating over Two Vectors
 
-## `map2(.x, .y, .f, ...)`
+## Let's apply the new function
 
-Let's apply the new function:
+### `map2(.x, .y, .f, ...)`
+
 
 ```{r}
 seeds <- c(2219868, 110454)
@@ -314,6 +330,8 @@ word_lengths <- c(5, 4)
 map2_chr(seeds, word_lengths, #<<
          magic_message)
 ```
+
+--
 
 #### What if we have more than 2 vectors to iterate over?
 
@@ -335,6 +353,8 @@ So far, our `magic_message()` function can only output letters, not numbers.
 #### Let's change that.
 ]
 
+--
+
 .pull-right[
 ### Flexible choices
 
@@ -355,9 +375,9 @@ magic_message <- function(seed,
 
 # purrr: Iterating over Multiple Vectors
 
-## `pmap(.l, .f, ...)`
+### `pmap(.l, .f, ...)`
 
-`.l = list of vectors`
+**`.l = list of vectors`**
 
 ```{r}
 seeds <- c(2219868, 110454, 639, 1750, 690, 9487)
@@ -368,9 +388,32 @@ choices <- c(rep(list(letters), 5), list(0:9))
 
 --
 
-```{r, ref.label = "pmap-chr"}
+.pull-left[
+```{r}
+purrr::pmap_chr(   #<<
+  list(seeds, choices, word_lengths),  #<<
+  magic_message) |>
+cat()
+
+```
+]
+
+.pull-right[
+```{r, eval = FALSE}
+
+purrr::pmap_chr(   #<<
+  # list of vectors to iterate over
+  list(seeds, choices, word_lengths),
+  
+  # function that takes 3 arguments
+  magic_message) |>
+
+# remove quotes around each word
+cat()
+
 ```
 
+]
 ---
 
 # purrr: Learning More
@@ -428,27 +471,4 @@ https://statistik-dresden.de/
 .right[Twitter: @StatistikInDD]
 .right[https://www.facebook.com/statistikdresden]
 **]]
-
-
----
-
-# .red[Snippets]
-
-
-
-
-```{r}
-
-purrr::pmap_chr(   #<<
-  # list of vectors to iterate over
-  list(seeds, choices, word_lengths),
-  
-  # function that takes 3 arguments
-  magic_message
-) |>
-
-# remove quotes around each word
-cat()
-
-```
 
