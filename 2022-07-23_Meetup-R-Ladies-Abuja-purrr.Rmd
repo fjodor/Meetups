@@ -110,7 +110,7 @@ knitr::include_graphics("libs/_Images/logo-purrr.png")
 
 # What We Want to Achieve
 
-## Iterate over Several Vectors in R Command
+## Iterate over Several Vectors in One R Command
 
 ```{r magic-message, echo = FALSE}
 
@@ -181,17 +181,25 @@ sample(letters, size = 4,
 
 ```
 
+Is this code elegant, <br>especially when we create more words?
+
 ]
 
 ---
 
-.pull-right[
+# From Copy & Paste to Our Own Function
 
-### Improve code
+### When to Write a Function
 
+*You should consider writing a function whenever you’ve copied and pasted a block of code more than twice <br>(i. e. you now have three copies of the same code).*<br><br>
+.right[Hadley Wickham and<br>Garrett Grolemund<br>in **R for Data Science** (R4DS)]
+
+--
+
+.pull-left[
 ```{r}
 
-magic_message <- function(seed) {
+magic_message <- function(seed) {  #<<
   set.seed(seed)
   sample(letters, size = 4, 
          replace = TRUE) |>
@@ -200,18 +208,27 @@ magic_message <- function(seed) {
 }
 
 ```
+]
+
+--
+
+.pull-right[
+
+### Applying the Function
+
 
 ```{r}
 seeds <- c(1982138, 942538)
-lapply(seeds, magic_message) |> unlist()
+lapply(seeds, magic_message)
 ```
 ]
 
 
-#### What if word lengths differ?
 
 
 ---
+
+#### What if word lengths differ?
 
 # Enter purrr
 
