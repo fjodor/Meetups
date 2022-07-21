@@ -255,6 +255,8 @@ For now, we will stick with **`map_chr()`**.
 
 ]
 
+--
+
 .pull-right[
 
 ```{r}
@@ -402,18 +404,100 @@ cat()
 ```{r, eval = FALSE}
 
 purrr::pmap_chr(   #<<
-  # list of vectors to iterate over
+  # .l list of vectors to iterate over
   list(seeds, choices, word_lengths),
   
-  # function that takes 3 arguments
+  # .f function that takes 3 arguments
   magic_message) |>
 
 # remove quotes around each word
 cat()
 
 ```
+]
+
+---
+
+## OK, maybe wow, ...
+
+```{r, echo = FALSE, fig.align = "center"}
+include_graphics("https://media.giphy.com/media/EdRgVzb2X3iJW/giphy.gif")
+```
+
+
+## ... but is it useful in a real-world application?
+
+---
+
+# purrr: Basic Idea
+
+.content-box-blue[
+.Large[.indent[.indent[**`map(.x, .f, ...)`**]]]
+]
+
+Argument | Description | Example
+---------|--------------|---------
+.x | vector or list<br>a data frame is a special case of a list | <br>see `typeof(data)`
+.f | function | `map(1:10, function(x) rnorm(10, x))`
+.f | formula | `map(1:10, ~ rnorm(10, .x))`
+.f | vector / list | `map(sw_films, "title")` <br> extracts the title from sub-lists of *sw_films*
+... | additional arguments passed to **.f**
+
+See Charlotte Wickham - An introduction to purrr: https://github.com/cwickham/purrr-tutorial
+
+---
+
+# Base R: `apply()` vs. tidyverse: `purrr::map()`
+
+.pull-left[
+```{r, echo = FALSE}
+include_graphics("libs/_Images/apply-functions.png")
+```
+
+<br><br>
+* Base R: Iterate over elements using `apply()` functions
+* Inconsistent grammar and function arguments
+* Hard to switch from one function to another
+
+Source: https://colinfay.me/happy-dev-purrr/
+]
+
+.pull-right[
+```{r, echo = FALSE, out.width = "75%", out.height = "75%"}
+include_graphics("libs/_Images/purrr-functions.png")
+```
+
+* `map()` functions: consistent grammar
+* Easy to switch from one function to another
 
 ]
+
+---
+
+## purrr: `map()` Functions
+
+purrr Function | Description | Example
+---------------|--------------|---------
+`map()` | Applies a function to each element of the input; result is always a **list** (as in `lapply()`) | `map(1:4, rnorm, n = 5)`<br>compare to `lapply(1:4, rnorm, n = 5)`
+`map_chr()` | Result: *character vector* (string) | `map_chr(c("John F. Kennedy", "Barack Obama"), toupper)`
+`map_int()` | Result: numeric *integer* | `map_int(c("John F. Kennedy", "Barack Obama"), nchar)`
+`map_dbl()` | Result: numeric, including decimals *(double)* | `map_dbl(sample(1:10, 5), sqrt)`
+`map_lgl()` | Result: *logical vector* (TRUE / FALSE) | `map_lgl(c(1, 2, NA, 4), is.na)`
+`map_dfr()` / <br> `map_dfc()` | Result: *data frame*, created by row binding / <br>column binding | `map_dfr(c(a = 3, b = 10), rnorm, n = 100)`
+
+---
+
+# Further *purrr* Functions
+
+Function | Description
+---------|-------------
+`walk2()` | analogous to `map2()`, no output in the console ("silent" return value .x)
+`pwalk()` | analogous to `pmap()`, no output in the console
+`partial()` | pre-fill function arguments, e. g.: <br> `mean_na_rm <- partial(mean, na.rm = TRUE)` <br> `mean_na_rm(c(1, 2, 3, NA))` <br> [1] 2
+`compact()` | Discard elements that are NULL or of length 0, e. g.: <br> `list(a = 1:3, b = NULL, c = "text") %>% compact()`
+`flatten()` | Remove a level of hierarchy from a list to make it less nested, e. g.: <br> `rerun(2, sample(4)) %>% flatten_int()` <br> compare to `rerun(2, sample(4))`
+
+
 ---
 
 # purrr: Learning More
@@ -472,3 +556,9 @@ https://statistik-dresden.de/
 .right[https://www.facebook.com/statistikdresden]
 **]]
 
+
+---
+
+# .red[Todo]
+
+* Introduce walk(); use built-in dataset (diamonds?)
