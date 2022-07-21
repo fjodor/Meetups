@@ -43,7 +43,6 @@ knitr::knit_hooks$set(output = function(x, options) {
 ```
 
 
-
 .pull-left[
 
 # Functional Programming
@@ -65,9 +64,7 @@ knitr::include_graphics("libs/_Images/logo-R.png")
 ]]
 
 .pull-right[
-<br><br>
-
-### Let's Turn On the Magic!
+<br><br><br><br><br><br><br><br>
 
 ```{r, echo = FALSE, fig.align = "center", out.width = "100%", out.height = "100%"}
 knitr::include_graphics("libs/_Images/2022-07-23-Abuja-purrr.webp")
@@ -84,11 +81,38 @@ knitr::include_graphics("libs/_Images/2022-07-23-Abuja-purrr.webp")
 
 ---
 
+# Let's bring on the Magic!
+
+.pull-left[
+![](https://media.giphy.com/media/lzL6avFZQ8PJEjdFgS/giphy.gif)
+]
+
+--
+
+.pull-right[
+
+## Let's make R purrr!
+
+```{r, echo = FALSE, fig.align = "center"}
+knitr::include_graphics("libs/_Images/logo-purrr.png")
+```
+]
+
+--
+
+### We will use magic two-fold:
+
+* **The magic of the purrr package**
+
+* **Magic numbers to generate messages from random letters**
+
+---
+
 # What We Want to Achieve
 
-## Iterate over Several Vectors in One Line of R Code
+## Iterate over Several Vectors in R Command
 
-```{r, echo = FALSE}
+```{r magic-message, echo = FALSE}
 
 seeds <- c(2219868, 110454, 639, 1750, 690, 9487)
 word_lengths <- c(5, 4, 2, 3, 2, 4)
@@ -103,63 +127,63 @@ magic_message <- function(seed, choices, word_length) {
 
 ```
 
+
+```{r pmap-chr}
+
+purrr::pmap_chr(   #<<
+  list(seeds, choices, word_lengths),
+  magic_message) |>
+cat()
+
+```
+
+---
+
+# Let's Go Step By Step
+
 .pull-left[
+### Drawing Random Letters ...
+
 ```{r}
 
-set.seed(1)
+set.seed(1)  #<<
 sample(letters, size = 5, replace = TRUE) |>
   paste(collapse = "")
 
-set.seed(2)
+set.seed(2)  #<<
 sample(letters, size = 5, replace = TRUE) |>
   paste(collapse = "")
 
 ```
+
+** As Magicians, we should know some magic seeds ... **
+
 ]
 
 --
 
 .pull-right[
-```{r pmap-chr}
 
-purrr::pmap_chr(   #<<
-  # list of vectors to iterate over
-  list(seeds, choices, word_lengths),
-  
-  # function that takes 3 arguments
-  magic_message
-) |>
+### Knowing a Few Magic Seeds ...
 
-# remove quotes around each word
-cat()
+```{r}
+set.seed(1982138)  #<<
+sample(letters, size = 4, 
+       replace = TRUE) |>
+  paste(collapse = "") |>
+  stringr::str_to_title()
+
+set.seed(942538)  #<<
+sample(letters, size = 4, 
+       replace = TRUE) |> 
+  paste(collapse = "") |>
+  stringr::str_to_title()
 
 ```
+
 ]
 
 ---
-
-# Knowing a Few Magic Seeds ...
-
-.pull-left[
-
-### Manually build up words
-
-```{r}
-set.seed(1982138)
-sample(letters, size = 4, replace = TRUE) |>
-  paste(collapse = "") |>
-  stringr::str_to_title()
-
-set.seed(942538)
-sample(letters, size = 4, replace = TRUE) |> 
-  paste(collapse = "") |>
-  stringr::str_to_title()
-
-```
-
-]
-
---
 
 .pull-right[
 
@@ -181,10 +205,11 @@ magic_message <- function(seed) {
 seeds <- c(1982138, 942538)
 lapply(seeds, magic_message) |> unlist()
 ```
+]
+
 
 #### What if word lengths differ?
 
-]
 
 ---
 
@@ -386,3 +411,27 @@ https://statistik-dresden.de/
 .right[Twitter: @StatistikInDD]
 .right[https://www.facebook.com/statistikdresden]
 **]]
+
+
+---
+
+# .red[Snippets]
+
+
+
+
+```{r}
+
+purrr::pmap_chr(   #<<
+  # list of vectors to iterate over
+  list(seeds, choices, word_lengths),
+  
+  # function that takes 3 arguments
+  magic_message
+) |>
+
+# remove quotes around each word
+cat()
+
+```
+
