@@ -443,14 +443,17 @@ include_graphics("https://media.giphy.com/media/EdRgVzb2X3iJW/giphy.gif")
 --
 
 ###  Example: Saving subsets of Data in separate csv files
-### .green[See script: *purrr-map2-csv.R*]
+
+using a *vector of filenames* and a *vector of categories* (subgroups)
+
+#### .green[See script: *Abuja-2-map2-csv.R*]
 
 ---
 
 <br><br><br>
 # .center[ Some Background]
 
-# .center[ About `purrr`]
+# .center[ about `purrr`]
 
 .center[![logo purrr](libs/_Images/logo-purrr.png)]
 
@@ -550,7 +553,7 @@ include_graphics("libs/_Images/logo-purrr.png")
   + https://github.com/cwickham/purrr-tutorial
   + https://resources.rstudio.com/wistia-rstudio-conf-2017/happy-r-users-purrr-tutorial-charlotte-wickham
 
-**Colin Fay**: Vous allez aimer avoir {purrr} (Artile in English)  
+**Colin Fay**: Vous allez aimer avoir {purrr} (Article in English)  
 https://colinfay.me/happy-dev-purrr/
 ]
 ---
@@ -585,9 +588,3 @@ https://statistik-dresden.de/
 .right[https://www.facebook.com/statistikdresden]
 **]]
 
-
----
-
-# .red[Todo]
-
-* Show possibly() und safely()
