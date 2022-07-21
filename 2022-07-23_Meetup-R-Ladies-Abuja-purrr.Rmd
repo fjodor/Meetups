@@ -438,7 +438,7 @@ include_graphics("https://media.giphy.com/media/EdRgVzb2X3iJW/giphy.gif")
 <br><br><br>
 # .center[ Some Background]
 
-# .center[ About purrr]
+# .center[ About `purrr`]
 
 .center[![logo purrr](libs/_Images/logo-purrr.png)]
 
@@ -578,3 +578,4 @@ https://statistik-dresden.de/
 # .red[Todo]
 
 * Introduce walk(); use built-in dataset (diamonds?)
+* Show possibly() und safely()
