@@ -424,8 +424,24 @@ cat()
 include_graphics("https://media.giphy.com/media/EdRgVzb2X3iJW/giphy.gif")
 ```
 
+--
 
 ## ... but is it useful in a real-world application?
+
+--
+
+###  Example: Saving subsets of Data in separate csv files
+### .green[See script: *purrr-map2-csv.R*]
+
+---
+
+<br><br><br>
+# .center[ Some Background]
+
+# .center[ About purrr]
+
+.center[![logo purrr](libs/_Images/logo-purrr.png)]
+
 
 ---
 

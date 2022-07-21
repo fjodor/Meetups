@@ -1,33 +1,28 @@
-#### Aufgabe: Schleife ersetzen mit purrr ####
+#### Replacing Loops Using purrr ####
 
-# Datenvorbereitung
+library(tidyverse)
 
-artists <- songs2000 %>% 
-  count(artist) %>% 
-  slice_max(n, n = 15, with_ties = FALSE) %>% 
-  pull(artist)
+# Data Preparation
 
-top_artists <- songs2000 %>% 
-  filter(artist %in% artists)
+cuts <- levels(diamonds$cut)
 
-filenames <- artists %>% 
+filenames <- diamonds %>% 
+  pull(cut) %>% 
   str_replace_all(" ", "_") %>% 
-  paste0(".csv")
+  str_c("Diamonds_Cut_", ., ".csv")
 
+# Classic for loop
 
-# Klassische for-Schleife
+# Data and files names are constructed inside the loop
 
-# Daten und Dateinamen werden innerhalb der Schleife gebildet
-# mit jeweils neuer Zuweisung
-
-for (my_artist in artists) {
+for (my_cut in cuts) {
   
-  data <- songs2000 %>% 
-    filter(artist %in% my_artist)
+  data <- diamonds %>% 
+    filter(cut %in% my_cut)
   
-  filename <- my_artist %>% 
+  filename <- my_cut %>% 
     str_replace_all(" ", "_") %>% 
-    paste0(".csv")
+    str_c("Diamonds_Cut_", ., ".csv")
   
   readr::write_csv(data, file = filename)
 }
@@ -35,42 +30,42 @@ for (my_artist in artists) {
 unlink(filenames)
 
 
-# Mit benutzerdefinierter Funktion
+# User defined function
 
-my_csv1 <- function(my_artist) {
+my_csv1 <- function(my_cut) {
   
-  data <- songs2000 %>% 
-    filter(artist %in% my_artist)
+  data <- diamonds %>% 
+    filter(cut %in% my_cut)
   
-  filename <- my_artist %>% 
+  filename <- my_cut %>% 
     str_replace_all(" ", "_") %>% 
-    paste0(".csv")
+    str_c("Diamonds_Cut_", ., ".csv")
   
   readr::write_csv(data, file = filename)
   
 }
 
-for (my_artist in artists) {
-  my_csv1(my_artist)
+for (my_cut in cuts) {
+  my_csv1(my_cut)
 }
 
 unlink(filenames)
 
 
-# purrr-Lösung
-# Ziel: Vektor filenames verwenden anstatt filename in jedem Schleifendurchlauf separat zuzuweisen
-# Funktion kürzen, filename als Funktionsargument ergänzen
-# und mit purrr-Funktion über ZWEI Vektoren artists und filenames iterieren
+# purrr solution
+# Approach: Use vector of filenames instead of assigning file name inside the loop
+# Adapt function, provide filename as function argument
+# Iterate over cuts and filenames
 
-my_csv2 <- function(my_artist, filename) {
+my_csv2 <- function(my_cut, filename) {
   
-  data <- songs2000 %>% 
-    filter(artist %in% my_artist)
+  data <- diamonds %>% 
+    filter(ct %in% my_cut)
   
   readr::write_csv(data, file = filename)
   
 }
 
-purrr::map2(artists, filenames, my_csv2)
+purrr::map2(cuts, filenames, my_csv2)
 
 unlink(filenames)
