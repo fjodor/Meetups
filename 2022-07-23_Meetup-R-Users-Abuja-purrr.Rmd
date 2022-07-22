@@ -436,6 +436,13 @@ cat()
 include_graphics("https://media.giphy.com/media/EdRgVzb2X3iJW/giphy.gif")
 ```
 
+```{r, echo = FALSE, fig.align = "center", out.height = "25%", out.width = "25%"}
+# for PDF version - looks better (screenshot shows back of head, not recognizable)
+# include_graphics("libs/_Images/amazed-bird.png")
+```
+.center[Source: giphy.com]
+
+
 --
 
 ## ... but is it useful in a real-world application?
@@ -551,7 +558,7 @@ include_graphics("libs/_Images/logo-purrr.png")
 
 **Charlotte Wickham**
   + https://github.com/cwickham/purrr-tutorial
-  + https://resources.rstudio.com/wistia-rstudio-conf-2017/happy-r-users-purrr-tutorial-charlotte-wickham
+  + https://www.rstudio.com/resources/rstudioconf-2017/happy-r-users-purrr-tutorial-/
 
 **Colin Fay**: Vous allez aimer avoir {purrr} (Article in English)  
 https://colinfay.me/happy-dev-purrr/
