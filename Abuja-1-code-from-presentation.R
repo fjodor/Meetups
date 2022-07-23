@@ -148,6 +148,7 @@ magic_message <- function(seed,
 seeds <- c(2219868, 110454, 639, 1750, 690, 9487)
 word_lengths <- c(5, 4, 2, 3, 2, 4)
 choices <- c(rep(list(letters), 5), list(0:9))
+choices
 
 purrr::pmap_chr(   
   list(seeds, choices, word_lengths),  

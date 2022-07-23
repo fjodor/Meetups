@@ -14,7 +14,7 @@ diamonds2 %>%
   ggplot(aes(x = carat, y = price, color = depth)) +
   geom_point(alpha = 0.6) +
   labs(title = "Diamonds: Carat vs. Price",
-       subtitle = glue::glue("Color: {diamonds$color}; Clarity: {diamonds$clarity}")) +
+       subtitle = glue::glue("Clarity: I1")) +
   theme_bw()
 
 # Plots for other clarities: Filter manually?
@@ -55,5 +55,5 @@ purrr::walk(my_clarities, ~print(my_plot(.)))
 # Alternative for anonymous functions
 walk(my_clarities, function(x) print(my_plot(x)))
 
-# New since R 4.2.0: Base R shortcut for anonymous function(x)
+# New since R 4.1.0: Base R shortcut for anonymous function(x)
 walk(my_clarities, \(x) print(my_plot(x)))

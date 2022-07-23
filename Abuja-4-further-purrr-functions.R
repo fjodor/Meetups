@@ -2,6 +2,8 @@
 
 # Further purrr functions
 
+library(tidyverse)
+
 # partial #
 # pre-fill function arguments
 
@@ -70,10 +72,6 @@ stat_round(1000:5000)
 
 library(repurrrsive)
 
-################################################
-# Star Wars
-
-library(repurrrsive)
 data(sw_films)
 
 str(sw_films)
@@ -93,7 +91,6 @@ sapply(sw_films, function(x) x[[1]])
 map_chr(sw_films, "title")
 
 # Task: Extract director
-
 map_chr(sw_films, "director")
 
 map_dfr(sw_films, magrittr::extract, c("title", "release_date"))

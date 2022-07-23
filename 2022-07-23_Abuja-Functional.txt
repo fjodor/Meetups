@@ -1,6 +1,8 @@
 RStudio Cloud:
 https://rstudio.cloud/project/4284193
 
+GMX Cloud:
+https://c.gmx.net/@330250598752459575/0oQL6E6ZQ0aypqjEpjsvIw
 
 Functional Programming including some purrr MAGIC
 
