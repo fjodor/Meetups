@@ -1,0 +1,244 @@
+---
+title: "Quarto"
+title-slide-attributes: 
+  data-background-image: libs/_Images/2023-05-08-Darmstadt-Quarto.webp
+  data-background-position: top
+  data-background-size: 25%
+  # data-background-opacity: "0.3"
+  data-background-color: "#F9F9F9"
+institution: "Wolf Riepl Social Science Research"
+author: "8. Mai 2023"
+format: 
+  revealjs:
+    theme: default
+    highlight-style: a11y
+execute:
+  echo: false
+  eval: true
+  freeze: auto
+  warning: false
+  message: false
+callout-appearance: simple
+---
+
+
+## Quarto
+
+```{r}
+#| include: false
+#| message: false
+
+library(knitr)
+library(tidyverse)
+library(fontawesome)
+Sys.setenv(LANG="en")
+# Sys.setenv(LANG="de")
+Sys.setlocale("LC_TIME", "en_GB.utf8")
+```
+
+### Warum? Houston, wir haben ein Problem!
+
+```{r, out.height = "60%", out.width = "60%", fig.align = 'center'}
+knitr::include_graphics("libs/_Images/markdown-houston.png")
+```
+
+## Quarto {.smaller}
+
+### Warum? Reproduzierbarkeit von Studien, Datenanalysen
+
+Schätzungen:
+
+- 75% - 90% prä-klinischer Studienergebnisse nicht reproduzierbar
+- Kosten für bio-medizinische Firmen in den USA pro Jahr: 28 Mrd. USD
+
+Quelle: Vortrag von Garrett Grolemund, EARL-Konferenz, London
+
+Video: <https://www.youtube.com/watch?v=HVlwNayog-k>
+
+#### Reproduzierbare Ergebnisse dank Quarto!
+
+
+## Markdown und Quarto {.smaller}
+
+### Word, PDF, Powerpoint, HTML, und mehr!
+
+::: columns
+::: column
+* Quarto wurde 2022 vorgestellt
+* basiert auf Markdown und Pandoc
+* Markdown: einfache Auszeichnungssprache („Markup“-Sprache)  
+Weitere Markup-Sprachen: HTML, XML  
+* Word-Dokumente erfordern MS Word-Installation
+* PDF-Dokumente:
+  + LaTeX-Installation: **TinyTex** (Alternative: MiKTeX)
+  + Oder HTML aus Browser als PDF drucken bzw. `pagedown::chrome_print()`
+:::
+
+::: column
+```{r quarto-logo, echo = FALSE, out.width = "100%", out.height = "100%", fig.align = "right"}
+knitr::include_graphics("libs/_Images/logo-quarto.png")
+```
+:::
+:::
+
+Dokumentation: <https://quarto.org/>
+
+## Quarto: Los geht's
+
+Templates at *File - New File - Quarto Document*
+
+::: columns
+::: {.column width="45%" style="font-size: 1.7rem"}
+```{r markdown-vorlage, echo = FALSE, out.width="75%", out.height="75%"}
+knitr::include_graphics("libs/_Images/Quarto-Vorlage.png")
+```
+
+Overview of formats:\
+<https://quarto.org/docs/output-formats/all-formats.html>
+:::
+
+::: {.column width="55%" style="font-size: 1.7rem"}
+Specify output format in YAML header:
+
+-   format: html
+-   format: docx
+-   More: pdf, OpenOffice (odt), Powerpoint (pptx), epub, MediaWiki, Jupyter, InDesign, ...
+
+Command line interface:\
+`quarto render document.qmd --to html`
+
+In R: `quarto::quarto_render("document.qmd", output_format = "docx")`
+:::
+:::
+
+## Quarto: YAML Header {.smaller}
+
+::: columns
+::: column
+-   Meta information like title, author, date, format
+-   YAML Ain't Markup Language \<- Yet Another Markup Language
+-   Starts and ends with `---` at top of document
+-   Basic structure can be taken from RStudio template
+
+**Render:** Create document from .qmd file
+:::
+
+::: column
+```{r yaml, echo = FALSE, out.width = "100%", out.height = "100%"}
+knitr::include_graphics("libs/_Images/yaml-header-quarto.png")
+```
+:::
+:::
+
+------------------------------------------------------------------------
+
+### Quarto / R Markdown: Mix R Code and Text
+
+```{r R-Text-Code, echo = FALSE, out.width = "100%", out.height = "100%"}
+knitr::include_graphics("libs/_Images/Text_R-Code.png")
+knitr::include_graphics("libs/_Images/Text_R-Code_Output.png")
+```
+
+------------------------------------------------------------------------
+
+### Quarto / R Markdown: Mix R Code and Text
+
+::: columns
+::: {.column style="font-size: 1.8rem"}
+| Markdown Code                | Result                                                                  |
+|-----------------------|-------------------------------------------------|
+| *'r R-code'*                 | Embed R code in text,<br>e. g. "Data based on 'r nrow(albums)' albums." |
+| \#<br>\##                    | Heading 1 <br> Heading 2 ... usw.                                       |
+| \*Text\*<br>\_Text\_         | *Italics*                                                               |
+| \*\*Text\*\*<br>\_\_Text\_\_ | **Bold**                                                                |
+:::
+
+::: {.column style="font-size: 1.8rem"}
+| Markdown Code                  | Result          |
+|--------------------------------|-----------------|
+| \* Aspect 1<br>\* Aspect 2<br> | Unnumbered list |
+| 1\. Aspect 1<br>2. Aspect 2    | Numbered List   |
+
+<br>
+
+**Try the visual editor!**
+
+Further formattings see:
+
+-   <https://rmarkdown.rstudio.com/authoring_basics.html>
+-   Markdown Quick Reference in RStudio - Help
+:::
+:::
+
+## Quarto: R Codeblock
+
+```{r}
+#| label: "diamonds"
+#| echo: false
+#| eval: false
+
+library(tidyverse)
+ggplot(diamonds, aes(x = carat, y = price, color = color)) +
+  geom_point() 
+```
+
+::: {style="font-size: 1.8rem"}
+![](libs/_Images/R-Codeblock-new.png)
+
+-   Starts with ```` ```{r} ````; ends with ```` ``` ````
+-   RStudio automatically colors background grey
+-   Recommended: assign unique name, here: *diamonds*
+-   `message: false`: hide messages
+-   `echo: true`: show code in document
+-   `eval: false`: don't run code
+-   **Ctrl + Alt + I** insert code block
+:::
+
+## More Interactivity: Shiny {.smaller}
+
+::: columns
+::: column
+-   Interactive app reacting to user input
+-   R required during runtime!
+    -   Local R Session *or*
+    -   Server-based R Session (Website)
+-   Formats: Standalone app or embedded in Quarto / Markdown documents
+
+Learn Shiny:
+
+-   <https://shiny.rstudio.com/>
+-   Hadley Wickham's Book: [Mastering Shiny](https://mastering-shiny.org/)
+:::
+
+::: column
+```{r, echo = FALSE, out.width = "70%", out.height = "70%"}
+knitr::include_graphics("libs/_Images/cover-mastering-shiny.png")
+```
+:::
+:::
+
+## Some Typical Challenges
+
+::: {style="font-size: 1.8rem"}
+| Task / Challenge                                                                      | Solution / Hint                                                                      |
+|------------------------------------|------------------------------------|
+| Recoding factor levels                                                                | use *forcats*                                                                        |
+| Plots: Categories in undesired order                                                  | recode factor levels, e. g. <br>`forcats::fct_inorder(), fct_infreq(), fct_recode()` |
+| [Error: Object "x" not found]{style="color:red"}                                      | Upper / lower case? Forgot quotes? \|                                                |
+| [Error in ...: could not find function ...]{style="color:red"}                        | R Package not attached? `library(package)` <br>Search: `??`, e. g. `??facet_wrap` \| |
+| [Error: unexpected symbol in ...]{style="color:red"}                                  | Open parenthesis?                                                                    |
+| [Error in which(a = 2) : argument "x" is missing, with no default]{style="color:red"} | Logical comparison: `==` <br> e. g. `which(a == 2)`                                  |
+:::
+
+## Outlook on Workshop Topics {.smaller}
+
+-   A deeper dive into Functional Programming
+-   Creating Your Own R Packages
+-   Speeding Up R Code
+    -   How to measure runtimes effectively
+    -   Increase efficiency of sequential code
+    -   Techniques to run code in parallel
+-   Shiny Apps
+    -   The reactive paradigm
+    -   Software development practices: outsourcing functions from main app, Shiny modules
+    -   Turning your app into an R package
