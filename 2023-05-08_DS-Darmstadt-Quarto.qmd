@@ -343,3 +343,93 @@ knitr::include_graphics("libs/_Images/cover-blogdown.png", )
 
 :::
 :::
+
+
+## Jupyter und Quarto
+
+* Quarto kann Jupyter Notebooks rendern
+  + als "normales" Notebook: **`.ipynb`**
+  + als Text: **`.qmd`**
+
+Jupyter Lab starten aus Shell:
+
+* Windows: `py -m jupyter lab`
+* Mac / Linux: `python3 -m jupyter lab`
+
+Details siehe <https://quarto.org/docs/tools/jupyter-lab.html>
+
+
+##  Jupyter und Quarto
+
+Formate in Quarto Kommandozeile umwandeln:
+
+* Von .ipynb zu .qmd:  
+  `quarto convert basics-jupyter.ipynb`
+  
+* Von .qmd zu .ipynb:  
+  `quarto convert basics-jupyter.qmd`
+  
+
+## Jupyter: .ipynb {.smaller}
+
+::: columns
+::: column
+
+```{r}
+include_graphics("libs/_Images/quarto-jupyter-ipynb.png")
+```
+
+:::
+
+::: column
+* Kommandozeile: <br>`quarto preview notebook.ipynb`
+* Browserfenster mit Live-Vorschau öffnet sich
+* Automatisches Update bei jedem Speichern
+* Ausgabeformat: <br>`quarto preview notebook.ipynb --to pdf`
+
+:::
+:::
+
+
+## Jupyter: .ipynb {.smaller}
+
+* Rendern:  
+  `quarto render notebook.ipynb`
+
+* Rendern zu bestimmtem Format:  
+  `quarto render notebook.ipynb --to docx`
+  
+* Achtung: Beim Rendern werden die Zellen (Codeblöcke) **nicht automatisch** ausgeführt!  
+  + `quarto render notebook.ipynb --execute`
+  + YAML-Kopf:
+
+```{r, eval = FALSE, echo = TRUE}
+---
+title: "My Notebook"
+execute: 
+  enabled: true
+---
+```
+
+
+## Jupyter: .qmd {.smaller}
+
+::: columns
+::: column
+
+```{r}
+#| out.width: 150%
+#| out.height: 150%
+
+include_graphics("libs/_Images/quarto-jupyter-text.png")
+```
+
+:::
+
+::: column
+* YAML-Kopf: <br> `jupyter: python3`
+
+* Rendern: <br> `quarto render basics-jupyter.qmd`
+
+:::
+:::
