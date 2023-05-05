@@ -3,7 +3,7 @@ title: "Quarto"
 title-slide-attributes: 
   data-background-image: libs/_Images/2023-05-08-Darmstadt-Quarto.webp
   data-background-position: top
-  data-background-size: 50%
+  data-background-size: 32%
   # data-background-opacity: "0.3"
   data-background-color: "#F9F9F9"
 institution: "Wolf Riepl Social Science Research"
@@ -63,7 +63,7 @@ Video: <https://www.youtube.com/watch?v=HVlwNayog-k>
 ### Word, PDF, Powerpoint, HTML, und mehr!
 
 ::: columns
-::: {.column width="60%"}
+::: {.column width="60%" style="font-size: 1.7rem"}
 * Quarto wurde 2022 vorgestellt
 * basiert auf Markdown und Pandoc
 * Markdown: einfache Auszeichnungssprache („Markup“-Sprache)  
@@ -93,14 +93,17 @@ Vorlagen unter *File - New File - Quarto Document*
 knitr::include_graphics("libs/_Images/Quarto-Vorlage.png")
 ```
 
-:::
-
-::: {.column width="55%" style="font-size: 1.7rem"}
 Ausgabeformat im YAML-Header einstellen:
 
 * format: html
 * format: docx
-* Weitere: pdf, OpenOffice (odt), Powerpoint (pptx), epub, MediaWiki, Jupyter, InDesign, ...
+
+:::
+
+::: {.column width="55%" style="font-size: 1.7rem"}
+Weitere Ausgabeformate:  
+
+pdf, OpenOffice (odt), Powerpoint (pptx), epub, MediaWiki, Jupyter, InDesign, ...
 
 In der Kommandozeile:  
 `quarto render document.qmd --to html`
@@ -119,7 +122,7 @@ In R:
 ::: column
 * Enthält Meta-Informationen, z. B. Titel, Autor, Datum, Ausgabeformat
 * YAML Ain‘t Markup Language <- Yet Another Markup Language
-* Gekennzeichnet mit jeweils drei	---	am Anfang des Dokuments
+* Gekennzeichnet mit jeweils drei	`---`	am Anfang des Dokuments
 * Grundgerüst kann aus RStudio-Vorlage übernommen und angepasst werden
 
 **Render:** Dokument aus .qmd-Vorlage erstellen
@@ -134,7 +137,7 @@ knitr::include_graphics("libs/_Images/yaml-header-quarto.png")
 
 ------------------------------------------------------------------------
 
-### Quarto / R Markdown: R-Code und Text mischen
+### Quarto / Markdown: R-Code und Text mischen
 
 ```{r R-Text-Code, echo = FALSE, out.width = "100%", out.height = "100%"}
 knitr::include_graphics("libs/_Images/Text_R-Code.png")
@@ -143,7 +146,7 @@ knitr::include_graphics("libs/_Images/Text_R-Code_Output.png")
 
 ------------------------------------------------------------------------
 
-### Quarto / R Markdown: R-Code und Text mischen
+### Quarto / Markdown: R-Code und Text mischen
 
 ::: columns
 ::: {.column style="font-size: 1.8rem"}
@@ -190,17 +193,16 @@ ggplot(diamonds, aes(x = carat, y = price, color = color)) +
 * Beginnt mit ```` ```{r} ````
 * endet mit ```` ``` ```` 
 * Wird von R Studio automatisch grau hinterlegt
-* Empfehlung: benennen; hier: *diamonds*; jeder Name muss eindeutig sein
 * `message: false`: keine Hinweise ausgeben
 * `echo: true`: Code im Dokument anzeigen
-* p`eval: false`: Code nicht ausführen
+* `eval: false`: Code nicht ausführen
 * Tastaturkürzel: **Strg + Alt + I** fügt Codeblock ein; siehe Schaltfläche
 
 :::
 
 ## Chunk-Optionen
 
-Für weitere Chunk-Optionen neben *echo* und *eval* siehe https://yihui.org/knitr/options/
+Für weitere Chunk-Optionen neben *echo* und *eval* siehe <https://yihui.org/knitr/options/>
 
 * Einstellungen für Grafiken, z. B. fig.width, fig.height
 
