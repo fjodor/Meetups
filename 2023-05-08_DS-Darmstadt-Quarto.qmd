@@ -150,7 +150,7 @@ knitr::include_graphics("libs/_Images/Text_R-Code_Output.png")
 
 ::: columns
 ::: {.column style="font-size: 1.8rem"}
-| Markdown Code                | Result                                                                  |
+| Markdown Code                | Ergebnis                                                                |
 |-----------------------|-------------------------------------------------|
 | *'r R-code'*                 | R-Code in laufenden Text einbetten,<br>z. B. „Die Daten beruhen auf 'r nrow(albums)' Alben.“ |
 | \#<br>\##                    | Überschrift 1 <br> Überschrift 2 ... usw.                                       |
@@ -158,8 +158,8 @@ knitr::include_graphics("libs/_Images/Text_R-Code_Output.png")
 | \*\*Text\*\*<br>\_\_Text\_\_ | **fett**                                                                |
 :::
 
-::: {.column style="font-size: 1.8rem"}
-| Markdown Code                  | Result          |
+::: {.column style="font-size: 1.7rem"}
+| Markdown Code                  | Ergebnis        |
 |--------------------------------|-----------------|
 | \* Punkt 1<br>\* Punkt 2<br> | Nicht nummerierte Liste |
 | 1\. Punkt 1<br>2. Punkt 2    | Nummerierte Liste   |
@@ -172,6 +172,7 @@ Weitere Formatierungen siehe:
 
 -   <https://rmarkdown.rstudio.com/authoring_basics.html>
 -   Markdown Quick Reference in der RStudio-Hilfe
+
 :::
 :::
 
