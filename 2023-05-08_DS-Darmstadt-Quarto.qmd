@@ -229,7 +229,7 @@ Für weitere Chunk-Optionen neben *echo* und *eval* siehe <https://yihui.org/kni
 Shiny lernen:
 
   + RStudio-Webseiten: <https://shiny.rstudio.com/>
-  + Buch von Hadley Wickham: [Mastering Shiny](https://mastering-shiny.org/)
+  + Buch von Hadley Wickham: <br>[Mastering Shiny](https://mastering-shiny.org/)
 
 :::
 
@@ -240,3 +240,106 @@ knitr::include_graphics("libs/_Images/cover-mastering-shiny.png")
 :::
 :::
 
+## Literatur: Markdown vs. Quarto {.smaller}
+
+::: columns
+::: {.column width="55%"}
+
+```{r Markdown-book}
+#| echo: false
+#| fig.show: hold
+#| out.width: "12%"
+#| out.height: "12%"
+#| layout-ncol: 2
+
+# out.extra: 'style="border:10px solid white;"'
+
+knitr::include_graphics("libs/_Images/cover-markdown.png")
+knitr::include_graphics("libs/_Images/cover-R4DS.png")
+```
+
+**Quarto: <https://quarto.org/>**
+
+:::
+
+
+::: {.column width="45%"}
+
+Beide Bücher sind online kostenlos lesbar
+
+* [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+* [R for Data Science](https://r4ds.had.co.nz/index.html)
+	Kap. 27, 29, 30
+
+
+Hilfe in RStudio
+
+* Help – Markdown Quick Reference
+* Help – Cheatsheets:  
+R Markdown Cheat Sheet  
+R Markdown Reference Guide
+
+:::
+:::
+
+
+## Bookdown - Bücher direkt aus R {.smaller}
+
+::: columns
+::: {.column width="60%"}
+
+* ***Neu: wird von Quarto abgedeckt, ohne Erweiterungspakete!***
+
+::: {style="font-size: 1.7rem"}
+* R-Paket von **Yihui Xie** (knitr, animation)
+
+* Grundlage: Markdown
+* Dynamische Bearbeitung
+* Flexible Outputs, z. B. PDF auf Knopfdruck
+* Einfachere Auszeichnungssprache als LaTeX
+* Online-Veröffentlichung, z. B. auf GitHub, bookdown.org, beliebiger Webserver
+* Online-Veröffentlichung ermöglicht interaktive Inhalte:  
+Shiny-Apps, HTML-Widgets, Animationen
+:::
+
+<https://bookdown.org/>
+
+:::
+
+::: {.column width="40%"}
+
+```{r bookdown, echo = FALSE, out.width = "90%", out.height = "90%"}
+knitr::include_graphics("libs/_Images/cover-bookdown.jpg", )
+```
+
+:::
+:::
+
+
+## Blogdown - Websites / Blogs {.smaller}
+
+::: columns
+::: {.column width="60%"}
+
+* ***Neu: wird von Quarto abgedeckt, ohne Erweiterungspakete!***
+
+* R-Paket von **Yihui Xie** (knitr, animation)
+
+* Erzeugt statische Webseite:
+  + HTML, CSS, JavaScript, Bilder, ...
+  + Kein PHP, keine Datenbank, keine serverbasierte R-Installation erforderlich
+
+* Grundlage: Markdown
+  + Dynamische Bearbeitung
+  + Flexible Outputs, z. B. PDF, Buch, etc.
+  
+<https://bookdown.org/yihui/blogdown/>
+:::
+
+::: {.column width="40%"}
+```{r blogdown, echo = FALSE, out.width = "100%", out.height = "100%"}
+knitr::include_graphics("libs/_Images/cover-blogdown.png", )
+```
+
+:::
+:::
