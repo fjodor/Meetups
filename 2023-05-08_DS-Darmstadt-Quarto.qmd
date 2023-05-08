@@ -84,7 +84,10 @@ PDF erstellen:
 
 - LaTeX-Installation: **TinyTex** (schlankere Alternative zu MiKTeX)
 - HTML aus Browser als PDF drucken bzw. `pagedown::chrome_print()`
+:::
 
+::: notes
+zeigen: Reproduzierbarkeit, Daten in Environment, aber nicht im Dokument
 :::
 
 
@@ -103,7 +106,8 @@ PDF erstellen:
 
 ::: {.column width="30%" style="font-size: 2rem"}
 ### R Markdown
-- basiert auf R-Paket `rmarkdown` von JJ Allaire, Yihui Xie und vielen anderen
+- Basiert auf R-Paket `rmarkdown` von JJ Allaire, Yihui Xie und vielen anderen
+- D. h. per Design mit R verknüpft!
 :::
 :::
 

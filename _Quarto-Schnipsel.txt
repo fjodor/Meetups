@@ -1,6 +1,1 @@
 Zeigen: Daten in Arbeitsumgebung, nicht in Dokument geladen
-
-* Word-Dokumente erfordern MS Word-Installation
-* PDF-Dokumente:
-  + LaTeX-Installation: **TinyTex** (Alternative: MiKTeX)
-+ Oder HTML aus Browser als PDF drucken bzw. `pagedown::chrome_print()`
