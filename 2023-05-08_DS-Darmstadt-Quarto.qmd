@@ -58,7 +58,7 @@ Video: <https://www.youtube.com/watch?v=HVlwNayog-k>
 #### Reproduzierbare Ergebnisse dank Quarto!
 
 
-## Markdown und Quarto {.smaller}
+## Markdown und Quarto
 
 ### Word, PDF, Powerpoint, HTML, und mehr!
 
@@ -68,10 +68,6 @@ Video: <https://www.youtube.com/watch?v=HVlwNayog-k>
 * basiert auf Markdown und Pandoc
 * Markdown: einfache Auszeichnungssprache („Markup“-Sprache)  
 Weitere Markup-Sprachen: HTML, XML  
-* Word-Dokumente erfordern MS Word-Installation
-* PDF-Dokumente:
-  + LaTeX-Installation: **TinyTex** (Alternative: MiKTeX)
-  + Oder HTML aus Browser als PDF drucken bzw. `pagedown::chrome_print()`
 :::
 
 ::: column
@@ -82,6 +78,26 @@ knitr::include_graphics("libs/_Images/logo-quarto.png")
 :::
 
 Dokumentation: <https://quarto.org/>
+
+
+## Quarto vs. R Markdown
+
+::: columns
+::: {.column width="65%" style="font-size: 2rem"}
+### Quarto
+
+- Command Line Interface (CLI),  
+  d. h. separate Software
+- Download: <https://quarto.org/docs/get-started/>
+- Es gibt ein optionales R-Paket `quarto` von JJ Allaire als Schnittstelle
+- Quarto in RStudio eingebettet
+:::
+
+::: {.column width="30%" style="font-size: 2rem"}
+### R Markdown
+- basiert auf R-Paket `rmarkdown` von JJ Allaire, Yihui Xie und vielen anderen
+:::
+:::
 
 ## Quarto: Los geht's
 
@@ -212,6 +228,116 @@ Für weitere Chunk-Optionen neben *echo* und *eval* siehe <https://yihui.org/kni
 * Umgang mit Fehlern (anzeigen vs. abbrechen) und Warnungen, Messages (anzeigen vs. unterdrücken)
 
 * Animationen
+
+
+## Quarto: Vorteile gegenüber RMarkdown
+
+::: incremental
+1. Quarto bietet viele Leistungsmerkmale als Standard, die in Markdown nur mit Erweiterungspaketen verfügbar sind.
+2. Quarto ist im Kern für multiple Programmiersprachen und Rendering-Technologien ausgelegt.
+3. Wechsel-"Kosten" sind vergleichsweise gering: <br>die meisten Markdown-Dokumente und Jupyter Notebooks können von Quarto **ohne Änderungen** direkt gerendert werden.
+:::
+
+
+## 1. Standard-Leistungsmerkmale
+
+Markdown benötigt für diverse Anwendungen zusätzliche R-Pakete:
+
+::: incremental
+-   *bookdown* für Bücher
+-   *blogdown* für Blogs
+-   *distill* für wissenschaftliche Publikationen
+-   *xaringan* für ansprechende Präsentationen
+-   Querverweise erfordern *bookdown-Formate* wie htmldocument2
+-   [***Quarto bietet all das als Standard***]{style="color:green"}
+:::
+
+
+## 2. Multi-Language and Multi-Engine
+
+Why should I care?
+
+::: columns
+::: {.column width="50%"}
+![](libs/_Images/quarto-multi-language-njtierney.jpeg)
+Source: NJ Tierney,  
+[*Notes on Changing from Rmarkdown/Bookdown to Quarto,*]{style="font-size:1.8rem"}  
+https://www.njtierney.com/
+:::
+
+::: {.column width="50%" .incremental style="font-size: 2rem"}
+- No R dependency
+- Quarto highly likely to become new standard
+- You may encounter collaborators working in other languages sooner than you expect
+- Quarto more easily used from other software; can be called from command line
+- supports editors beyond RStudio like JupyterLab, VS Code
+:::
+:::
+
+## 2. Multi-Language and Multi-Engine
+
+Currently supported **engines**:
+
+- knitr 
+- Jupyter
+- Observable
+
+. . . 
+
+Currently supported **languages**:
+
+- R, Python, Javascript, Julia
+- designed to work with languages that don't even exist today
+
+
+## 3. Small Cost of Switching
+
+- Depending on your formats, some adaption may be necessary
+- Benefit: More consistency
+  + easier to switch between output formats, e. g. from book to website or slides
+  + Markdown: `_bookdown.yml`, `_output.yml` etc.
+  + Quarto: Just one single `_quarto.yml`
+
+
+## My Experience & More
+
+::: {.incremental style="font-size: 2rem"}
+- Presentations: switched from **rmarkdown & xaringan** to **quarto & revealjs**
+- Layout more flexible, e. g. adjust widths for 2-or-more column layouts
+  + xaringan: edit .css file
+  + quarto & revealjs: `::: {.column width="65%"}`
+- Tabsets work across different html output formats <br>(but can be a hassle for PDF printing)
+- Easier to set global chunk options
+  + RMarkdown: `knitr::opts_chunk$set(echo = FALSE)` in R code block
+  + Quarto: `execute: echo: false` in YAML header
+- Show code chunks including chunk options: use `echo: fenced`
+- New features may only be implemented in Quarto!
+:::
+
+::: {.notes}
+What is NOT implemented in Quarto?
+
+- paged HTML: pagedown for rmarkdown; planned for Quarto 
+- flexdashboard: planned for Quarto 
+- interactive learnr tutorials: no equivalent planned!
+
+:::
+
+
+## Resources
+
+::: {style="font-size: 2.1rem"}
+- Documentation: **Quarto website** at  
+  https://quarto.org/
+- **Alison Hill**: We don't talk about Quarto - Until Now!  
+  https://www.apreshill.com/blog/2022-04-we-dont-talk-about-quarto/
+- **jumping rivers**: I'm an R user: Quarto or R Markdown?  
+  https://www.jumpingrivers.com/blog/quarto-rmarkdown-comparison/
+- **Nick Tierney**: Notes on Changing from Rmarkdown/Bookdown to Quarto  
+  https://www.njtierney.com/post/2022/04/11/rmd-to-qmd/
+- **Jim Hester**: it depends 
+  https://speakerdeck.com/jimhester/it-depends
+:::
 
 
 ## Mehr Interaktivität: Shiny {.smaller}
@@ -432,5 +558,35 @@ include_graphics("libs/_Images/quarto-jupyter-text.png")
 
 * Rendern: <br> `quarto render basics-jupyter.qmd`
 
+:::
+:::
+
+
+## Danke! {.smaller}
+
+::: columns
+::: column
+
+```{r, echo = FALSE, fig.align = "center", out.width = "100%", out.height = "100%"}
+include_graphics("libs/_Images/2023-05-08-Darmstadt-Quarto.webp")
+```
+
+::: {.style="font-color:blue"} 
+**Wolf Riepl  
+Active on LinkedIn  
+<https://statistik-dresden.de/>**  
+:::
+:::
+
+::: column
+```{r, echo = FALSE, fig.align = "center", out.width = "78%", out.height = "78%"}
+include_graphics("libs/_Images/coffee.jpg")
+```
+
+::: {.style="align:right"}
+**Youtube: StatistikinDD  
+Twitter: @StatistikInDD  
+https://www.facebook.com/statistikdresden**
+:::
 :::
 :::
