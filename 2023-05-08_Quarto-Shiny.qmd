@@ -6,7 +6,9 @@ format:
 server: shiny
 ---
 
-```{r ui, message = FALSE}
+```{r, message = FALSE}
+#| context: setup
+#| include: false
 
 library(chartmusicdata)
 library(shiny)
@@ -19,6 +21,10 @@ artists <- songs2000 %>%
 
 songsdata <- songs2000 %>%
   filter(artist %in% artists)
+```
+
+
+```{r ui}
 
 fluidPage(
   
@@ -46,18 +52,6 @@ fluidPage(
 
 ```{r server}
 #| context: server
-
-library(chartmusicdata)
-library(shiny)
-library(tidyverse)
-
-artists <- songs2000 %>% 
-  count(artist, sort = TRUE) %>% 
-  slice_head(n = 10) %>% 
-  pull(artist)
-
-songsdata <- songs2000 %>% 
-  filter(artist %in% artists)
 
 output$bandplot <- renderPlot({
 
