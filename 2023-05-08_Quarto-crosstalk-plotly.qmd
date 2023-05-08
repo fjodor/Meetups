@@ -1,5 +1,5 @@
 ---
-title: "Quarto, plotly und crosstalk"
+title: "Quarto, plotly and crosstalk"
 format:
   html:
     toc: true
@@ -137,7 +137,8 @@ p <- shared_data %>%
   add_markers(size = 3) %>%
   layout(xaxis = list(title = "Air Pollution<br>Mean Annual Exposure in micrograms per cubic meter"),
          yaxis = list(title = "Life Expectancy<br>at birth in years"),
-         legend = list(font = list(size = 16)))
+         # legend = list(font = list(size = 16)))
+         showlegend = FALSE)
 
 # Combining several selectors
 

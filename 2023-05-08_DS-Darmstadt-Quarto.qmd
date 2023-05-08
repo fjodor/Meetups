@@ -79,6 +79,14 @@ knitr::include_graphics("libs/_Images/logo-quarto.png")
 
 Dokumentation: <https://quarto.org/>
 
+::: {.fragment width="60%" style="font-size: 1.7rem"}
+PDF erstellen:
+
+- LaTeX-Installation: **TinyTex** (schlankere Alternative zu MiKTeX)
+- HTML aus Browser als PDF drucken bzw. `pagedown::chrome_print()`
+
+:::
+
 
 ## Quarto vs. R Markdown
 
@@ -594,11 +602,9 @@ include_graphics("libs/_Images/quarto-jupyter-text.png")
 include_graphics("libs/_Images/2023-05-08-Darmstadt-Quarto.webp")
 ```
 
-::: {.style="font-color:blue"} 
 **Wolf Riepl  
-Active on LinkedIn  
+Bei LinkedIn, Xing  
 <https://statistik-dresden.de/>**  
-:::
 :::
 
 ::: column
@@ -606,10 +612,8 @@ Active on LinkedIn
 include_graphics("libs/_Images/coffee.jpg")
 ```
 
-::: {.style="align:right"}
 **Youtube: StatistikinDD  
 Twitter: @StatistikInDD  
 https://www.facebook.com/statistikdresden**
-:::
 :::
 :::
