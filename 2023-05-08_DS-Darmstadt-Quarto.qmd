@@ -230,6 +230,19 @@ Für weitere Chunk-Optionen neben *echo* und *eval* siehe <https://yihui.org/kni
 * Animationen
 
 
+## Quarto: Von .qmd zur Ausgabe
+
+Wie entsteht aus der .qmd-Datei das finale Ausgabedokument?
+
+```{r}
+include_graphics("libs/_Images/rstudio-qmd-how-it-works.png")
+```
+
+Quelle: <https://quarto.org/docs/faq/rmarkdown.html>
+
+Das ist der Blick aus R heraus. Anstelle von *knitr* kann auch *Jupyter* oder *Observable* stehen.
+
+
 ## Quarto: Vorteile gegenüber RMarkdown
 
 ::: incremental
@@ -258,14 +271,14 @@ Markdown benötigt für diverse Anwendungen zusätzliche R-Pakete:
 Warum sollte mich das interessieren?
 
 ::: columns
-::: {.column width="50%"}
+::: {.column width="50%" style="font-size:1.8rem"}
 ![](libs/_Images/quarto-multi-language-njtierney.jpeg)
 Quelle: NJ Tierney,  
-[*Notes on Changing from Rmarkdown/Bookdown to Quarto,*]{style="font-size:1.8rem"}  
+[*Notes on Changing from Rmarkdown/Bookdown to Quarto,*]  
 <https://www.njtierney.com/>
 :::
 
-::: {.column width="50%" .incremental style="font-size: 2rem"}
+::: {.column width="50%" .incremental style="font-size: 1.9rem"}
 - Keine Abhängigkeit von R
 - Hohe Wahrscheinlichkeit, dass Quarto zum neuen Standard wird
 - R-Programmierer: evtl. früher als erwartet Kollegen, die in anderen Sprachen arbeiten
@@ -276,18 +289,22 @@ Quelle: NJ Tierney,
 
 ## 2. Multiple Programmiersprachen und Rendering-Technologien
 
+::: {style="font-size: 2rem"}
 Aktuell unterstützte **Rendering-Technologien** *("engines")*
 
 - knitr 
 - Jupyter
 - Observable
+:::
 
 . . . 
 
+::: {style="font-size: 2rem"}
 Aktuell unterstützte **Programmiersprachen**:
 
 - R, Python, Javascript, Julia
 - dafür ausgelegt, mit Sprachen nutzbar zu sein, die es heute noch gar nicht gibt
+:::
 
 
 ## 3. Geringe Wechselkosten
@@ -305,7 +322,7 @@ Aktuell unterstützte **Programmiersprachen**:
 
 ## Meine Erfahrung & Mehr
 
-::: {.incremental style="font-size: 2rem"}
+::: {.incremental style="font-size: 1.9rem"}
 - Präsentationen: Wechsel von **rmarkdown & xaringan** zu **quarto & revealjs**
 - Flexibleres Layout, z. B. einfachere Anpassung von Spaltenbreiten
   + xaringan: .css anpassen
@@ -314,13 +331,12 @@ Aktuell unterstützte **Programmiersprachen**:
 - Globale Chunk-Optionen einfacher zu setzen
   + RMarkdown: `knitr::opts_chunk$set(echo = FALSE)` in R-Codeblock
   + Quarto: `execute: echo: false` im YAML Header
-- Code-Chunks inklusive der Chunk-Optionen im Dokument zeigen: `echo: fenced`
+- Code-Chunks inklusive der Chunk-Optionen im Dokument zeigen: <br>`echo: fenced`
 - Neue Features werden eher in Quarto als in RMarkdown implementiert!
 :::
 
 ::: {.notes}
 Was gibt es bisher NICHT in Quarto?
-
 
 - paged HTML: pagedown für rmarkdown; für Quarto in Planung
 - flexdashboard: für Quarto in Planung
@@ -331,17 +347,18 @@ Was gibt es bisher NICHT in Quarto?
 ## Material
 
 ::: {style="font-size: 2rem"}
-- DoKumentation: **Quarto website**   
+- Dokumentation: **Quarto website**   
   <https://quarto.org/>
 - **Alison Hill**: We don't talk about Quarto - Until Now!  
-  https://www.apreshill.com/blog/2022-04-we-dont-talk-about-quarto/
+  <https://www.apreshill.com/blog/2022-04-we-dont-talk-about-quarto/>
 - **jumping rivers**: I'm an R user: Quarto or R Markdown?  
-  https://www.jumpingrivers.com/blog/quarto-rmarkdown-comparison/
+  <https://www.jumpingrivers.com/blog/quarto-rmarkdown-comparison/>
 - **Nick Tierney**: Notes on Changing from Rmarkdown/Bookdown to Quarto  
-  https://www.njtierney.com/post/2022/04/11/rmd-to-qmd/
+  <https://www.njtierney.com/post/2022/04/11/rmd-to-qmd/>
 - **Jim Hester**: it depends 
-  https://speakerdeck.com/jimhester/it-depends
-- Twitter Thread <https://twitter.com/rstatstips/status/1602406320296034305>
+  <https://speakerdeck.com/jimhester/it-depends>
+- Twitter Thread **R Stats Tips**, 12.12.2022  
+  <https://twitter.com/rstatstips/status/1602406320296034305>
 
 :::
 

@@ -1,8 +1,5 @@
 Zeigen: Daten in Arbeitsumgebung, nicht in Dokument geladen
 
-
-Schnipsel Quarto
-
 * Word-Dokumente erfordern MS Word-Installation
 * PDF-Dokumente:
   + LaTeX-Installation: **TinyTex** (Alternative: MiKTeX)
