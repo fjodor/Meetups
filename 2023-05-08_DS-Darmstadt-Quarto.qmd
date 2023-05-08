@@ -286,7 +286,7 @@ Warum sollte mich das interessieren?
 ::: {.column width="50%" style="font-size:1.8rem"}
 ![](libs/_Images/quarto-multi-language-njtierney.jpeg)
 Quelle: NJ Tierney,  
-[*Notes on Changing from Rmarkdown/Bookdown to Quarto,*]  
+*Notes on Changing from Rmarkdown/Bookdown to Quarto,*  
 <https://www.njtierney.com/>
 :::
 
@@ -295,7 +295,7 @@ Quelle: NJ Tierney,
 - Hohe Wahrscheinlichkeit, dass Quarto zum neuen Standard wird
 - R-Programmierer: evtl. früher als erwartet Kollegen, die in anderen Sprachen arbeiten
 - Quarto von anderen Sprachen aus leichter nutzbar als Markdown; Aufruf über Kommandozeile
-- Unterstützt andere Editoren als RStudio, z. B. JupyterLab, VS Code
+- Unterstützt andere Editoren als RStudio, <br>z. B. JupyterLab, VS Code
 :::
 :::
 
