@@ -351,14 +351,22 @@ include_graphics("libs/_Images/logo-dplyr.png")
 
 - Simple linear model: **`raw_eur ~ raw_usa`**
 - Separate model for each band / artist
+
+::: fragment
+
 - Usual, complicated way:
   + filter data manually for each subgroup
   + create separate model for each subgroup
+
+:::
+
+::: fragment
 
 - Elegant way?
 - Output format well suited for further processing?
 - No *model summaries* in console!
 
+:::
 :::
 ::::
 
@@ -370,7 +378,9 @@ include_graphics("libs/_Images/logo-dplyr.png")
 :::: columns
 ::: column
 
-```{r, echo = TRUE}
+```{r}
+#| echo: true
+
 top_mod <- top_artists %>% 
   nest_by(artist)
 head(top_mod)
@@ -378,20 +388,198 @@ head(top_mod)
 
 :::
 
-::: column
+::: {.column style="font-size: 2rem"}
 
-```{r, echo = TRUE}
+```{r}
+#| echo: true
+
 top_mod$data[[1]] %>%  # AC/DC
   select(1:3) %>%      # Columns
   slice(1:3)           # Rows
 ```
 
-* Dataset contains **1 Row per Band**
-* Column ***data*** contains **1 dataset per cell**
+* Dataset contains **1 Row per band**
+* Column ***data*** contains <br>**1 dataset per cell**
 * This enables us to continue `elegantly`
 
 :::
 ::::
+
+
+## Creating Many Statistical Models
+
+#### Step 2: One Model per Group
+
+:::: columns
+::: {.column style="width: 60%"}
+
+```{r}
+#| echo: true
+
+top_mod2 <- top_mod %>% 
+  mutate(model = list(
+    lm(raw_eur ~ raw_usa, data = data)
+  ))
+
+head(top_mod2, n = 3)
+```
+
+:::
+
+::: {.column style="width: 40%"}
+
+- Examining models from this data frame (tibble) manually is inconvenient
+- Better: Convert to ***tidy data***
+
+:::
+::::
+
+
+## Creating Many Statistical Models
+
+#### Step 3: Dataset format - *Model summaries*
+
+:::: columns
+::: {.column style="width: 60%"}
+
+```{r broom-glance}
+#| echo: true
+#| message: false
+#| eval: false
+
+top_res <- top_mod2 %>% 
+  summarise(broom::glance(model))
+head(top_res, n = 3)
+
+```
+
+:::
+
+::: {.column style="width: 40%"}
+
+```{r}
+#| out-width: "40%"
+#| out-height: "40%"
+#| fig-align: "right"
+
+include_graphics("libs/_Images/logo-broom.png")
+```
+
+:::
+::::
+
+
+```{r, ref.label = "broom-glance"}
+#| message: false
+```
+
+
+## Creating Many Statistical Models
+
+#### Step 3: Dataset format - *Coefficients*
+
+:::: columns
+::: {.column style="width: 60%"}
+
+```{r broom-tidy}
+#| echo: true
+#| message: false
+#| eval: false
+
+top_res <- top_mod2 %>% 
+  reframe(broom::tidy(model))
+head(top_res, n = 4)
+```
+
+:::
+
+::: {.column style="width: 40%"}
+
+```{r}
+#| out-width: "40%"
+#| out-height: "40%"
+#| fig-align: "right"
+
+include_graphics("libs/_Images/logo-broom.png")
+```
+
+:::
+::::
+
+```{r, ref.label = "broom-tidy"}
+#| message: false
+```
+
+
+## Creating Many Statistical Models
+
+### Just Four Lines of Code!
+
+#### Model summaries
+
+```{r}
+#| echo: true
+#| eval: false
+
+top_artists %>% 
+  nest_by(artist) %>% 
+  mutate(model = list(lm(raw_eur ~ raw_usa, data = data))) %>% 
+  summarise(broom::glance(model), .groups = "drop")
+```
+
+```{r}
+top_artists %>% 
+  nest_by(artist) %>% 
+  mutate(model = list(lm(raw_eur ~ raw_usa, data = data))) %>% 
+  summarise(broom::glance(model), .groups = "drop") %>% 
+  head(n = 3)
+```
+
+
+## Creating Many Statistical Models
+
+### Just Four Lines of Code!
+
+#### Coefficients
+
+```{r}
+#| echo: true
+#| eval: false
+
+top_artists %>% 
+  nest_by(artist) %>% 
+  mutate(model = list(lm(raw_eur ~ raw_usa, data = data))) %>% 
+  reframe(broom::tidy(model))
+```
+
+```{r}
+
+top_artists %>% 
+  nest_by(artist) %>% 
+  mutate(model = list(lm(raw_eur ~ raw_usa, data = data))) %>% 
+  reframe(broom::tidy(model)) %>% 
+  head(n = 3)
+```
+
+
+## Creating Many Statistical Models
+
+#### Overview of Functions
+
+::: {style="font-size: 1.7rem"}
+
+R Package | Function | Description
+-------|--------------|-------------
+dplyr | `nest_by()` | Creates "list column" containing one dataset per group (band); dataset now has as many rows as groups
+dplyr | `mutate(model = list(`*formula*`))` | Create separate models per group (band)
+dplyr | `summarise()` | Retrieve results per row = band
+dplyr | `reframe()` | Retrieve results for more than one row per group <br>(e. g. several coefficients)
+broom | `glance()` | Retrieve model summaries in *tidy data* format
+broom | `tidy()` | Turn object (e. g. model coefficients) into *tidy data* format
+tidyr | `pivot_wider()` | Transform data into *wide* format
+: {tbl-colwidths="[15,23,62]"}
+
+:::
 
 
 ## Thank you - enjoy R! {.smaller}
