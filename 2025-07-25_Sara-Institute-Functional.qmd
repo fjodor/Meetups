@@ -6,7 +6,7 @@ title-slide-attributes:
   data-background-size: 40%
   data-background-opacity: "0.5"
   data-background-color: "#F9F9F9"
-institution: "Wolf Riepl Trainer for R Programming"
+author: "Wolf Riepl"
 date: 2025-07-25
 format: 
   revealjs:
@@ -259,6 +259,139 @@ purrr::walk(2000:2020, ~print(my_plot(.)), .progress = TRUE)
 ```
 
 :::
+
+
+## Creating Many Statistical Models
+
+:::: columns
+::: column
+
+```{r, out.width = "80%", out.height = "80%"}
+include_graphics("libs/_Images/Coding-College.png")
+```
+
+:::
+
+::: column
+
+```{r, out.width = "70%", out.height = "70%"}
+include_graphics("libs/_Images/Coding-Real-Job.png")
+```
+:::
+::::
+
+::: {style="font-size: 1.6rem"}
+<https://me.me/i/coding-while-learning-it-at-college-coding-for-a-project-d004e7c838784aecbf821cd76b38ff5b>  
+and <https://memecenter.com>
+:::
+
+
+## Creating Many Statistical Models
+
+```{r}
+
+top_artists <- topalbums %>% 
+  filter(!(artist %in% c("Original Soundtrack", "Original Cast"))) %>% 
+  count(artist) %>% 
+  filter(n > 9) %>% 
+  pull(artist)
+
+top_artists <- topalbums %>% 
+  filter(artist %in% top_artists)
+
+top4 <- top_artists %>% 
+  count(artist) %>% 
+  slice_max(order_by = n, n = 4, with_ties = FALSE) %>% 
+  pull(artist)
+
+# Das erfolgreichste Album jeder Band / jedes Künstlers beschriften
+
+plot_labels <- topalbums %>% 
+  filter(artist %in% top4) %>% 
+  group_by(artist) %>% 
+  filter(final_score == max(final_score)) %>% 
+  rename(label = name)
+
+plot_data <- top_artists %>% 
+  left_join(plot_labels) %>% 
+  mutate(label = str_wrap(label, width = 19))
+
+plot <- plot_data %>% 
+  filter(artist %in% top4) %>% 
+  ggplot(aes(x = year, y = final_score, label = label)) +
+  geom_point() +
+  # geom_text(aes(label = label), nudge_y = 60,
+  #           nudge_x = 10, check_overlap = TRUE) +
+  ggrepel::geom_text_repel(nudge_y = 7, nudge_x = 10,
+                           arrow = arrow(), col = "darkblue") +
+  facet_wrap(~ artist, nrow = 2) +
+  scale_y_continuous(limits = c(0, 70)) +
+  labs(x = "Year", y = "Score",
+       title = "Top 4 Bands / Artists with most Albums in Top 3000") +
+  theme_bw(base_size = 14) 
+
+plot
+```
+
+
+## Creating Many Statistical Models
+
+### Task: Predict album success in Europe <br> from success in U.S.
+
+:::: columns
+::: {.column style="width: 30%"}
+
+```{r}
+include_graphics("libs/_Images/logo-dplyr.png")
+```
+
+:::
+
+::: {.column style="width: 70%; font-size: 2rem"}
+
+- Simple linear model: **`raw_eur ~ raw_usa`**
+- Separate model for each band / artist
+- Usual, complicated way:
+  + filter data manually for each subgroup
+  + create separate model for each subgroup
+
+- Elegant way?
+- Output format well suited for further processing?
+- No *model summaries* in console!
+
+:::
+::::
+
+
+## Creating Many Statistical Models
+
+#### Step 1: Create "nested" dataset
+
+:::: columns
+::: column
+
+```{r, echo = TRUE}
+top_mod <- top_artists %>% 
+  nest_by(artist)
+head(top_mod)
+```
+
+:::
+
+::: column
+
+```{r, echo = TRUE}
+top_mod$data[[1]] %>%  # AC/DC
+  select(1:3) %>%      # Columns
+  slice(1:3)           # Rows
+```
+
+* Dataset contains **1 Row per Band**
+* Column ***data*** contains **1 dataset per cell**
+* This enables us to continue `elegantly`
+
+:::
+::::
 
 
 ## Thank you - enjoy R! {.smaller}
