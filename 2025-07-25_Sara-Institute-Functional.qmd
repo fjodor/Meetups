@@ -21,8 +21,7 @@ execute:
 callout-appearance: simple
 ---
 
-
-## Quarto
+## Creating Many Graphics
 
 ```{r}
 #| include: false
@@ -31,16 +30,111 @@ callout-appearance: simple
 library(knitr)
 library(tidyverse)
 library(fontawesome)
+library(chartmusicdata)
+
 Sys.setenv(LANG="en")
 # Sys.setenv(LANG="de")
 Sys.setlocale("LC_TIME", "en_GB.utf8")
 ```
 
+::: {style="font-size: 2.2rem"}
 
-## Thank you! {.smaller}
+Why work code-based in the first place?
 
-::: columns
-::: column
+```{r ref.label = "albumchart"}
+#| echo: false
+#| eval: true
+```
+
+:::
+
+
+## Creating Many Graphics
+
+:::: columns
+::: {.column style="width: 72%"}
+
+```{r, ref.label = "albumchart"}
+#| echo: true
+#| eval: false
+```
+
+:::
+
+::: {.column style="width: 28%"}
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-height: 12
+#| fig-width: 9
+
+p <- albums2000 %>% 
+  filter(year == 2020) %>%
+  filter(!(artist %in% c(
+    "Original Soundtrack", "Various Artists"))) %>%
+  count(artist) %>% 
+  slice_max(n, n = 7) %>% 
+  ggplot(aes(x = n, 
+             y = fct_rev(fct_inorder(artist)))) +
+  geom_point(size = 5, col = "blue") +
+  ggthemes::theme_wsj(base_size = 24) +
+  labs(title = "Albums in 2020",
+       subtitle = "Most Entries",
+       y = "", caption = "Source: chart2000.com") +
+  scale_x_continuous(limits = c(0, NA))
+
+p
+```
+
+:::
+::::
+
+
+## Creating Many Graphics
+
+:::: columns
+::: {.column style="width: 72%"}
+
+```{r "albumchart"}
+#| echo: true
+#| eval: false
+#| code-line-numbers: "2|11"
+
+albums2000 %>% 
+  filter(year == 2020) %>%
+  filter(!(artist %in% c(
+    "Original Soundtrack", "Various Artists"))) %>%
+  count(artist) %>% 
+  slice_max(n, n = 7) %>% 
+  ggplot(aes(x = n, 
+             y = fct_rev(fct_inorder(artist)))) +
+  geom_point(size = 5, col = "blue") +
+  ggthemes::theme_wsj(base_size = 18) +
+  labs(title = "Albums in 2020",
+       subtitle = "Most Entries",
+       y = "", caption = "Source: chart2000.com") +
+  scale_x_continuous(limits = c(0, NA))
+
+```
+
+:::
+
+::: {.column style="width: 28%"}
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-height: 12
+#| fig-width: 9
+
+p
+```
+
+:::
+::::
+
+## Thank you - enjoy R! {.smaller}
 
 ```{r}
 #| echo: false
@@ -52,17 +146,18 @@ Sys.setlocale("LC_TIME", "en_GB.utf8")
 include_graphics("libs/_Images/2025-07-Sara.png")
 ```
 
+:::: columns
+::: column
+
 **Wolf Riepl  
 LinkedIn, Xing  
 <https://statistik-dresden.de/>**  
 :::
 
 ::: column
-```{r, echo = FALSE, fig.align = "center", out.width = "78%", out.height = "78%"}
-include_graphics("libs/_Images/coffee.jpg")
-```
 
 **Youtube: StatistikinDD  
 https://www.facebook.com/statistikdresden**
+
 :::
-:::
+::::
