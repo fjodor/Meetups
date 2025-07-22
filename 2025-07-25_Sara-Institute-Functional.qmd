@@ -1,0 +1,68 @@
+---
+title: "Putting the Fun in: <br>FUNctional Programming in R"
+title-slide-attributes: 
+  data-background-image: libs/_Images/logo-Sara.png
+  data-background-position: top
+  data-background-size: 10%
+  # data-background-opacity: "0.3"
+  data-background-color: "#F9F9F9"
+institution: "Wolf Riepl Trainer for R Programming"
+date: 2025-07-25
+format: 
+  revealjs:
+    theme: default
+    highlight-style: a11y
+execute:
+  echo: false
+  eval: true
+  freeze: auto
+  warning: false
+  message: false
+callout-appearance: simple
+---
+
+
+## Quarto
+
+```{r}
+#| include: false
+#| message: false
+
+library(knitr)
+library(tidyverse)
+library(fontawesome)
+Sys.setenv(LANG="en")
+# Sys.setenv(LANG="de")
+Sys.setlocale("LC_TIME", "en_GB.utf8")
+```
+
+
+## Thank you! {.smaller}
+
+::: columns
+::: column
+
+```{r}
+#| echo: false
+#| fig-align: "center"
+
+# out-width: "200%"
+# out-height: "200%"
+
+include_graphics("libs/_Images/2025-07-Sara.png")
+```
+
+**Wolf Riepl  
+LinkedIn, Xing  
+<https://statistik-dresden.de/>**  
+:::
+
+::: column
+```{r, echo = FALSE, fig.align = "center", out.width = "78%", out.height = "78%"}
+include_graphics("libs/_Images/coffee.jpg")
+```
+
+**Youtube: StatistikinDD  
+https://www.facebook.com/statistikdresden**
+:::
+:::
