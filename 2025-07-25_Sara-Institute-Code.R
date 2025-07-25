@@ -8,6 +8,7 @@ library(knitr)
 library(tidyverse)
 library(ggrepel)
 library(devtools)
+library(gtsummary)
 
 # Uncomment and run once to install data package
 # devtools::install_github("fjodor/chartmusicdata")
@@ -173,6 +174,11 @@ head(top_mod2)
 
 top_mod2$model[[1]]
 summary(top_mod2$model[[1]])
+
+# Get a convenient table: gtsummary
+
+top_mod2$model[[1]] %>% 
+  tbl_regression()
 
 # Better: Convert to tidy data
 
