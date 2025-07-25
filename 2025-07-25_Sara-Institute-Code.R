@@ -7,6 +7,7 @@
 library(knitr)
 library(tidyverse)
 library(ggrepel)
+library(ggthemes)
 library(devtools)
 library(gtsummary)
 
