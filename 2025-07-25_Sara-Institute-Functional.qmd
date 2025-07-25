@@ -242,7 +242,7 @@ my_plot <- function(Year) {
     ggplot(aes(x = n, 
                y = fct_rev(fct_inorder(artist)))) +
     geom_point(size = 5, col = "blue") +
-    ggthemes::theme_wsj() +
+    ggthemes::theme_wsj(base_size = 18) +
     labs(title = paste("Albums in", Year),
          subtitle = "Most Entries",
          y = "", caption = "Source: chart2000.com") +
