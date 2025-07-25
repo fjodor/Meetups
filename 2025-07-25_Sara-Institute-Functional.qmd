@@ -21,8 +21,6 @@ execute:
 callout-appearance: simple
 ---
 
-## Creating Many Graphics
-
 ```{r}
 #| include: false
 #| message: false
@@ -36,6 +34,74 @@ Sys.setenv(LANG="en")
 # Sys.setenv(LANG="de")
 Sys.setlocale("LC_TIME", "en_GB.utf8")
 ```
+
+## Data for Today {.smaller}
+
+:::: columns
+::: column
+
+#### https://tsort.info/ <br> "The World's Music Charts"
+  + Songs and albums since 1900
+  + Scoring well suited until about 2012
+
+#### https://chart2000.com/ <br> "Music Charts"
+  + Songs and albums since 2000
+  + Scoring better suited for more recent entries
+
+:::
+
+::: column
+
+| Dataset   | Source: tsort.info                               |
+|-----------|--------------------------------------------------|
+| topalbums | Top 3000 albums                                  |
+
+<br>
+
+| Dataset    | Source: chart2000.com                               |
+|------------|-----------------------------------------------------|
+| albums2000 | Top 50 albums each month from Jan 2000 to June 2021 |
+
+<br>
+
+#### Install once; load per session as needed
+
+```{r, eval = FALSE, echo = TRUE}
+library(devtools)
+install_github("fjodor/chartmusicdata")
+```
+
+```{r, message = FALSE, echo = TRUE}
+library(chartmusicdata)
+data("albums2000")
+```
+
+:::
+::::
+
+
+## The albums2000 data {.smaller}
+
+
+```{r, echo = TRUE, eval = FALSE}
+head(albums2000, n = 5)
+```
+
+<br>
+
+::: {style="font-size: 1.4rem"}
+
+```{r, echo = FALSE, eval = TRUE}
+albums2000 %>% 
+  select(-au, -ca) %>% 
+  head(n = 5) %>% 
+  knitr::kable()
+```
+
+:::
+
+
+## Creating Many Graphics
 
 ::: {style="font-size: 2.2rem"}
 
@@ -242,23 +308,63 @@ lapply(2000:2020, my_plot)
 
 <br>
 
-### tidyverse
+### tidyverse - purrr Package
 
 ```{r}
 #| echo: true
 #| eval: false
 
 # Like lapply
-purrr::map(2000:2020, my_plot)
+map(2000:2020, my_plot)
 
 # Suppress output in console - charts only
-purrr::walk(2000:2020, ~print(my_plot(.)))
+walk(2000:2020, ~print(my_plot(.)))
 
 # Show progress bar
-purrr::walk(2000:2020, ~print(my_plot(.)), .progress = TRUE)
+walk(2000:2020, ~print(my_plot(.)), .progress = TRUE)
 ```
 
 :::
+
+
+## The topalbums data {.smaller}
+
+```{r, echo = TRUE, eval = FALSE}
+head(topalbums, n = 5)   # Some variables excluded ...
+```
+
+::: {style="font-size: 1.4rem"}
+
+```{r, echo = FALSE, eval = TRUE}
+topalbums %>% 
+  select(-final_score, -raw_eng, -raw_row) %>% 
+  head(n = 5) %>% 
+  knitr::kable()
+```
+
+:::
+
+<br>
+
+:::: columns
+::: column
+
+-   position: Rank from 1 to 3000
+-   artist: artist / band
+-   name: album title
+
+:::
+
+::: column
+
+-   year: release year
+-   raw_usa: raw score USA
+-   raw_eur: raw score in (non-English) European countries
+
+:::
+::::
+
+Each album appears only once in the data.
 
 
 ## Creating Many Statistical Models
@@ -350,7 +456,7 @@ include_graphics("libs/_Images/logo-dplyr.png")
 ::: {.column style="width: 70%; font-size: 2rem"}
 
 - Simple linear model: **`raw_eur ~ raw_usa`**
-- Separate model for each band / artist
+- Separate model for each band / artist (n >= 10)
 
 ::: fragment
 

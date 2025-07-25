@@ -13,6 +13,8 @@ library(devtools)
 # devtools::install_github("fjodor/chartmusicdata")
 library(chartmusicdata)
 
+data("albums2000")
+
 
 # A chart ----
 
@@ -25,7 +27,7 @@ albums2000 %>%
   ggplot(aes(x = n, 
              y = fct_rev(fct_inorder(artist)))) +
   geom_point(size = 5, col = "blue") +
-  ggthemes::theme_wsj(base_size = 24) +
+  ggthemes::theme_wsj(base_size = 14) +
   labs(title = "Albums in 2020",
        subtitle = "Most Entries",
        y = "", caption = "Source: chart2000.com") +
@@ -47,7 +49,7 @@ my_plot <- function(Year) {
     ggplot(aes(x = n, 
                y = fct_rev(fct_inorder(artist)))) +
     geom_point(size = 5, col = "blue") +
-    ggthemes::theme_wsj() +
+    ggthemes::theme_wsj(base_size = 14) +
     labs(title = paste("Albums in", Year),
          subtitle = "Most Entries",
          y = "", caption = "Source: chart2000.com") +
@@ -91,6 +93,8 @@ walk(2000:2020, ~print(my_plot(.)), .progress = TRUE)
 # Creating Many Statistical Models ----
 
 ## Data preparation ----
+
+data(topalbums)
 
 top_artists <- topalbums %>% 
   filter(!(artist %in% c("Original Soundtrack", "Original Cast"))) %>% 
