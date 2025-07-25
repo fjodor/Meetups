@@ -373,6 +373,30 @@ include_graphics("libs/_Images/logo-dplyr.png")
 
 ## Creating Many Statistical Models
 
+### Overview: Just Four Lines of Code
+
+```{r}
+#| echo: true
+#| eval: false
+
+top_artists %>% 
+  nest_by(artist) %>% 
+  mutate(model = list(lm(raw_eur ~ raw_usa, data = data))) %>% 
+  summarise(broom::glance(model), .groups = "drop")
+```
+
+```{r}
+top_artists %>% 
+  nest_by(artist) %>% 
+  mutate(model = list(lm(raw_eur ~ raw_usa, data = data))) %>% 
+  summarise(broom::glance(model), .groups = "drop") %>% 
+  head(n = 3)
+```
+
+
+
+## Creating Many Statistical Models
+
 #### Step 1: Create "nested" dataset
 
 :::: columns
